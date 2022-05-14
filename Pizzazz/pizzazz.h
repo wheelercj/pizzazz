@@ -42,7 +42,7 @@
 #define ESC "\x1b"
 #define LESC L"\x1b"
 
-const std::string VERSION = "0.1.0";
+const std::string __version = "0.2.0";
 
 // Here are some resources that were helpful for writing this file:
 // https://docs.microsoft.com/en-us/windows/console/console-virtual-terminal-sequences
