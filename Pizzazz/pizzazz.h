@@ -143,6 +143,12 @@ namespace pizzazz {
     void move_cursor_left(int columns);
     Coord get_window_size();
     char getch_();
+    char getch_if_kbhit();
+#ifndef _WIN32
+    void enable_raw_mode();
+    void disable_raw_mode();
+    bool kbhit_();
+#endif
     void insert(std::string text);
     void insert(std::wstring text);
     void delete_chars(int count);
