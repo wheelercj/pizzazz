@@ -135,12 +135,12 @@ namespace pizzazz {
     void print_at(unsigned x, unsigned y, std::wstring message);
     void set_cursor_coords(unsigned x, unsigned y);
     Coord get_cursor_coords();
-    void save_cursor_position();
-    void restore_cursor_position();
     void move_cursor_up(int lines);
     void move_cursor_down(int lines);
     void move_cursor_right(int columns);
     void move_cursor_left(int columns);
+    void save_cursor_location();
+    void restore_cursor_location();
     Coord get_window_size();
     char getch_();
     char getch_if_kbhit();
@@ -305,11 +305,11 @@ namespace pizzazz {
         return coord;
     }
 
-    void save_cursor_position() {
+    void save_cursor_location() {
         std::cout << ESC "[s";
     }
 
-    void restore_cursor_position() {
+    void restore_cursor_location() {
         std::cout << ESC "[u";
     }
 
