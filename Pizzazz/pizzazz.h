@@ -127,20 +127,20 @@ namespace pizzazz {
     void set_style(std::vector<Style> styles);
     void set_style(std::string ansi_code_after_esc);
     void reset_style();
-    void print_rgb(int red, int green, int blue, std::string message);
-    void print_rgb(int red, int green, int blue, std::wstring message);
-    void print_bg_rgb(int red, int green, int blue, std::string message);
-    void print_bg_rgb(int red, int green, int blue, std::wstring message);
+    void print_rgb(unsigned red, unsigned green, unsigned blue, std::string message);
+    void print_rgb(unsigned red, unsigned green, unsigned blue, std::wstring message);
+    void print_bg_rgb(unsigned red, unsigned green, unsigned blue, std::string message);
+    void print_bg_rgb(unsigned red, unsigned green, unsigned blue, std::wstring message);
     void print_at(unsigned x, unsigned y, std::string message);
     void print_at(unsigned x, unsigned y, std::wstring message);
     void set_cursor_coords(unsigned x, unsigned y);
     Coord get_cursor_coords();
-    void move_cursor_up(int lines);
-    void move_cursor_down(int lines);
-    void move_cursor_right(int columns);
-    void move_cursor_left(int columns);
     void save_cursor_location();
     void restore_cursor_location();
+    void move_cursor_up(unsigned = 1);
+    void move_cursor_down(unsigned = 1);
+    void move_cursor_right(unsigned = 1);
+    void move_cursor_left(unsigned = 1);
     Coord get_window_size();
     char getch_();
     char getch_if_kbhit();
@@ -151,12 +151,12 @@ namespace pizzazz {
 #endif
     void insert(std::string text);
     void insert(std::wstring text);
-    void delete_chars(int count);
-    void insert_lines(int count);
-    void delete_lines(int count);
+    void delete_chars(unsigned count);
+    void insert_lines(unsigned count);
+    void delete_lines(unsigned count);
     void alternate_screen_buffer();
     void restore_screen_buffer();
-    void sleep_(int milliseconds);
+    void sleep_(unsigned milliseconds);
     void set_window_width_to_132();
     void set_window_width_to_80();
     void clear_screen();
@@ -239,25 +239,25 @@ namespace pizzazz {
         std::cout << "\x1b[0m";
     }
 
-    void print_rgb(int red, int green, int blue, std::string message) {
+    void print_rgb(unsigned red, unsigned green, unsigned blue, std::string message) {
         std::cout << ESC "[38;2;" << red << ";" << green << ";" << blue << "m";
         std::cout << message;
         reset_style();
     }
 
-    void print_rgb(int red, int green, int blue, std::wstring message) {
+    void print_rgb(unsigned red, unsigned green, unsigned blue, std::wstring message) {
         std::cout << ESC "[38;2;" << red << ";" << green << ";" << blue << "m";
         wprint(message);
         reset_style();
     }
 
-    void print_bg_rgb(int red, int green, int blue, std::string message) {
+    void print_bg_rgb(unsigned red, unsigned green, unsigned blue, std::string message) {
         std::cout << ESC "[48;2;" << red << ";" << green << ";" << blue << "m";
         std::cout << message;
         reset_style();
     }
 
-    void print_bg_rgb(int red, int green, int blue, std::wstring message) {
+    void print_bg_rgb(unsigned red, unsigned green, unsigned blue, std::wstring message) {
         std::cout << ESC "[48;2;" << red << ";" << green << ";" << blue << "m";
         wprint(message);
         reset_style();
@@ -313,19 +313,19 @@ namespace pizzazz {
         std::cout << ESC "[u";
     }
 
-    void move_cursor_up(int lines = 1) {
+    void move_cursor_up(unsigned lines) {
         std::cout << ESC "[" << lines << "A";
     }
 
-    void move_cursor_down(int lines = 1) {
+    void move_cursor_down(unsigned lines) {
         std::cout << ESC "[" << lines << "B";
     }
 
-    void move_cursor_right(int columns = 1) {
+    void move_cursor_right(unsigned columns) {
         std::cout << ESC "[" << columns << "C";
     }
 
-    void move_cursor_left(int columns = 1) {
+    void move_cursor_left(unsigned columns) {
         std::cout << ESC "[" << columns << "D";
     }
 
@@ -409,15 +409,15 @@ namespace pizzazz {
         wprint(text);
     }
 
-    void delete_chars(int count) {
+    void delete_chars(unsigned count) {
         std::cout << ESC "[" << count << "P";
     }
 
-    void insert_lines(int count) {
+    void insert_lines(unsigned count) {
         std::cout << ESC "[" << count << "L";
     }
 
-    void delete_lines(int count) {
+    void delete_lines(unsigned count) {
         std::cout << ESC "[" << count << "M";
     }
 
@@ -429,8 +429,8 @@ namespace pizzazz {
         std::cout << ESC "[?1049l";
     }
 
-    void sleep_(int milliseconds) {
         /* Pauses the program for a chosen amount of time. */
+    void sleep_(unsigned milliseconds) {
 #ifdef _WIN32
         Sleep(milliseconds);
 #else
