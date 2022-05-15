@@ -255,10 +255,21 @@ namespace pizzazz {
     */
     char getch_();
 
-    /* Gets a character input without an Enter keypress only if there is input.
+    /* Detects whether a key was pressed.
+       Ignores modifier keys.
+    */
+    bool kbhit__();
+
+    /* Gets a character input without requiring an Enter keypress only if there is input.
        Returns 0 if there is no input.
+       Ignores modifier keys.
     */
     char getch_if_kbhit();
+
+    /* Pauses the program until the user presses a key.
+       Modifier keys are ignored.
+    */
+    void pause();
 
 #ifndef _WIN32
     

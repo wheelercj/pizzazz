@@ -195,14 +195,24 @@ namespace pizzazz {
 #endif
     }
 
-    char getch_if_kbhit() {
+    bool kbhit__() {
 #ifdef _WIN32
-        if (_kbhit())
+        return _kbhit();
 #else
-        if (kbhit_())
+        return kbhit_();
 #endif
+    }
+
+    char getch_if_kbhit() {
+        if (kbhit__())
             return getch_();
         return 0;
+    }
+
+    void pause() {
+        char _ = getch_();
+        while (kbhit__())  // some keys are multiple characters
+            _ = getch_();
     }
 
 #ifndef _WIN32
