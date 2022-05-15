@@ -5,7 +5,7 @@
 namespace pizzazz {
 
     /* Hides or shows the terminal's cursor. */
-    void toggle_showing_cursor(bool choice) {
+    void show_cursor(bool choice) {
         if (choice)
             std::cout << ESC "[?25h";
         else
@@ -13,7 +13,7 @@ namespace pizzazz {
     }
 
     /* Hides or shows the terminal cursor's blinking. */
-    void toggle_showing_cursor_blink(bool choice) {
+    void show_cursor_blink(bool choice) {
         if (choice)
             std::cout << ESC "[?12h";
         else

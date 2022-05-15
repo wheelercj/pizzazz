@@ -112,8 +112,8 @@ namespace pizzazz {
         bright_bg_white,
     };
 
-    void toggle_showing_cursor(bool choice);
-    void toggle_showing_cursor_blink(bool choice);
+    void show_cursor(bool = true);
+    void show_cursor_blink(bool = true);
     void set_window_title(std::string title);
     void set_window_title(std::wstring title);
     void wprint(std::wstring message);
