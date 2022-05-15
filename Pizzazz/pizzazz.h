@@ -26,6 +26,7 @@
 #include <string>
 #include <vector>
 #include <wchar.h>
+#include <stdexcept>
 #ifdef _WIN32
 #include <windows.h>
 #include <conio.h>  // _getch
@@ -165,24 +166,25 @@ namespace pizzazz {
     void reset_style();
 
     /* Prints a message with a chosen color.
+       Throws std::invalid_argument if a color value is greater than 255.
        The red, green, and blue variables must be in the range [0, 255].
     */
     void print_rgb(unsigned red, unsigned green, unsigned blue, std::string message);
 
     /* Prints a message with a chosen color.
        The message can have emoji/Unicode characters.
-       The red, green, and blue variables must be in the range [0, 255].
+       Throws std::invalid_argument if a color value is greater than 255.
     */
     void print_rgb(unsigned red, unsigned green, unsigned blue, std::wstring message);
 
     /* Prints a message with a chosen background color.
-       The red, green, and blue variables must be in the range [0, 255].
+       Throws std::invalid_argument if a color value is greater than 255.
     */
     void print_bg_rgb(unsigned red, unsigned green, unsigned blue, std::string message);
 
     /* Prints a message with a chosen background color.
        The message can have emoji/Unicode characters.
-       The red, green, and blue variables must be in the range [0, 255].
+       Throws std::invalid_argument if a color value is greater than 255.
     */
     void print_bg_rgb(unsigned red, unsigned green, unsigned blue, std::wstring message);
     
