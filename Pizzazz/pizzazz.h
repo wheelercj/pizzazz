@@ -207,6 +207,12 @@ namespace pizzazz {
        and y increases downwards.
     */
     void set_cursor_coords(unsigned x, unsigned y);
+
+    /* Moves the terminal's cursor to chosen coordinates.
+       In this coordinate system, x increases to the right
+       and y increases downwards.
+    */
+    void set_cursor_coords(Coord coord);
     
     /* Detects the current coordinates of the terminal's cursor. */
     Coord get_cursor_coords();

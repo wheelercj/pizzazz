@@ -128,6 +128,10 @@ namespace pizzazz {
         std::cout << ESC "[" << y << ";" << x << "H";
     }
 
+    void set_cursor_coords(Coord coord) {
+        std::cout << ESC "[" << coord.y << ";" << coord.x << "H";
+    }
+
     Coord get_cursor_coords() {
         std::cout << ESC "[6n";  // request coordinates in the format \x1b[y;xR
         char input;
