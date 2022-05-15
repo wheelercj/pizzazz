@@ -232,12 +232,43 @@ namespace pizzazz {
     /* Detects the terminal window's current size in columns and rows. */
     Coord get_window_size();
 
+    /* Waits for and gets a keypress of input without requiring an Enter keypress.
+       Ignores modifier keys. Some return values may be unexpected:
+       Enter -> "Enter",
+       Tab -> "Tab",
+       Escape -> "Escape",
+       Backspace -> "Backspace",
+       Delete -> "Delete",
+       up arrow -> "up arrow",
+       down arrow -> "down arrow",
+       left arrow -> "left arrow",
+       right arrow -> "right arrow",
+       Home -> "Home",
+       End -> "End",
+       Page Up -> "Page Up",
+       Page Down -> "Page Down",
+       Insert -> "Insert",
+       F1 -> "F1",
+       F2 -> "F2",
+       F3 -> "F3",
+       F4 -> "F4",
+       F5 -> "F5",
+       F6 -> "F6",
+       F7 -> "F7",
+       F8 -> "F8",
+       F9 -> "F9",
+       F10 -> "F10",
+       F11 -> "F11",
+       F12 -> "F12".
+    */
+    std::string read_key();
+
     /* Waits for and gets a character input without requiring an Enter keypress.
        Ignores modifier keys. Some keys return values that may be unexpected:
-       Enter -> '\\r',
-       Tab -> '\\t',
-       Escape -> '\\x1b',
-       Backspace -> '\\b',
+       Enter -> '\r',
+       Tab -> '\t',
+       Escape -> '\x1b',
+       Backspace -> '\b',
        Delete -> 'à' and then 'S',
        up arrow -> 'à' and then 'H',
        down arrow -> 'à' and then 'P',
@@ -248,16 +279,16 @@ namespace pizzazz {
        Page Up -> 'à' and then 'I',
        Page Down -> 'à' and then 'Q',
        Insert -> 'à' and then 'R',
-       F1 -> '\\0' and then ';',
-       F2 -> '\\0' and then '<',
-       F3 -> '\\0' and then '=',
-       F4 -> '\\0' and then '>',
-       F5 -> '\\0' and then '?',
-       F6 -> '\\0' and then the at symbol,
-       F7 -> '\\0' and then 'A',
-       F8 -> '\\0' and then 'B',
-       F9 -> '\\0' and then 'C',
-       F10 -> '\\0' and then 'D',
+       F1 -> '\0' and then ';',
+       F2 -> '\0' and then '<',
+       F3 -> '\0' and then '=',
+       F4 -> '\0' and then '>',
+       F5 -> '\0' and then '?',
+       F6 -> '\0' and then the at symbol,
+       F7 -> '\0' and then 'A',
+       F8 -> '\0' and then 'B',
+       F9 -> '\0' and then 'C',
+       F10 -> '\0' and then 'D',
        F11 -> 'à' and then '…',
        F12 -> 'à' and then '†'.
     */

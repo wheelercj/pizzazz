@@ -192,6 +192,56 @@ namespace pizzazz {
 #endif
     }
 
+    std::string read_key() {
+        char input = getch_();
+        switch (input) {
+        case '\r': return "Enter";
+        case '\t': return "Tab";
+        case '\x1b': return "Escape";
+        case '\b': return "Backspace";
+        case 'à':
+            if (!kbhit__())
+                return "à";
+            input = getch_();
+            switch (input) {
+            case 'S': return "Delete";
+            case 'H': return "up arrow";
+            case 'P': return "down arrow";
+            case 'K': return "left arrow";
+            case 'M': return "right arrow";
+            case 'G': return "Home";
+            case 'O': return "End";
+            case 'I': return "Page Up";
+            case 'Q': return "Page Down";
+            case 'R': return "Insert";
+            case '…': return "F11";
+            case '†': return "F12";
+            default:
+                throw std::exception("Key not recognized.");
+            }
+        case '\0':
+            if (!kbhit__())
+                return "\0";
+            input = getch_();
+            switch (input) {
+            case ';': return "F1";
+            case '<': return "F2";
+            case '=': return "F3";
+            case '>': return "F4";
+            case '?': return "F5";
+            case '@': return "F6";
+            case 'A': return "F7";
+            case 'B': return "F8";
+            case 'C': return "F9";
+            case 'D': return "F10";
+            default:
+                throw std::exception("Key not recognized.");
+            }
+        default:
+            return std::to_string(input);
+        }
+    }
+
     char getch_() {
 #ifdef _WIN32
         return _getch();
