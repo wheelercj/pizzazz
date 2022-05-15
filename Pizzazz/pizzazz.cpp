@@ -79,35 +79,39 @@ namespace pizzazz {
     }
 
     void print_rgb(unsigned red, unsigned green, unsigned blue, std::string message) {
-        if (red > 255 || green > 255 || blue > 255)
-            throw std::invalid_argument("Error: the values for the colors must be within the range [0,255].");
-        std::cout << ESC "[38;2;" << red << ";" << green << ";" << blue << "m";
+        set_rgb(red, green, blue);
         std::cout << message;
         reset_style();
     }
 
     void print_rgb(unsigned red, unsigned green, unsigned blue, std::wstring message) {
-        if (red > 255 || green > 255 || blue > 255)
-            throw std::invalid_argument("Error: the values for the colors must be within the range [0,255].");
-        std::cout << ESC "[38;2;" << red << ";" << green << ";" << blue << "m";
+        set_rgb(red, green, blue);
         wprint(message);
         reset_style();
     }
 
     void print_bg_rgb(unsigned red, unsigned green, unsigned blue, std::string message) {
-        if (red > 255 || green > 255 || blue > 255)
-            throw std::invalid_argument("Error: the values for the colors must be within the range [0,255].");
-        std::cout << ESC "[48;2;" << red << ";" << green << ";" << blue << "m";
+        set_bg_rgb(red, green, blue);
         std::cout << message;
         reset_style();
     }
 
     void print_bg_rgb(unsigned red, unsigned green, unsigned blue, std::wstring message) {
+        set_bg_rgb(red, green, blue);
+        wprint(message);
+        reset_style();
+    }
+
+    void set_rgb(unsigned red, unsigned green, unsigned blue) {
+        if (red > 255 || green > 255 || blue > 255)
+            throw std::invalid_argument("Error: the values for the colors must be within the range [0,255].");
+        std::cout << ESC "[38;2;" << red << ";" << green << ";" << blue << "m";
+    }
+
+    void set_bg_rgb(unsigned red, unsigned green, unsigned blue) {
         if (red > 255 || green > 255 || blue > 255)
             throw std::invalid_argument("Error: the values for the colors must be within the range [0,255].");
         std::cout << ESC "[48;2;" << red << ";" << green << ";" << blue << "m";
-        wprint(message);
-        reset_style();
     }
 
     void print_at(unsigned x, unsigned y, std::string message) {

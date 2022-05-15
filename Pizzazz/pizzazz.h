@@ -188,6 +188,12 @@ namespace pizzazz {
     */
     void print_bg_rgb(unsigned red, unsigned green, unsigned blue, std::wstring message);
     
+    /* Sets future output to have a chosen color. */
+    void set_rgb(unsigned red, unsigned green, unsigned blue);
+    
+    /* Sets future output to have a chosen background color. */
+    void set_bg_rgb(unsigned red, unsigned green, unsigned blue);
+
     /* Prints a message at chosen coordinates. */
     void print_at(unsigned x, unsigned y, std::string message);
 
