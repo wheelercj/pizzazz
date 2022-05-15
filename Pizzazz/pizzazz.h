@@ -64,6 +64,9 @@ namespace pizzazz {
         }
     };
 
+    /* Values to pass to functions that control the terminal's style.
+       Some styles don't work in all terminals.
+    */
     enum class Style {
         reset,
         bold,
