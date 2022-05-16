@@ -163,19 +163,19 @@ namespace pizzazz {
         std::cout << ESC "[u";
     }
 
-    void move_cursor_up(unsigned lines) {
+    void move_cursor_up(size_t lines) {
         std::cout << ESC "[" << lines << "A";
     }
 
-    void move_cursor_down(unsigned lines) {
+    void move_cursor_down(size_t lines) {
         std::cout << ESC "[" << lines << "B";
     }
 
-    void move_cursor_right(unsigned columns) {
+    void move_cursor_right(size_t columns) {
         std::cout << ESC "[" << columns << "C";
     }
 
-    void move_cursor_left(unsigned columns) {
+    void move_cursor_left(size_t columns) {
         std::cout << ESC "[" << columns << "D";
     }
 
