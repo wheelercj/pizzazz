@@ -252,7 +252,7 @@ namespace pizzazz {
     Coord get_window_size();
 
     /* Waits for and gets a keypress of input without requiring an Enter keypress.
-       Ignores modifier keys. Some return values may be unexpected:
+       Some return values may be unexpected:
        Enter -> "Enter",
        Tab -> "Tab",
        Escape -> "Escape",
@@ -283,7 +283,7 @@ namespace pizzazz {
     std::string read_key();
 
     /* Waits for and gets a character input without requiring an Enter keypress.
-       Ignores modifier keys. Some keys return values that may be unexpected:
+       Some keys return values that may be unexpected:
        Enter -> '\r',
        Tab -> '\t',
        Escape -> '\x1b',
@@ -320,7 +320,6 @@ namespace pizzazz {
 
     /* Gets a character input without requiring an Enter keypress only if there is input.
        Returns 0 if there is no input.
-       Ignores modifier keys.
     */
     char getch_if_kbhit();
 
@@ -335,7 +334,9 @@ namespace pizzazz {
     
     void disable_raw_mode();
     
-    /* Detects whether a key has been pressed. */
+    /* Detects whether a key has been pressed.
+       Modifier keys are ignored.
+    */
     bool kbhit_for_internal_use_only();
 #endif
     
