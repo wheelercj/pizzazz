@@ -270,7 +270,7 @@ namespace pizzazz {
 #ifdef _WIN32
         return _kbhit();
 #else
-        return kbhit_();
+        return kbhit_for_internal_use_only();
 #endif
     }
 
@@ -301,7 +301,7 @@ namespace pizzazz {
         tcsetattr(0, TCSANOW, &term);
     }
 
-    bool kbhit_() {
+    bool kbhit_for_internal_use_only() {
         int bytes_waiting;
         ioctl(0, FIONREAD, &bytes_waiting);
         return bytes_waiting > 0;

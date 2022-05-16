@@ -336,7 +336,7 @@ namespace pizzazz {
     void disable_raw_mode();
     
     /* Detects whether a key has been pressed. */
-    bool kbhit_();
+    bool kbhit_for_internal_use_only();
 #endif
     
     /* Inserts text at the terminal cursor's current location.
