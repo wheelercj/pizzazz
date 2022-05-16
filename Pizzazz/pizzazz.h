@@ -1,4 +1,6 @@
-﻿/*
+﻿// version 0.2.0
+
+/*
     MIT License
 
     Copyright (c) 2022 Chris Wheeler
@@ -41,8 +43,6 @@
 #include <locale>
 #include <codecvt>  // wstring_convert, codecvt_utf8
 #endif
-
-const std::string __version = "0.2.0";
 
 // Here are some resources that were helpful for writing this file:
 // https://docs.microsoft.com/en-us/windows/console/console-virtual-terminal-sequences
