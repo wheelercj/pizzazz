@@ -223,16 +223,28 @@ namespace pizzazz {
     /* Restores the terminal cursor to a previously saved location. */
     void restore_cursor_location();
     
-    /* Moves the terminal cursor up a chosen number of lines. */
+    /* Moves the terminal cursor up a chosen number of lines.
+       If the cursor is at the top of the window, this function will
+       have no effect.
+    */
     void move_cursor_up(unsigned = 1);
     
-    /* Moves the terminal cursor down a chosen number of lines. */
+    /* Moves the terminal cursor down a chosen number of lines.
+       If the cursor is at the bottom of the window, this function will
+       have no effect.
+    */
     void move_cursor_down(unsigned = 1);
     
-    /* Moves the terminal cursor to the right a chosen number of columns. */
+    /* Moves the terminal cursor to the right a chosen number of columns.
+       If the cursor is at the right edge of the window, this function will
+       have no effect.
+    */
     void move_cursor_right(unsigned = 1);
     
-    /* Moves the terminal cursor to the left a chosen number of columns. */
+    /* Moves the terminal cursor to the left a chosen number of columns.
+       If the cursor is at the left edge of the window, this function will
+       have no effect.
+    */
     void move_cursor_left(unsigned = 1);
     
     /* Detects the terminal window's current size in columns and rows. */
