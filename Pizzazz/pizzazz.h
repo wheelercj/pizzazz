@@ -327,7 +327,10 @@ namespace pizzazz {
     */
     void clear_screen();
     
-    /* Switches the terminal app to a different "window" in the terminal. */
+    /* Switches the terminal app to a different "window" in the terminal.
+       Some terminal apps move the cursor to the top when the new "window" opens, and some
+       do not.
+    */
     void alternate_screen_buffer();
     
     /* Restores the terminal app's original "window". */
