@@ -338,11 +338,15 @@ namespace pizzazz {
     bool kbhit_();
 #endif
     
-    /* Inserts text at the terminal cursor's current location. */
+    /* Inserts text at the terminal cursor's current location.
+       Any text that is pushed out of the window to the right
+       is deleted.
+    */
     void insert(std::string text);
 
     /* Inserts text at the terminal cursor's current location.
-       The text can have emoji/Unicode characters.
+       The text can have emoji/Unicode characters. Any text that
+       is pushed out of the window to the right is deleted.
     */
     void insert(std::wstring text);
 
@@ -351,7 +355,9 @@ namespace pizzazz {
     */
     void delete_chars(unsigned count);
     
-    /* Inserts empty lines at the terminal cursor's current location. */
+    /* Inserts empty lines at the terminal cursor's current location.
+       Any text that gets pushed down off the window is deleted.
+    */
     void insert_lines(unsigned count);
 
     /* Deletes a chosen number of lines at the terminal cursor's current location.
