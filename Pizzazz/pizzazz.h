@@ -252,33 +252,9 @@ namespace pizzazz {
     Coord get_window_size();
 
     /* Waits for and gets a keypress of input without requiring an Enter keypress.
-       Some return values may be unexpected:
-       Enter -> "Enter",
-       Tab -> "Tab",
-       Escape -> "Escape",
-       Backspace -> "Backspace",
-       Delete -> "Delete",
-       up arrow -> "up arrow",
-       down arrow -> "down arrow",
-       left arrow -> "left arrow",
-       right arrow -> "right arrow",
-       Home -> "Home",
-       End -> "End",
-       Page Up -> "Page Up",
-       Page Down -> "Page Down",
-       Insert -> "Insert",
-       F1 -> "F1",
-       F2 -> "F2",
-       F3 -> "F3",
-       F4 -> "F4",
-       F5 -> "F5",
-       F6 -> "F6",
-       F7 -> "F7",
-       F8 -> "F8",
-       F9 -> "F9",
-       F10 -> "F10",
-       F11 -> "F11",
-       F12 -> "F12".
+       Some possible return values are entire words or multiple words, such as "Enter"
+       or "left arrow". See the function definition or use test_read_key in tests.cpp
+       to see all possibilities.
     */
     std::string read_key();
 
@@ -288,33 +264,7 @@ namespace pizzazz {
     std::string read_key_if_kbhit();
 
     /* Waits for and gets a character input without requiring an Enter keypress.
-       Some keys return values that may be unexpected:
-       Enter -> '\r',
-       Tab -> '\t',
-       Escape -> '\x1b',
-       Backspace -> '\b',
-       Delete -> 'à' and then 'S',
-       up arrow -> 'à' and then 'H',
-       down arrow -> 'à' and then 'P',
-       left arrow -> 'à' and then 'K',
-       right arrow -> 'à' and then 'M',
-       Home -> 'à' and then 'G',
-       End -> 'à' and then 'O',
-       Page Up -> 'à' and then 'I',
-       Page Down -> 'à' and then 'Q',
-       Insert -> 'à' and then 'R',
-       F1 -> '\0' and then ';',
-       F2 -> '\0' and then '<',
-       F3 -> '\0' and then '=',
-       F4 -> '\0' and then '>',
-       F5 -> '\0' and then '?',
-       F6 -> '\0' and then the at symbol,
-       F7 -> '\0' and then 'A',
-       F8 -> '\0' and then 'B',
-       F9 -> '\0' and then 'C',
-       F10 -> '\0' and then 'D',
-       F11 -> 'à' and then '…',
-       F12 -> 'à' and then '†'.
+       See a list of many possible return values here: https://gist.github.com/wheelercj/3e6dd4f9c8b267145cbd746d8daccf80
     */
     char getch_();
 
