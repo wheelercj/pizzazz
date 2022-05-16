@@ -27,6 +27,7 @@
 #include <vector>
 #include <wchar.h>
 #include <stdexcept>
+#include <csignal>  // raise, SIGINT
 #ifdef _WIN32
 #include <windows.h>
 #include <conio.h>  // _getch

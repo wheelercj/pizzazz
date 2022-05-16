@@ -248,16 +248,21 @@ namespace pizzazz {
 
     char getch_() {
 #ifdef _WIN32
-        return _getch();
+        char input = _getch();
+        if (input == '\x3')
+            raise(SIGINT);
+        return input;
 #else
         struct termios old_attr, new_attr;
         tcgetattr(STDIN_FILENO, &old_attr);
         new_attr = oldattr;
         new_attr.c_lflag &= ~(ICANON | ECHO);
         tcsetattr(STDIN_FILENO, TCSANOW, &new_attr);
-        char ch = getchar();
+        char input = getchar();
         tcsetattr(STDIN_FILENO, TCSANOW, &old_attr);
-        return ch;
+        if (input == '\x3')
+            raise(SIGINT);
+        return input;
 #endif
     }
 
