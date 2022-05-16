@@ -282,6 +282,11 @@ namespace pizzazz {
     */
     std::string read_key();
 
+    /* Waits for and gets a keypress without requiring an Enter keypress only if there is input.
+       Returns an empty string if there is no input.
+    */
+    std::string read_key_if_kbhit();
+
     /* Waits for and gets a character input without requiring an Enter keypress.
        Some keys return values that may be unexpected:
        Enter -> '\r',

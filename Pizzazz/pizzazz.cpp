@@ -246,6 +246,12 @@ namespace pizzazz {
         }
     }
 
+    std::string read_key_if_kbhit() {
+        if (kbhit__())
+            return read_key();
+        return "";
+    }
+
     char getch_() {
 #ifdef _WIN32
         char input = _getch();
