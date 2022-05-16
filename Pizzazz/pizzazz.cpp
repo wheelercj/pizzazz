@@ -242,7 +242,9 @@ namespace pizzazz {
                 throw std::exception("Key not recognized.");
             }
         default:
-            return std::to_string(input);
+            std::string result;
+            result.push_back(input);
+            return result;
         }
     }
 
