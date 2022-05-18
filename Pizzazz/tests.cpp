@@ -4,6 +4,7 @@ namespace paz = pizzazz;  // shorter alias for easier use
 using paz::Style;
 
 void run_tests();
+void test_read_key();
 void test_show_cursor();
 void test_show_cursor_blink();
 void test_set_window_title();
@@ -46,7 +47,6 @@ void test_insert_lines();
 void test_delete_lines();
 void test_alternate_screen_buffer();
 void test_sleep_();
-void test_read_key();
 void test_read_key_with_cursor_movements();
 
 int main() {
@@ -56,6 +56,7 @@ int main() {
 }
 
 void run_tests() {
+	test_read_key();
 	test_show_cursor();
 	test_show_cursor_blink();
 	test_set_window_title();
@@ -98,8 +99,17 @@ void run_tests() {
 	test_delete_lines();
 	test_alternate_screen_buffer();
 	test_sleep_();
-	test_read_key();
 	test_read_key_with_cursor_movements();
+}
+
+
+void test_read_key() {
+	cout << "Press any key and its name will be shown on the next line. Press escape to stop.\n";
+	string input = "";
+	while (input != "Escape") {
+		input = paz::read_key();
+		cout << "\r                           \r" << input;
+	}
 }
 
 void test_show_cursor() {
@@ -426,15 +436,6 @@ void test_sleep_() {
 	cout << "Sleeping for 5 seconds.\n";
 	paz::sleep_(5000);
 	cout << "5 seconds have passed.\n";
-}
-
-void test_read_key() {
-	cout << "Press any key and its name will be shown on the next line. Press escape to stop.\n";
-	string input = "";
-	while (input != "Escape") {
-		input = paz::read_key();
-		cout << "\r                           \r" << input;
-	}
 }
 
 void test_read_key_with_cursor_movements() {
