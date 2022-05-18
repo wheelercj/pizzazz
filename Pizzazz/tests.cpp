@@ -1,9 +1,11 @@
 ﻿#include "pizzazz.h"
+#include <signal.h>
 using namespace std;
 namespace paz = pizzazz;  // shorter alias for easier use
 using paz::Style;
 
 void run_tests();
+void signal_callback_handler(int signal_number);
 void test_read_key();
 void test_show_cursor();
 void test_show_cursor_blink();
@@ -102,8 +104,13 @@ void run_tests() {
 	test_read_key_with_cursor_movements();
 }
 
+void signal_callback_handler(int signal_number) {
+	cout << "\r                           \rYou pressed Ctrl+c or Ctrl+2 which ends the program early.";
+	exit(signal_number);
+}
 
 void test_read_key() {
+	signal(SIGINT, signal_callback_handler);
 	cout << "Press any key and its name will be shown on the next line. Press escape to stop.\n";
 	string input = "";
 	while (input != "Escape") {
