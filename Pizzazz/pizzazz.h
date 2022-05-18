@@ -43,8 +43,7 @@ namespace pizzazz {
     };
 
     /* Values to pass to functions that control the terminal's style.
-       Some styles don't work in all terminals.
-    */
+       Some styles don't work in all terminals. */
     enum class Style {
         reset,
         bold,
@@ -100,22 +99,19 @@ namespace pizzazz {
     void show_cursor_blink(bool = true);
     
     /* Changes the terminal window's title.
-       Doesn't work with Windows Terminal.
-    */
+       Doesn't work with Windows Terminal. */
     void set_window_title(std::string title);
 
     /* Changes the terminal window's title.
        The new title can include any emoji/Unicode characters.
-       Doesn't work with Windows Terminal.
-    */
+       Doesn't work with Windows Terminal. */
     void set_window_title(std::wstring title);
 
     /*  Prints a string that can have emoji/Unicode characters.
         When calling this function, put an L in front of the string.
         For example, `wprint(L"Hi! ✨");` prints `Hi! ✨`.
         Microsoft's C++ compiler doesn't support printing Unicode
-        characters with code points greater than U+FFFF.
-    */
+        characters with code points greater than U+FFFF. */
     void wprint(std::wstring message);
     
     /* Prints a message with style such as as color, italics, underline, etc. */
@@ -144,25 +140,21 @@ namespace pizzazz {
 
     /* Prints a message with a chosen color.
        Throws std::invalid_argument if a color value is greater than 255.
-       The red, green, and blue variables must be in the range [0, 255].
-    */
+       The red, green, and blue variables must be in the range [0, 255]. */
     void print_rgb(unsigned red, unsigned green, unsigned blue, std::string message);
 
     /* Prints a message with a chosen color.
        The message can have emoji/Unicode characters.
-       Throws std::invalid_argument if a color value is greater than 255.
-    */
+       Throws std::invalid_argument if a color value is greater than 255. */
     void print_rgb(unsigned red, unsigned green, unsigned blue, std::wstring message);
 
     /* Prints a message with a chosen background color.
-       Throws std::invalid_argument if a color value is greater than 255.
-    */
+       Throws std::invalid_argument if a color value is greater than 255. */
     void print_bg_rgb(unsigned red, unsigned green, unsigned blue, std::string message);
 
     /* Prints a message with a chosen background color.
        The message can have emoji/Unicode characters.
-       Throws std::invalid_argument if a color value is greater than 255.
-    */
+       Throws std::invalid_argument if a color value is greater than 255. */
     void print_bg_rgb(unsigned red, unsigned green, unsigned blue, std::wstring message);
     
     /* Sets future output to have a chosen color. */
@@ -175,20 +167,17 @@ namespace pizzazz {
     void print_at(unsigned x, unsigned y, std::string message);
 
     /* Prints a message at chosen coordinates.
-       The message can have emoji/Unicode characters.
-    */
+       The message can have emoji/Unicode characters. */
     void print_at(unsigned x, unsigned y, std::wstring message);
 
     /* Moves the terminal's cursor to chosen coordinates.
        In this coordinate system, x increases to the right
-       and y increases downwards.
-    */
+       and y increases downwards. */
     void set_cursor_coords(unsigned x, unsigned y);
 
     /* Moves the terminal's cursor to chosen coordinates.
        In this coordinate system, x increases to the right
-       and y increases downwards.
-    */
+       and y increases downwards. */
     void set_cursor_coords(Coord coord);
     
     /* Detects the current coordinates of the terminal's cursor. */
@@ -202,26 +191,22 @@ namespace pizzazz {
     
     /* Moves the terminal cursor up a chosen number of lines.
        If the cursor is at the top of the window, this function will
-       have no effect.
-    */
+       have no effect. */
     void move_cursor_up(size_t = 1);
     
     /* Moves the terminal cursor down a chosen number of lines.
        If the cursor is at the bottom of the window, this function will
-       have no effect.
-    */
+       have no effect. */
     void move_cursor_down(size_t = 1);
     
     /* Moves the terminal cursor to the right a chosen number of columns.
        If the cursor is at the right edge of the window, this function will
-       have no effect.
-    */
+       have no effect. */
     void move_cursor_right(size_t = 1);
     
     /* Moves the terminal cursor to the left a chosen number of columns.
        If the cursor is at the left edge of the window, this function will
-       have no effect.
-    */
+       have no effect. */
     void move_cursor_left(size_t = 1);
     
     /* Detects the terminal window's current size in columns and rows. */
@@ -236,33 +221,27 @@ namespace pizzazz {
        Ctrl+h -> "Backspace"
        Ctrl+i -> "Tab"
        Ctrl+j -> "Ctrl+Enter"
-       Ctrl+m -> "Enter"
-    */
+       Ctrl+m -> "Enter" */
     std::string read_key();
 
     /* Waits for and gets a keypress without requiring an Enter keypress only if there is input.
-       Returns an empty string if there is no input.
-    */
+       Returns an empty string if there is no input. */
     std::string read_key_if_kbhit();
 
     /* Waits for and gets a character input without requiring an Enter keypress.
-       See a list of many possible return values here: https://gist.github.com/wheelercj/3e6dd4f9c8b267145cbd746d8daccf80
-    */
+       See a list of many possible return values here: https://gist.github.com/wheelercj/3e6dd4f9c8b267145cbd746d8daccf80 */
     char getch_();
 
     /* Detects whether a key was pressed.
-       Ignores modifier keys.
-    */
+       Ignores modifier keys. */
     bool kbhit__();
 
     /* Gets a character input without requiring an Enter keypress only if there is input.
-       Returns 0 if there is no input.
-    */
+       Returns 0 if there is no input. */
     char getch_if_kbhit();
 
     /* Pauses the program until the user presses a key.
-       Modifier keys are ignored.
-    */
+       Modifier keys are ignored. */
     void pause();
 
 #ifndef _WIN32
@@ -272,55 +251,46 @@ namespace pizzazz {
     void disable_raw_mode();
     
     /* Detects whether a key has been pressed.
-       Modifier keys are ignored.
-    */
+       Modifier keys are ignored. */
     bool kbhit_for_internal_use_only();
 #endif
     
     /* Inserts text at the terminal cursor's current location.
        Any text that is pushed out of the window to the right
-       is deleted.
-    */
+       is deleted. */
     void insert(std::string text);
 
     /* Inserts text at the terminal cursor's current location.
        The text can have emoji/Unicode characters. Any text that
-       is pushed out of the window to the right is deleted.
-    */
+       is pushed out of the window to the right is deleted. */
     void insert(std::wstring text);
 
     /* Deletes a chosen number of characters at the terminal cursor's current location.
-       All characters to the right of what is deleted move to the left.
-    */
+       All characters to the right of what is deleted move to the left. */
     void delete_chars(unsigned count);
     
     /* Inserts empty lines at the terminal cursor's current location.
-       Any text that gets pushed down off the window is deleted.
-    */
+       Any text that gets pushed down off the window is deleted. */
     void insert_lines(unsigned count);
 
     /* Deletes a chosen number of lines at the terminal cursor's current location.
-       All characters below what is deleted move up.
-    */
+       All characters below what is deleted move up. */
     void delete_lines(unsigned count);
 
     /* Deletes all characters in the terminal window.
-       Use of this function is not recommended without using an alternate screen buffer.
-    */
+       Use of this function is not recommended without using an alternate screen buffer. */
     void clear_screen();
     
     /* Switches the terminal app to a different "window" in the terminal.
        Some terminal apps move the cursor to the top when the new "window" opens, and some
-       do not.
-    */
+       do not. */
     void alternate_screen_buffer();
     
     /* Restores the terminal app's original "window". */
     void restore_screen_buffer();
 
     /* Pauses the program for a chosen amount of time.
-       1 second is 1000 milliseconds.
-    */
+       1 second is 1000 milliseconds. */
     void sleep_(unsigned milliseconds);
     
     void set_window_width_to_132();
