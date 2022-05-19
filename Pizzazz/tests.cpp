@@ -449,6 +449,7 @@ void test_sleep_() {
 }
 
 void test_read_key_with_cursor_movements() {
+	paz::pause();
 	cout << "\nTry moving the cursor with the arrow keys. Press any other key to stop.";
 	paz::show_cursor_blink(false);
 	while (true) {
