@@ -26,6 +26,7 @@
 // https://docs.microsoft.com/en-us/windows/console/mouse-event-record-str
 // https://en.wikipedia.org/wiki/ANSI_escape_code#SGR_(Select_Graphic_Rendition)_parameters
 // https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#main
+// http://xn--rpa.cc/irl/term.html
 
 namespace pizzazz {
 
