@@ -258,8 +258,8 @@ namespace pizzazz {
             case 'Š': return "Ctrl+F12";
             case '‡': return "Shift+F11";
             case 'ˆ': return "Shift+F12";
-            case '‹': return "Ctrl+Alt+F11";
-            case 'Œ': return "Ctrl+Alt+F12";
+            case '‹': return "Alt+F11";
+            case 'Œ': return "Alt+F12";
             default:
                 throw std::exception("Key not recognized.");
             }
@@ -356,16 +356,16 @@ namespace pizzazz {
             case '\x1c': return "Ctrl+Alt+Enter";
             case '\xe': return "Ctrl+Alt+Backspace";
             case ')': return "Ctrl+Alt+`";
-            case 'h': return "Ctrl+Alt+F1";
-            case 'i': return "Ctrl+Alt+F2";
-            case 'j': return "Ctrl+Alt+F3";
-            case 'k': return "Ctrl+Alt+F4";
-            case 'l': return "Ctrl+Alt+F5";
-            case 'm': return "Ctrl+Alt+F6";
-            case 'n': return "Ctrl+Alt+F7";
-            case 'o': return "Ctrl+Alt+F8";
-            case 'p': return "Ctrl+Alt+F9";
-            case 'q': return "Ctrl+Alt+F10";
+            case 'h': return "Alt+F1";
+            case 'i': return "Alt+F2";
+            case 'j': return "Alt+F3";
+            case 'k': return "Alt+F4";
+            case 'l': return "Alt+F5";
+            case 'm': return "Alt+F6";
+            case 'n': return "Alt+F7";
+            case 'o': return "Alt+F8";
+            case 'p': return "Alt+F9";
+            case 'q': return "Alt+F10";
             default:
                 throw std::exception("Key not recognized.");
             }
