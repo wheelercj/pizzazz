@@ -42,7 +42,17 @@ namespace pizzazz {
         }
     };
 
-    /* Values to pass to functions that control the terminal's style.
+    /* Values to pass to a function to control the cursor's appearance. */
+    enum class CursorStyle {
+        blinking_block = 1,
+        steady_block,
+        blinking_underline,
+        steady_underline,
+        blinking_i_beam,
+        steady_i_beam
+    };
+
+    /* Values to pass to functions that control the terminal's text style.
        Some styles don't work in all terminals. */
     enum class Style {
         reset,
@@ -114,6 +124,9 @@ namespace pizzazz {
         characters with code points greater than U+FFFF. */
     void wprint(std::wstring message);
     
+    /* Changes the terminal cursor's appearance. */
+    void set_cursor_style(CursorStyle style);
+
     /* Prints a message with style such as as color, italics, underline, etc. */
     void print_styled(std::string message, std::initializer_list<Style> styles);
     

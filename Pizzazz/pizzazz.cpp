@@ -37,6 +37,10 @@ namespace pizzazz {
 #endif
     }
 
+    void set_cursor_style(CursorStyle style) {
+        std::cout << "\x1b[" << int(style) << " q";
+    }
+
     void print_styled(std::string message, std::initializer_list<Style> styles) {
         set_style(styles);
         std::cout << message;

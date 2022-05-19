@@ -3,12 +3,14 @@
 using namespace std;
 namespace paz = pizzazz;  // shorter alias for easier use
 using paz::Style;
+using paz::CursorStyle;
 
 void run_tests();
 void signal_callback_handler(int signal_number);
 void test_read_key();
 void test_show_cursor();
 void test_show_cursor_blink();
+void test_set_cursor_style();
 void test_set_window_title();
 void test_wide_set_window_title();
 void test_wide_print();
@@ -57,6 +59,7 @@ void run_tests() {
 	test_read_key();
 	test_show_cursor();
 	test_show_cursor_blink();
+	test_set_cursor_style();
 	test_set_window_title();
 	test_wide_set_window_title();
 	test_wide_print();
@@ -132,6 +135,30 @@ void test_show_cursor_blink() {
 	paz::show_cursor_blink();
 	cout << "Cursor blinking again.\n";
 	paz::pause();
+}
+
+void test_set_cursor_style() {
+	cout << "\nDefault cursor";
+	paz::pause();
+	paz::set_cursor_style(CursorStyle::blinking_block);
+	cout << "\nBlinking block cursor";
+	paz::pause();
+	paz::set_cursor_style(CursorStyle::steady_block);
+	cout << "\nSteady block cursor";
+	paz::pause();
+	paz::set_cursor_style(CursorStyle::blinking_underline);
+	cout << "\nBlinking underline cursor";
+	paz::pause();
+	paz::set_cursor_style(CursorStyle::steady_underline);
+	cout << "\nSteady underline cursor";
+	paz::pause();
+	paz::set_cursor_style(CursorStyle::blinking_i_beam);
+	cout << "\nBlinking i-beam cursor";
+	paz::pause();
+	paz::set_cursor_style(CursorStyle::steady_i_beam);
+	cout << "\nSteady i-beam cursor";
+	paz::pause();
+	cout << endl;
 }
 
 void test_set_window_title() {
