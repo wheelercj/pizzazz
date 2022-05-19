@@ -228,7 +228,7 @@ namespace pizzazz {
 
     /* Waits for and gets a keypress of input without requiring an Enter keypress.
        Some possible return values are entire words or multiple words, such as "Enter"
-       or "left arrow". Run tests.cpp or see the function definition to see all possibilities.
+       or "left arrow". Run main.cpp or see the function definition to see all possibilities.
        Here are some potentially unexpected return values:
        Ctrl+c -> (ends the program early)
        Ctrl+2 -> (ends the program early)
