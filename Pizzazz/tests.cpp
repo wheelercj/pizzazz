@@ -158,6 +158,9 @@ void test_set_cursor_style() {
 	paz::set_cursor_style(CursorStyle::steady_i_beam);
 	cout << "\nSteady i-beam cursor";
 	paz::pause();
+	paz::set_cursor_style(CursorStyle::reset);
+	cout << "\nBack to the default cursor";
+	paz::pause();
 	cout << endl;
 }
 

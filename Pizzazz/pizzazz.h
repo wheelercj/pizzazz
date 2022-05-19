@@ -49,7 +49,8 @@ namespace pizzazz {
         blinking_underline,
         steady_underline,
         blinking_i_beam,
-        steady_i_beam
+        steady_i_beam,
+        reset
     };
 
     /* Values to pass to functions that control the terminal's text style.
