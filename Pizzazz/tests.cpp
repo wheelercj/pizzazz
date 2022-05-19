@@ -213,7 +213,8 @@ void test_print_invalid_rgb() {
 }
 
 void test_wide_print_rgb() {
-	paz::print_rgb(37, 100, 188, L"This is blue, and here's an emoji that's only visible in some terminals like Windows Terminal: ⚓.\n");
+	paz::print_rgb(37, 100, 188, L"This is blue, and here's an emoji that's only visible in "
+		"some terminals like Windows Terminal: ⚓.\n");
 	paz::pause();
 }
 
@@ -223,7 +224,8 @@ void test_print_background_rgb() {
 }
 
 void test_wide_print_background_rgb() {
-	paz::print_bg_rgb(183, 84, 4, L"This has a brown/orange background, and here's an emoji that's only visible in some terminals like Windows Terminal: ☃.\n");
+	paz::print_bg_rgb(183, 84, 4, L"This has a brown/orange background, and here's an "
+		"emoji that's only visible in some terminals like Windows Terminal: ☃.\n");
 	paz::pause();
 }
 
@@ -242,7 +244,8 @@ void test_print_at() {
 
 void test_wide_print_at() {
 	paz::set_style({ Style::bg_blue });
-	paz::print_at(10, 10, L"This starts at coordinates (10,10), and here's an emoji that's only visible in some terminals like Windows Terminal: ☔.\n");
+	paz::print_at(10, 10, L"This starts at coordinates (10,10), and here's an emoji "
+		"that's only visible in some terminals like Windows Terminal: ☔.\n");
 	paz::reset_style();
 	paz::pause();
 }
@@ -258,7 +261,8 @@ void test_set_cursor_coordinates() {
 void test_get_cursor_location() {
 	paz::set_style({ Style::bright_bg_green });
 	paz::Coord coords = paz::get_cursor_coords();
-	cout << "The cursor was at coordinates (" << coords.x << "," << coords.y << ") at the start of this message.";
+	cout << "The cursor was at coordinates (" << coords.x << "," << coords.y << ") at "
+		"the start of this message.";
 	paz::reset_style();
 	paz::pause();
 }
