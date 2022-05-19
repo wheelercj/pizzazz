@@ -440,15 +440,15 @@ namespace pizzazz {
         wprint(text);
     }
 
-    void delete_chars(unsigned count) {
+    void delete_chars(size_t count) {
         std::cout << ESC "[" << count << "P";
     }
 
-    void insert_lines(unsigned count) {
+    void insert_lines(size_t count) {
         std::cout << ESC "[" << count << "L";
     }
 
-    void delete_lines(unsigned count) {
+    void delete_lines(size_t count) {
         std::cout << ESC "[" << count << "M";
     }
 

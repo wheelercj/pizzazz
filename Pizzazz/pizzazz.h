@@ -268,15 +268,15 @@ namespace pizzazz {
 
     /* Deletes a chosen number of characters at the terminal cursor's current location.
        All characters to the right of what is deleted move to the left. */
-    void delete_chars(unsigned count);
-    
+    void delete_chars(size_t count);
+
     /* Inserts empty lines at the terminal cursor's current location.
        Any text that gets pushed down off the window is deleted. */
-    void insert_lines(unsigned count);
+    void insert_lines(size_t count);
 
     /* Deletes a chosen number of lines at the terminal cursor's current location.
        All characters below what is deleted move up. */
-    void delete_lines(unsigned count);
+    void delete_lines(size_t count);
 
     /* Deletes all characters in the terminal window.
        Use of this function is not recommended without using an alternate screen buffer. */
