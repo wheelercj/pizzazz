@@ -54,6 +54,7 @@ int main() {
 	cout << endl;
 	return 0;
 }
+using paz::Coord;
 
 void run_tests() {
 	test_read_key();
@@ -290,7 +291,7 @@ void test_set_cursor_coordinates() {
 
 void test_get_cursor_location() {
 	paz::set_style({ Style::bright_bg_green });
-	paz::Coord coords = paz::get_cursor_coords();
+	Coord coords = paz::get_cursor_coords();
 	cout << "The cursor was at coordinates (" << coords.x << "," << coords.y << ") at "
 		"the start of this message.";
 	paz::reset_style();
@@ -345,7 +346,7 @@ void test_move_cursor_left() {
 }
 
 void test_get_window_size() {
-	paz::Coord window_size = paz::get_window_size();
+	Coord window_size = paz::get_window_size();
 	cout << "\nThe window has a size of (" << window_size.x << "," << window_size.y << ").\n";
 	cout << "Try resizing the window now.\n";
 	paz::pause();
