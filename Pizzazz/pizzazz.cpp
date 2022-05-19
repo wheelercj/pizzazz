@@ -37,35 +37,19 @@ namespace pizzazz {
 #endif
     }
 
-    void print_styled(Style style, std::string message) {
-        set_style(style);
-        std::cout << message;
-        reset_style();
-    }
-
-    void print_styled(Style style, std::wstring message) {
-        set_style(style);
-        wprint(message);
-        reset_style();
-    }
-
-    void print_styled(std::vector<Style> styles, std::string message) {
+    void print_styled(std::string message, std::initializer_list<Style> styles) {
         set_style(styles);
         std::cout << message;
         reset_style();
     }
 
-    void print_styled(std::vector<Style> styles, std::wstring message) {
+    void print_styled(std::wstring message, std::initializer_list<Style> styles) {
         set_style(styles);
         wprint(message);
         reset_style();
     }
 
-    void set_style(Style style) {
-        std::cout << ESC "[" << int(style) << "m";
-    }
-
-    void set_style(std::vector<Style> styles) {
+    void set_style(std::initializer_list<Style> styles) {
         for (Style style : styles)
             std::cout << ESC "[" << int(style) << "m";
     }

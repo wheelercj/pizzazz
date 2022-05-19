@@ -158,52 +158,45 @@ void test_wide_print() {
 }
 
 void test_print_styled() {
-	paz::print_styled(Style::underlined, "This is underlined.\n\n");
+	paz::print_styled("This is underlined.\n\n", { Style::underlined });
 	paz::pause();
 }
 
 void test_wide_print_styled() {
-	paz::print_styled(Style::bright_bg_red, L"This text has a bright red background.\n");
+	paz::print_styled(L"This text has a bright red background.\n", { Style::bright_bg_red });
 	paz::pause();
 }
 
 void test_print_multi_styled() {
-	vector<Style> styles;
-	styles.push_back(Style::magenta);
-	styles.push_back(Style::bg_green);
-	styles.push_back(Style::strikethrough);
-	paz::print_styled(styles, "This is magenta with a green background and strikethrough. The strikethrough is only visible in some terminals such as Windows Terminal.\n");
+	paz::print_styled("This is magenta with a green background and strikethrough. "
+		"The strikethrough is only visible in some terminals such as Windows Terminal.\n",
+		{ Style::magenta, Style::bg_green, Style::strikethrough });
 	paz::pause();
 }
 
 void test_wide_print_multi_styled() {
-	vector<Style> styles;
-	styles.push_back(Style::double_underlined);
-	styles.push_back(Style::overlined);
-	styles.push_back(Style::italic);
-	paz::print_styled(styles, L"\nThis is overlined, double underlined, and italic with an emoji: ✅. These are only visible in some terminals such as Windows Terminal.\n");
+	paz::print_styled(L"\nThis is overlined, double underlined, and italic with an emoji: ✅. "
+		"These are only visible in some terminals such as Windows Terminal.\n",
+		{ Style::double_underlined, Style::overlined, Style::italic });
 	paz::pause();
 }
 
 void test_set_style() {
-	paz::set_style(Style::bright_blue);
+	paz::set_style({ Style::bright_blue });
 	cout << "This is \"bright\" blue.\n\n";
 	paz::reset_style();
 	paz::pause();
 }
 
 void test_set_multi_style() {
-	vector<Style> styles;
-	styles.push_back(Style::bg_white);
-	styles.push_back(Style::black);
-	styles.push_back(Style::bold);
-	paz::set_style(styles);
+	paz::set_style({ Style::bg_white, Style::black, Style::bold });
 	cout << "This is black and bold with a white background.\n\n";
 	paz::reset_style();
 	paz::pause();
 }
 
 void test_reset_style() {
+	paz::set_style({ Style::red });
 	cout << "This is red.\n\n";
 	paz::reset_style();
 	cout << "This is the default color.\n\n";
@@ -247,21 +240,21 @@ void test_save_cursor_coords() {
 }
 
 void test_print_at() {
-	paz::set_style(Style::red);
+	paz::set_style({ Style::red });
 	paz::print_at(0, 0, "This is in the top left corner of the window.");
 	paz::reset_style();
 	paz::pause();
 }
 
 void test_wide_print_at() {
-	paz::set_style(Style::bg_blue);
+	paz::set_style({ Style::bg_blue });
 	paz::print_at(10, 10, L"This starts at coordinates (10,10), and here's an emoji that's only visible in some terminals like Windows Terminal: ☔.\n");
 	paz::reset_style();
 	paz::pause();
 }
 
 void test_set_cursor_coordinates() {
-	paz::set_style(Style::bright_bg_magenta);
+	paz::set_style({ Style::bright_bg_magenta });
 	paz::set_cursor_coords(5, 5);
 	cout << "This starts at coordinates (5,5).\n";
 	paz::reset_style();
@@ -269,7 +262,7 @@ void test_set_cursor_coordinates() {
 }
 
 void test_get_cursor_location() {
-	paz::set_style(Style::bright_bg_green);
+	paz::set_style({ Style::bright_bg_green });
 	paz::Coord coords = paz::get_cursor_coords();
 	cout << "The cursor was at coordinates (" << coords.x << "," << coords.y << ") at the start of this message.";
 	paz::reset_style();
@@ -283,7 +276,7 @@ void test_restore_cursor_location() {
 }
 
 void test_move_cursor_up() {
-	paz::set_style(Style::bg_magenta);
+	paz::set_style({Style::bg_magenta});
 	paz::move_cursor_up(3);
 	cout << "This is 3 lines higher than the last output.";
 	paz::reset_style();
@@ -291,7 +284,7 @@ void test_move_cursor_up() {
 }
 
 void test_move_cursor_down() {
-	paz::set_style(Style::bg_magenta);
+	paz::set_style({Style::bg_magenta});
 	paz::move_cursor_down(3);
 	cout << "This is 3 lines lower than the last output.";
 	paz::reset_style();
@@ -300,7 +293,7 @@ void test_move_cursor_down() {
 
 void test_move_cursor_right() {
 	cout << endl;
-	paz::set_style(Style::bg_blue);
+	paz::set_style({Style::bg_blue});
 	paz::move_cursor_right(3);
 	cout << "This is 3 columns to the right from the window's edge.\n";
 	paz::reset_style();
@@ -311,12 +304,12 @@ void test_move_cursor_left() {
 	paz::save_cursor_location();
 	paz::move_cursor_right(20);
 	paz::move_cursor_up(15);
-	paz::set_style(Style::bg_green);
+	paz::set_style({Style::bg_green});
 	cout << "This is higher and further to the right.";
 	paz::pause();
 	paz::move_cursor_left(5);
 	paz::move_cursor_down();
-	paz::set_style(Style::bg_cyan);
+	paz::set_style({Style::bg_cyan});
 	cout << "This is 5 columns to the left and 1 line below the end of the last output.";
 	paz::reset_style();
 	paz::restore_cursor_location();
