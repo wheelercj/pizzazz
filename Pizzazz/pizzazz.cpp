@@ -18,6 +18,10 @@ namespace pizzazz {
             std::cout << ESC "[?12l";
     }
 
+    void set_cursor_style(CursorStyle style) {
+        std::cout << "\x1b[" << int(style) << " q";
+    }
+
     void set_window_title(std::string title) {
         std::cout << ESC "]0;" + title + ESC "[";
     }
@@ -35,10 +39,6 @@ namespace pizzazz {
 #else
         std::cout << std::wstring_convert<std::codecvt_utf8<wchar_t>>().to_bytes(message);
 #endif
-    }
-
-    void set_cursor_style(CursorStyle style) {
-        std::cout << "\x1b[" << int(style) << " q";
     }
 
     void print_styled(std::string message, std::initializer_list<Style> styles) {

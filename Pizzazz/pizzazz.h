@@ -119,7 +119,10 @@ namespace pizzazz {
     
     /* Hides or shows the terminal cursor's blinking. */
     void show_cursor_blink(bool = true);
-    
+
+    /* Changes the terminal cursor's appearance. */
+    void set_cursor_style(CursorStyle style);
+
     /* Changes the terminal window's title.
        Doesn't work with Windows Terminal. */
     void set_window_title(std::string title);
@@ -136,9 +139,6 @@ namespace pizzazz {
         characters with code points greater than U+FFFF. */
     void wprint(std::wstring message);
     
-    /* Changes the terminal cursor's appearance. */
-    void set_cursor_style(CursorStyle style);
-
     /* Prints a message with style such as as color, italics, underline, etc. */
     void print_styled(std::string message, std::initializer_list<Style> styles);
     
