@@ -374,15 +374,18 @@ void test_wide_insert() {
 }
 
 void test_delete_chars() {
-	cout << "\nHere is yet moer text.";
+	cout << "\nHere is yet more text. ";
+	string message1 = "This is sentence is about to be deleted. ";
+	cout << message1;
+	string message2 = "This sentence will move to the left.";
+	cout << message2;
 	paz::pause();
-	paz::move_cursor_left(8);
-	paz::delete_chars(8);
-	cout << "re text. There, the typo is fixed.\n";
+	paz::move_cursor_left(message1.size() + message2.size());
+	paz::delete_chars(message1.size());
 }
 
 void test_insert_lines() {
-	cout << "-----------\n";
+	cout << "\n-----------\n";
 	paz::move_cursor_up();
 	paz::pause();
 	paz::insert_lines(1);
