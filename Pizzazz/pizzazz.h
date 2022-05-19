@@ -131,10 +131,6 @@ namespace pizzazz {
     
     /* Sets future output to have styles such as as color, italics, underline, etc. */
     void set_style(std::vector<Style> styles);
-    
-    /* Sets future output to have styles such as as color, italics, underline, etc. */
-    void set_style(std::string ansi_code_after_esc);
-    
     /* Sets future output to NOT have any special styles. */
     void reset_style();
 

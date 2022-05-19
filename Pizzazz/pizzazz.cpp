@@ -70,10 +70,6 @@ namespace pizzazz {
             std::cout << ESC "[" << int(style) << "m";
     }
 
-    void set_style(std::string ansi_code_after_esc) {
-        std::cout << ESC + ansi_code_after_esc;
-    }
-
     void reset_style() {
         std::cout << "\x1b[0m";
     }

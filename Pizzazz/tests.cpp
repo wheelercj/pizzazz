@@ -18,7 +18,6 @@ void test_print_multi_styled();
 void test_wide_print_multi_styled();
 void test_set_style();
 void test_set_multi_style();
-void test_set_style_with_ansi();
 void test_reset_style();
 void test_print_rgb();
 void test_print_invalid_rgb();
@@ -70,7 +69,6 @@ void run_tests() {
 	test_wide_print_multi_styled();
 	test_set_style();
 	test_set_multi_style();
-	test_set_style_with_ansi();
 	test_reset_style();
 	test_print_rgb();
 	test_print_invalid_rgb();
@@ -204,16 +202,8 @@ void test_set_multi_style() {
 	paz::pause();
 }
 
-void test_set_style_with_ansi() {
-	paz::set_style("[31m");
-	cout << "This is red.\n\n";
-	paz::reset_style();
-	paz::pause();
-}
-
 void test_reset_style() {
-	paz::set_style("[31m");
-	cout << "This is also red.\n\n";
+	cout << "This is red.\n\n";
 	paz::reset_style();
 	cout << "This is the default color.\n\n";
 	paz::pause();
