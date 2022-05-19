@@ -115,6 +115,7 @@ void test_read_key() {
 		input = paz::read_key();
 		cout << "\r                           \r" << input;
 	}
+	std::cout << std::endl;
 }
 
 void test_show_cursor() {
