@@ -38,9 +38,6 @@ void test_get_window_size();
 void test_getch_();
 void test_kbhit__();
 void test_getch_if_kbhit();
-#ifndef _WIN32
-void test_kbhit_();
-#endif
 void test_insert();
 void test_wide_insert();
 void test_delete_chars();
@@ -89,9 +86,6 @@ void run_tests() {
 	test_getch_();
 	test_kbhit__();
 	test_getch_if_kbhit();
-#ifndef _WIN32
-	test_kbhit_();
-#endif
 	test_insert();
 	test_wide_insert();
 	test_delete_chars();
@@ -354,15 +348,6 @@ void test_getch_if_kbhit() {
 	cout << "\nYou pressed " << input << endl;
 	paz::pause();
 }
-
-#ifndef _WIN32
-void test_kbhit_() {
-	cout << "Waiting for you to press a key.\n";
-	char input = paz::kbhit_for_internal_use_only();
-	cout << "You pressed a key!\n";
-	paz::pause();
-}
-#endif
 
 void test_insert() {
 	string message = "This is printed first.";
