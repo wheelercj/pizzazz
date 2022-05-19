@@ -118,18 +118,21 @@ void test_set_cursor_style() {
 
 void test_set_window_title() {
 	paz::set_window_title("hey look, a custom title!");
-	cout << "Title set to \"hey look, a custom title!\" The title will only be visible in some terminals such as Command Prompt.\n\n";
+	cout << "Title set to \"hey look, a custom title!\" The title will only be "
+		"visible in some terminals such as Command Prompt.\n\n";
 	paz::pause();
 }
 
 void test_wide_set_window_title() {
 	paz::set_window_title(L"a custom title with emoji! 🔥");
-	cout << "Title set to \"a custom title with emoji! (flame emoji here)\" The title will only be visible in some terminals such as Command Prompt.\n";
+	cout << "Title set to \"a custom title with emoji! (flame emoji here)\" The "
+		"title will only be visible in some terminals such as Command Prompt.\n";
 	paz::pause();
 }
 
 void test_wide_print() {
-	paz::wprint(L"A message with emoji! ✨ The emoji will not be visible in some terminals such as Command Prompt.\n");
+	paz::wprint(L"A message with emoji! ✨ The emoji will not be visible in some "
+		"terminals such as Command Prompt.\n");
 	paz::pause();
 }
 
