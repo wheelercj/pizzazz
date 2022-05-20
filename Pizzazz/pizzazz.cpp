@@ -41,19 +41,19 @@ namespace pizzazz {
 #endif
     }
 
-    void print_styled(std::string message, std::initializer_list<Style> styles) {
+    void print_styled(std::string message, std::vector<Style> styles) {
         set_style(styles);
         std::cout << message;
         reset_style();
     }
 
-    void print_styled(std::wstring message, std::initializer_list<Style> styles) {
+    void print_styled(std::wstring message, std::vector<Style> styles) {
         set_style(styles);
         wprint(message);
         reset_style();
     }
 
-    void set_style(std::initializer_list<Style> styles) {
+    void set_style(std::vector<Style> styles) {
         for (Style style : styles)
             std::cout << ESC "[" << int(style) << "m";
     }

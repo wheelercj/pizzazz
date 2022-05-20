@@ -141,13 +141,13 @@ namespace pizzazz {
     void wprint(std::wstring message);
     
     /* Prints a message with style such as as color, italics, underline, etc. */
-    void print_styled(std::string message, std::initializer_list<Style> styles);
+    void print_styled(std::string message, std::vector<Style> styles);
     
     /* Prints a message with style such as as color, italics, underline, etc. */
-    void print_styled(std::wstring message, std::initializer_list<Style> styles);
+    void print_styled(std::wstring message, std::vector<Style> styles);
     
     /* Sets future output to have a style such as as color, italics, underline, etc. */
-    void set_style(std::initializer_list<Style> styles);
+    void set_style(std::vector<Style> styles);
 
     /* Sets future output to NOT have any special styles. */
     void reset_style();
