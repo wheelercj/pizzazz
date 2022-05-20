@@ -392,11 +392,38 @@ namespace pizzazz {
 #endif
     }
 
+
+#ifndef _WIN32
+    bool _POSIX_kbhit() {
+        int bytes_waiting;
+        ioctl(0, FIONREAD, &bytes_waiting);
+        return bytes_waiting > 0;
+    }
+
+    void _enable_raw_mode() {
+        termios term;
+        tcgetattr(0, &term);
+        term.c_lflag &= ~(ICANON | ECHO);
+        tcsetattr(0, TCSANOW, &term);
+    }
+
+    void _disable_raw_mode() {
+        termios term;
+        tcgetattr(0, &term);
+        term.c_lflag |= ICANON | ECHO;
+        tcsetattr(0, TCSANOW, &term);
+    }
+#endif
+
     bool kbhit__() {
 #ifdef _WIN32
         return _kbhit();
 #else
-        return kbhit_for_internal_use_only();
+        _enable_raw_mode();
+        bool hit = _POSIX_kbhit();
+        _disable_raw_mode();
+        tcflush(0, TCIFLUSH);
+        return hit;
 #endif
     }
 
@@ -411,28 +438,6 @@ namespace pizzazz {
         while (kbhit__())  // some keys are multiple characters
             _ = getch_();
     }
-
-#ifndef _WIN32
-    void enable_raw_mode() {
-        termios term;
-        tcgetattr(0, &term);
-        term.c_lflag &= ~(ICANON | ECHO);
-        tcsetattr(0, TCSANOW, &term);
-    }
-
-    void disable_raw_mode() {
-        termios term;
-        tcgetattr(0, &term);
-        term.c_lflag |= ICANON | ECHO;
-        tcsetattr(0, TCSANOW, &term);
-    }
-
-    bool kbhit_for_internal_use_only() {
-        int bytes_waiting;
-        ioctl(0, FIONREAD, &bytes_waiting);
-        return bytes_waiting > 0;
-    }
-#endif
 
     void insert(std::string text) {
         std::cout << ESC "[" << text.size() << "@";

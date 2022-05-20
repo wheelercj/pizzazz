@@ -259,17 +259,6 @@ namespace pizzazz {
        Modifier keys are ignored. */
     void pause();
 
-#ifndef _WIN32
-    
-    void enable_raw_mode();
-    
-    void disable_raw_mode();
-    
-    /* Detects whether a key has been pressed.
-       Modifier keys are ignored. */
-    bool kbhit_for_internal_use_only();
-#endif
-    
     /* Inserts text at the terminal cursor's current location.
        Any text that is pushed out of the window to the right
        is deleted. */
