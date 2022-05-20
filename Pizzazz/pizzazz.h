@@ -284,6 +284,9 @@ namespace pizzazz {
        All characters to the right of what is deleted move to the left. */
     void delete_chars(size_t count);
 
+    /* Backspaces a chosen number of characters at the terminal cursor's current location. */
+    void backspace_chars(size_t count);
+
     /* Inserts empty lines at the terminal cursor's current location.
        Any text that gets pushed down off the window is deleted. */
     void insert_lines(size_t count);

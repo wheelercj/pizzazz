@@ -444,6 +444,11 @@ namespace pizzazz {
         std::cout << ESC "[" << count << "P";
     }
 
+    void backspace_chars(size_t count) {
+        move_cursor_left(count);
+        delete_chars(count);
+    }
+
     void insert_lines(size_t count) {
         std::cout << ESC "[" << count << "L";
     }
