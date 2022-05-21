@@ -3,19 +3,19 @@
 namespace pizzazz {
 
     std::string getline_autocompleted(
-        const std::vector<std::string>& suggestions,
-        std::string default_message,
-        bool must_use_suggestion,
-        bool case_sensitive) {
+            const std::vector<std::string>& suggestions,
+            std::string default_message,
+            bool must_use_suggestion,
+            bool case_sensitive) {
         TextField tf(suggestions, default_message, must_use_suggestion, case_sensitive);
         return tf.getline_autocompleted();
     }
 
     TextField::TextField(
-        const std::vector<std::string>& suggestions,
-        std::string default_message,
-        bool must_use_suggestion,
-        bool case_sensitive) {
+            const std::vector<std::string>& suggestions,
+            std::string default_message,
+            bool must_use_suggestion,
+            bool case_sensitive) {
         this->suggestions = suggestions;
         this->default_message = default_message;
         this->must_use_suggestion = must_use_suggestion;
@@ -42,17 +42,24 @@ namespace pizzazz {
             }
             else if (this->key.size() == 1)
                 kp_char();
-            else if (this->key == "Backspace" && this->current.x > this->start.x && this->input.size())
+            else if (this->key == "Backspace"
+                    && this->current.x > this->start.x
+                    && this->input.size())
                 kp_backspace();
-            else if (this->key == "Ctrl+Backspace" && this->current.x > this->start.x && this->input.size())
+            else if (this->key == "Ctrl+Backspace"
+                    && this->current.x > this->start.x
+                    && this->input.size())
                 kp_ctrl_backspace();
-            else if (this->key == "Delete" && this->current.x < this->input_end.x)
+            else if (this->key == "Delete"
+                    && this->current.x < this->input_end.x)
                 kp_delete();
             else if (this->key == "Ctrl+Delete")
                 kp_ctrl_delete();
-            else if (this->key == "left arrow" && this->current.x > this->start.x)
+            else if (this->key == "left arrow"
+                    && this->current.x > this->start.x)
                 kp_left_arrow();
-            else if (this->key == "right arrow" && this->current.x < this->input_end.x)
+            else if (this->key == "right arrow"
+                    && this->current.x < this->input_end.x)
                 kp_right_arrow();
             else if (this->key == "up arrow")
                 kp_up_arrow();
@@ -62,9 +69,11 @@ namespace pizzazz {
                 kp_home();
             else if (this->key == "End")
                 kp_end();
-            else if (this->key == "Ctrl+left arrow" && this->input_index > 0)
+            else if (this->key == "Ctrl+left arrow"
+                    && this->input_index > 0)
                 kp_ctrl_left_arrow();
-            else if (this->key == "Ctrl+right arrow" && this->input_index < this->input.size())
+            else if (this->key == "Ctrl+right arrow"
+                    && this->input_index < this->input.size())
                 kp_ctrl_right_arrow();
         }
     }
