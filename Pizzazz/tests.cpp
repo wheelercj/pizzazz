@@ -64,7 +64,7 @@ void test_read_key() {
 		input = paz::read_key();
 		cout << "\r                           \r" << input;
 	}
-	std::cout << std::endl;
+	cout << endl;
 }
 
 void test_show_cursor() {
@@ -137,18 +137,18 @@ void test_wide_print() {
 }
 
 void test_print_styled() {
-	paz::print_styled("This is underlined.\n\n", { Style::underlined });
+	paz::print_styled("This is underlined.", { Style::underlined });
 	paz::pause();
 }
 
 void test_wide_print_styled() {
-	paz::print_styled(L"This text has a bright red background.\n", { Style::bright_bg_red });
+	paz::print_styled(L"\nThis text has a bright red background.", { Style::bright_bg_red });
 	paz::pause();
 }
 
 void test_print_multi_styled() {
-	paz::print_styled("This is magenta with a green background and strikethrough. "
-		"The strikethrough is only visible in some terminals such as Windows Terminal.\n",
+	paz::print_styled("\nThis is magenta with a green background and strikethrough. "
+		"The strikethrough is only visible in some terminals such as Windows Terminal.",
 		{ Style::magenta, Style::bg_green, Style::strikethrough });
 	paz::pause();
 }
@@ -192,7 +192,7 @@ void test_print_invalid_rgb() {
 	try {
 		paz::print_rgb(95, 256, 95, "This will raise an exception.");
 	}
-	catch (std::invalid_argument& e) {
+	catch (invalid_argument& e) {
 		cout << e.what() << endl;
 	}
 }
