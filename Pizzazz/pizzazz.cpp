@@ -613,12 +613,26 @@ namespace pizzazz {
                 input_index = input.size() - 1;
                 set_cursor_coords(current);
             }
-            //else if (key == "Ctrl+left arrow") {
-            //    // TODO
-            //}
-            //else if (key == "Ctrl+right arrow") {
-            //    // TODO
-            //}
+            else if (key == "Ctrl+left arrow" && input_index > 0) {
+                int i = int(input_index) - 1;
+                if (i >= 0) {
+                    while (i > 0 && input[i] != ' ')
+                        i--;
+                    current.x -= int(input_index) - i;
+                    input_index = i;
+                    set_cursor_coords(current);
+                }
+            }
+            else if (key == "Ctrl+right arrow" && input_index < input.size()) {
+                int i = int(input_index) + 1;
+                if (i != input.size()) {
+                    while (i < input.size() && input[i] != ' ')
+                        i++;
+                    current.x += i - int(input_index);
+                    input_index = i;
+                    set_cursor_coords(current);
+                }
+            }
         }
     }
 
