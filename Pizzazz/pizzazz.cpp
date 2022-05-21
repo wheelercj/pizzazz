@@ -392,6 +392,240 @@ namespace pizzazz {
 #endif
     }
 
+    void _clear_suggestion(
+            Coord input_end,
+            Coord& suggestion_end,
+            std::string& latest_suggestion) {
+        set_cursor_coords(input_end);
+        delete_chars(suggestion_end.x - input_end.x);
+        suggestion_end = input_end;
+        latest_suggestion = "";
+    }
+
+    void _red_flash_text(std::string text, Coord start, Coord current) {
+        set_cursor_coords(start);
+        print_styled(text, { Style::red });
+        sleep_(300);
+        set_cursor_coords(start);
+        std::cout << text;
+        set_cursor_coords(current);
+    }
+    
+    void _print_suggestion(
+            std::string suggestion,
+            Coord& suggestion_end,
+            size_t input_size) {
+        std::string suffix = suggestion.substr(input_size);
+        print_styled(suffix, { Style::bright_gray });
+        suggestion_end = get_cursor_coords();
+    }
+
+    void _find_and_print_suggestion(
+            std::string input,
+            const std::vector<std::string>& suggestions,
+            std::string& latest_suggestion,
+            Coord current,
+            Coord input_end,
+            Coord& suggestion_end,
+            bool case_sensitive,
+            std::string default_message = "") {
+        _clear_suggestion(input_end, suggestion_end, latest_suggestion);
+        if (input.empty()) {
+            if (default_message.size())
+                _print_suggestion(default_message, suggestion_end, input.size());
+            set_cursor_coords(current);
+            return;
+        }
+        for (auto it = suggestions.begin(); it != suggestions.end(); it++) {
+            std::string suggestion = *it;
+            std::string lc_suggestion = suggestion;
+            if (!case_sensitive) {
+                input = to_lower(input);
+                lc_suggestion = to_lower(suggestion);
+            }
+            if (lc_suggestion.find(input) == 0) {
+                latest_suggestion = suggestion;
+                _print_suggestion(suggestion, suggestion_end, input.size());
+                break;
+            }
+        }
+        set_cursor_coords(current);
+    }
+
+    std::string getline_autocompleted(
+            const std::vector<std::string>& suggestions,
+            std::string default_message,
+            bool must_use_suggestion,
+            bool case_sensitive) {
+        std::string input;
+        size_t input_index = 0;
+        std::string key = "";
+        std::string latest_suggestion = "";
+        Coord start = get_cursor_coords();
+        Coord current = start;
+        Coord input_end = current;
+        Coord suggestion_end = current;
+        if (default_message.size()) {
+            _find_and_print_suggestion(
+                input,
+                suggestions,
+                latest_suggestion,
+                current,
+                input_end,
+                suggestion_end,
+                case_sensitive,
+                default_message);
+            latest_suggestion = default_message;
+        }
+        while (true) {
+            key = read_key();
+            if (key == "Enter") {
+                if (must_use_suggestion) {
+                    if (case_sensitive) {
+                        if (latest_suggestion != input)
+                            _red_flash_text(input, start, current);
+                        else {
+                            _clear_suggestion(input_end, suggestion_end, latest_suggestion);
+                            return latest_suggestion;
+                        }
+                    }
+                    else if (to_lower(latest_suggestion) != to_lower(input))
+                        _red_flash_text(input, start, current);
+                    else {
+                        _clear_suggestion(input_end, suggestion_end, latest_suggestion);
+                        return latest_suggestion;
+                    }
+                }
+                else {
+                    _clear_suggestion(input_end, suggestion_end, latest_suggestion);
+                    return input;
+                }
+            }
+            else if (key == "Tab") {
+                if (latest_suggestion.empty())
+                    return input;
+                set_cursor_coords(start);
+                std::cout << latest_suggestion;
+                return latest_suggestion;
+            }
+            else if (key.size() == 1) {
+                if (input_index < input.size())
+                    input[input_index] = key[0];
+                else {
+                    input.append(key);
+                    input_end.x += 1;
+                }
+                std::cout << key;
+                current.x += 1;
+                input_index += 1;
+                _find_and_print_suggestion(
+                    input,
+                    suggestions,
+                    latest_suggestion,
+                    current,
+                    input_end,
+                    suggestion_end,
+                    case_sensitive,
+                    default_message);
+            }
+            else if (key == "Backspace" && current.x > start.x && input.size()) {
+                input.erase(input_index - 1, 1);
+                backspace_chars(1);
+                current.x -= 1;
+                input_end.x -= 1;
+                input_index -= 1;
+                _find_and_print_suggestion(
+                    input,
+                    suggestions,
+                    latest_suggestion,
+                    current,
+                    input_end,
+                    suggestion_end,
+                    case_sensitive,
+                    default_message);
+            }
+            else if (key == "Ctrl+Backspace" && current.x > start.x && input.size()) {
+                backspace_chars(input_index);
+                input = input.substr(input_index);
+                if (latest_suggestion.size())
+                    suggestion_end.x -= int(input_index);
+                current = start;
+                set_cursor_coords(current);
+                input_end = start;
+                input_index = 0;
+                input = "";
+                _find_and_print_suggestion(
+                    input,
+                    suggestions,
+                    latest_suggestion,
+                    current,
+                    input_end,
+                    suggestion_end,
+                    case_sensitive,
+                    default_message);
+            }
+            else if (key == "Delete" && current.x < input_end.x) {
+                delete_chars(1);
+                input_end.x -= 1;
+                input.erase(input_index, 1);
+                _find_and_print_suggestion(
+                    input,
+                    suggestions,
+                    latest_suggestion,
+                    current,
+                    input_end,
+                    suggestion_end,
+                    case_sensitive,
+                    default_message);
+            }
+            else if (key == "Ctrl+Delete") {
+                delete_chars(suggestion_end.x - current.x);
+                input = input.substr(0, input_index);
+                input_end.x = current.x;
+                _find_and_print_suggestion(
+                    input,
+                    suggestions,
+                    latest_suggestion,
+                    current,
+                    input_end,
+                    suggestion_end,
+                    case_sensitive,
+                    default_message);
+            }
+            else if (key == "left arrow" && current.x > start.x) {
+                current.x -= 1;
+                input_index -= 1;
+                set_cursor_coords(current);
+            }
+            else if (key == "right arrow" && current.x < input_end.x) {
+                current.x += 1;
+                input_index += 1;
+                set_cursor_coords(current);
+            }
+            //else if (key == "up arrow") {
+            //    // TODO
+            //}
+            //else if (key == "down arrow") {
+            //    // TODO
+            //}
+            else if (key == "Home") {
+                current = start;
+                input_index = 0;
+                set_cursor_coords(current);
+            }
+            else if (key == "End") {
+                current = input_end;
+                input_index = input.size() - 1;
+                set_cursor_coords(current);
+            }
+            //else if (key == "Ctrl+left arrow") {
+            //    // TODO
+            //}
+            //else if (key == "Ctrl+right arrow") {
+            //    // TODO
+            //}
+        }
+    }
 
 #ifndef _WIN32
     bool _POSIX_kbhit() {

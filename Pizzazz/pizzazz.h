@@ -246,12 +246,19 @@ namespace pizzazz {
        Returns an empty string if there is no input. */
     std::string read_key_if_kbhit();
 
+    /* Gets a line of input while showing autocomplete suggestions.
+       Press Tab to accept a suggestion. Optional parameters: a default message to show,
+       whether to require choosing a suggestion, whether to require case sensitivity. */
+    std::string getline_autocompleted(const std::vector<std::string>& suggestions, std::string = "", bool = true, bool = false);
+
     /* Waits for and gets a character input without requiring an Enter keypress.
-       See a list of many possible return values here: https://gist.github.com/wheelercj/3e6dd4f9c8b267145cbd746d8daccf80 */
+       See a list of many possible return values here: https://gist.github.com/wheelercj/3e6dd4f9c8b267145cbd746d8daccf80
+       Cross-platform, unlike _getch from conio.h. */
     char getch_();
 
     /* Detects whether a key was pressed.
-       Ignores modifier keys. */
+       Ignores modifier keys.
+       Cross-platform, unlike _kbhit from conio.h. */
     bool kbhit__();
 
     /* Gets a character input without requiring an Enter keypress only if there is input.

@@ -9,6 +9,8 @@ using paz::Coord;
 
 void run_tests() {
 	test_read_key();
+	test_getline_autocompleted();
+	test_getline_autocompleted_menu();
 	test_show_cursor();
 	test_show_cursor_blink();
 	test_set_cursor_style();
@@ -65,6 +67,26 @@ void test_read_key() {
 		cout << "\r                           \r" << input;
 	}
 	cout << endl;
+}
+
+void test_getline_autocompleted() {
+	cout << "Autocomplete suggestions example:\n";
+	vector<string> large_city_names = { "Ahmedabad", "Alexandria", "Atlanta", "Baghdad", "Bangalore", "Bangkok", "Barcelona", "Beijing", "Belo Horizonte", "Bogotá", "Buenos Aires", "Cairo", "Chengdu", "Chennai", "Chicago", "Chongqing", "Dalian", "Dallas", "Dar es Salaam", "Delhi", "Dhaka", "Dongguan", "Foshan", "Fukuoka", "Guadalajara", "Guangzhou", "Hangzhou", "Harbin", "Ho Chi Minh City", "Hong Kong", "Houston", "Hyderabad", "Istanbul", "Jakarta", "Jinan", "Karachi", "Khartoum", "Kinshasa", "Kolkata", "Kuala Lumpur", "Lagos", "Lahore", "Lima", "London", "Los Angeles", "Luanda", "Madrid", "Manila", "Mexico City", "Miami", "Moscow", "Mumbai", "Nagoya", "Nanjing", "New York", "Osaka", "Paris", "Philadelphia", "Pune", "Qingdao", "Rio de Janeiro", "Riyadh", "Saint Petersburg", "Santiago", "Seoul", "Shanghai", "Shenyang", "Shenzhen", "Singapore", "Surat", "Suzhou", "São Paulo", "Tehran", "Tianjin", "Tokyo", "Toronto", "Washington", "Wuhan", "Xi'an", "Yangon" };
+	string name = paz::getline_autocompleted(large_city_names, "type a large city's name");
+	cout << "\nYou chose " << name << endl;
+}
+
+void test_getline_autocompleted_menu() {
+	cout << "\nSample menu:\n"
+		" * Create\n"
+		" * Read\n"
+		" * Update\n"
+		" * Delete\n"
+		"> ";
+	string choice = paz::getline_autocompleted(
+		{ "Create", "Read", "Update", "Delete" },
+		"type an option");
+	cout << "\nYou chose " << choice << "\n\n";
 }
 
 void test_show_cursor() {
