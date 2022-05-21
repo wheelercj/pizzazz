@@ -11,8 +11,6 @@ void run_tests() {
 	test_read_key();
 	test_getline_autocompleted();
 	test_getline_autocompleted_menu();
-	test_show_cursor();
-	test_show_cursor_blink();
 	test_set_cursor_style();
 	test_set_window_title();
 	test_wide_set_window_title();
@@ -89,30 +87,20 @@ void test_getline_autocompleted_menu() {
 	cout << "\nYou chose " << choice << "\n\n";
 }
 
-void test_show_cursor() {
-	cout << "Cursor visible.\n";
-	paz::pause();
-	paz::show_cursor(false);
-	cout << "Cursor not visible.\n";
-	paz::pause();
-	paz::show_cursor();
-	cout << "Cursor visible again.\n";
-	paz::pause();
-}
-
-void test_show_cursor_blink() {
-	cout << "Cursor blinking.\n";
-	paz::pause();
-	paz::show_cursor_blink(false);
-	cout << "Cursor not blinking.\n";
-	paz::pause();
-	paz::show_cursor_blink();
-	cout << "Cursor blinking again.\n";
-	paz::pause();
-}
-
 void test_set_cursor_style() {
-	cout << "\nDefault cursor";
+	cout << "\nCursor visible";
+	paz::pause();
+	paz::set_cursor_style(CursorStyle::hidden);
+	cout << "\nCursor not visible";
+	paz::pause();
+	paz::set_cursor_style(CursorStyle::not_hidden);
+	cout << "\nCursor visible again";
+	paz::pause();
+	paz::set_cursor_style(CursorStyle::blinking_default);
+	cout << "\nBlinking default cursor";
+	paz::pause();
+	paz::set_cursor_style(CursorStyle::steady_default);
+	cout << "\nSteady default cursor";
 	paz::pause();
 	paz::set_cursor_style(CursorStyle::blinking_block);
 	cout << "\nBlinking block cursor";
@@ -132,7 +120,7 @@ void test_set_cursor_style() {
 	paz::set_cursor_style(CursorStyle::steady_i_beam);
 	cout << "\nSteady i-beam cursor";
 	paz::pause();
-	paz::set_cursor_style(CursorStyle::reset);
+	paz::set_cursor_style(CursorStyle::blinking_default);
 	cout << "\nBack to the default cursor";
 	paz::pause();
 	cout << endl;
@@ -281,7 +269,7 @@ void test_restore_cursor_location() {
 }
 
 void test_move_cursor_up() {
-	paz::set_style({Style::bg_magenta});
+	paz::set_style({ Style::bg_magenta });
 	paz::move_cursor_up(3);
 	cout << "This is 3 lines higher than the last output.";
 	paz::reset_style();
@@ -289,7 +277,7 @@ void test_move_cursor_up() {
 }
 
 void test_move_cursor_down() {
-	paz::set_style({Style::bg_magenta});
+	paz::set_style({ Style::bg_magenta });
 	paz::move_cursor_down(3);
 	cout << "This is 3 lines lower than the last output.";
 	paz::reset_style();
@@ -298,7 +286,7 @@ void test_move_cursor_down() {
 
 void test_move_cursor_right() {
 	cout << endl;
-	paz::set_style({Style::bg_blue});
+	paz::set_style({ Style::bg_blue });
 	paz::move_cursor_right(3);
 	cout << "This is 3 columns to the right from the window's edge.\n";
 	paz::reset_style();
@@ -309,12 +297,12 @@ void test_move_cursor_left() {
 	paz::save_cursor_location();
 	paz::move_cursor_right(20);
 	paz::move_cursor_up(15);
-	paz::set_style({Style::bg_green});
+	paz::set_style({ Style::bg_green });
 	cout << "This is higher and further to the right.";
 	paz::pause();
 	paz::move_cursor_left(5);
 	paz::move_cursor_down();
-	paz::set_style({Style::bg_cyan});
+	paz::set_style({ Style::bg_cyan });
 	cout << "This is 5 columns to the left and 1 line below the end of the last output.";
 	paz::reset_style();
 	paz::restore_cursor_location();
@@ -346,7 +334,7 @@ void test_kbhit__() {
 }
 
 void test_getch_if_kbhit() {
-	paz::show_cursor(false);
+	paz::set_cursor_style(CursorStyle::hidden);
 	char input;
 	for (int i = 0; "yes"; i++) {
 		cout << "\r(" << i << ") Waiting for you to press a key without blocking.";
@@ -355,7 +343,7 @@ void test_getch_if_kbhit() {
 			break;
 		paz::sleep_(1000);
 	}
-	paz::show_cursor(true);
+	paz::set_cursor_style(CursorStyle::not_hidden);
 	cout << "\nYou pressed " << input << endl;
 	paz::pause();
 }
@@ -431,7 +419,7 @@ void test_sleep_() {
 void test_read_key_with_cursor_movements() {
 	paz::pause();
 	cout << "\nTry moving the cursor with the arrow keys. Press any other key to stop.";
-	paz::show_cursor_blink(false);
+	paz::set_cursor_style(CursorStyle::steady_default);
 	while (true) {
 		string input = paz::read_key();
 		if (input == "up arrow")
@@ -443,7 +431,7 @@ void test_read_key_with_cursor_movements() {
 		else if (input == "right arrow")
 			paz::move_cursor_right();
 		else {
-			paz::show_cursor_blink();
+			paz::set_cursor_style(CursorStyle::blinking_default);
 			return;
 		}
 	}

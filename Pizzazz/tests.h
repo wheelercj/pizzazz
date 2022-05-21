@@ -3,8 +3,6 @@ void signal_callback_handler(int signal_number);
 void test_read_key();
 void test_getline_autocompleted();
 void test_getline_autocompleted_menu();
-void test_show_cursor();
-void test_show_cursor_blink();
 void test_set_cursor_style();
 void test_set_window_title();
 void test_wide_set_window_title();

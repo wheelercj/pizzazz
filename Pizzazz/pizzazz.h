@@ -51,7 +51,10 @@ namespace pizzazz {
         steady_underline,
         blinking_i_beam,
         steady_i_beam,
-        reset
+        blinking_default,
+        steady_default,
+        hidden,
+        not_hidden
     };
 
     /* Values to pass to functions that control the terminal's text style.
@@ -114,12 +117,6 @@ namespace pizzazz {
         bright_bg_cyan,
         bright_bg_white,
     };
-
-    /* Hides or shows the terminal's cursor. */
-    void show_cursor(bool = true);
-    
-    /* Hides or shows the terminal cursor's blinking. */
-    void show_cursor_blink(bool = true);
 
     /* Changes the terminal cursor's appearance. */
     void set_cursor_style(CursorStyle style);

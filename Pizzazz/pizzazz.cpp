@@ -4,22 +4,17 @@
 
 namespace pizzazz {
 
-    void show_cursor(bool choice) {
-        if (choice)
-            std::cout << ESC "[?25h";
-        else
-            std::cout << ESC "[?25l";
-    }
-
-    void show_cursor_blink(bool choice) {
-        if (choice)
-            std::cout << ESC "[?12h";
-        else
-            std::cout << ESC "[?12l";
-    }
-
     void set_cursor_style(CursorStyle style) {
-        std::cout << "\x1b[" << int(style) << " q";
+        if (style == CursorStyle::not_hidden)
+            std::cout << ESC "[?25h";
+        else if (style == CursorStyle::hidden)
+            std::cout << ESC "[?25l";
+        else if (style == CursorStyle::blinking_default)
+            std::cout << ESC "[7 q" ESC "[?12h";
+        else if (style == CursorStyle::steady_default)
+            std::cout << ESC "[7 q" ESC "[?12l";
+        else
+            std::cout << "\x1b[" << int(style) << " q";
     }
 
     void set_window_title(std::string title) {
