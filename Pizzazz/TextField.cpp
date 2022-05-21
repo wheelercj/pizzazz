@@ -116,6 +116,24 @@ namespace pizzazz {
         this->suggestion_end = get_cursor_coords();
     }
 
+    int TextField::find_previous_space() {
+        int i = int(this->input_index) - 1;
+        if (i < 0)
+            return int(this->input_index);
+        while (i > 0 && this->input[i] != ' ')
+            i--;
+        return i;
+    }
+
+    int TextField::find_next_space() {
+        int i = int(this->input_index) + 1;
+        if (i == this->input.size())
+            return int(this->input_index);
+        while (i < this->input.size() && this->input[i] != ' ')
+            i++;
+        return i;
+    }
+
     std::string TextField::kp_enter() {
         if (this->must_use_suggestion) {
             if (this->case_sensitive) {
@@ -175,15 +193,14 @@ namespace pizzazz {
     }
 
     void TextField::kp_ctrl_backspace() {
-        backspace_chars(this->input_index);
-        this->input = this->input.substr(this->input_index);
-        if (this->latest_suggestion.size())
-            this->suggestion_end.x -= int(this->input_index);
-        this->current = this->start;
-        set_cursor_coords(this->current);
-        this->input_end = this->start;
-        this->input_index = 0;
-        this->input = "";
+        int s = find_previous_space();
+        int i = int(this->input_index);
+        int diff = i - s;
+        backspace_chars(diff);
+        this->input.erase(s, diff);
+        this->current.x -= diff;
+        this->input_end.x -= diff;
+        this->input_index -= diff;
         find_and_print_suggestion();
     }
 
@@ -195,9 +212,12 @@ namespace pizzazz {
     }
 
     void TextField::kp_ctrl_delete() {
-        delete_chars(this->suggestion_end.x - this->current.x);
-        this->input = this->input.substr(0, this->input_index);
-        this->input_end.x = this->current.x;
+        int s = find_next_space();
+        int i = int(this->input_index);
+        int diff = s - i;
+        delete_chars(diff);
+        this->input.erase(i, diff);
+        this->input_end.x -= diff;
         find_and_print_suggestion();
     }
 
@@ -234,24 +254,16 @@ namespace pizzazz {
     }
 
     void TextField::kp_ctrl_left_arrow() {
-        int i = int(this->input_index) - 1;
-        if (i >= 0) {
-            while (i > 0 && this->input[i] != ' ')
-                i--;
-            this->current.x -= int(this->input_index) - i;
-            this->input_index = i;
-            set_cursor_coords(this->current);
-        }
+        int i = find_previous_space();
+        this->current.x -= int(this->input_index) - i;
+        this->input_index = i;
+        set_cursor_coords(this->current);
     }
 
     void TextField::kp_ctrl_right_arrow() {
-        int i = int(this->input_index) + 1;
-        if (i != this->input.size()) {
-            while (i < this->input.size() && this->input[i] != ' ')
-                i++;
-            this->current.x += i - int(this->input_index);
-            this->input_index = i;
-            set_cursor_coords(this->current);
-        }
+        int i = find_next_space();
+        this->current.x += i - int(this->input_index);
+        this->input_index = i;
+        set_cursor_coords(this->current);
     }
 }
