@@ -2,6 +2,7 @@
 #include "common.h"
 #include <string>
 #include <vector>
+#include <optional>  // C++17+
 
 namespace pizzazz {
 
@@ -42,8 +43,8 @@ namespace pizzazz {
         void print_suggestion(std::string suggestion);
         int find_previous_space();
         int find_next_space();
-        std::string kp_enter();
-        std::string kp_tab();
+        std::optional<std::string> kp_enter();
+        std::optional<std::string> kp_tab();
         void kp_char();
         void kp_backspace();
         void kp_ctrl_backspace();

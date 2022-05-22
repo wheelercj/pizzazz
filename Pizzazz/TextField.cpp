@@ -27,18 +27,18 @@ namespace pizzazz {
     }
 
     std::string TextField::getline_autocompleted() {
-        std::string result;
+        std::optional<std::string> result;
         while (true) {
             this->key = read_key();
             if (this->key == "Enter") {
                 result = kp_enter();
-                if (result.size() || !must_use_suggestion || is_suggestion(result))
-                    return result;
+                if (result && (result->size() || !must_use_suggestion || is_suggestion(*result)))
+                    return *result;
             }
             else if (this->key == "Tab") {
                 result = kp_tab();
-                if (result.size() || is_suggestion(result))
-                    return result;
+                if (result && (result->size() || is_suggestion(*result)))
+                    return *result;
             }
             else if (this->key.size() == 1)
                 kp_char();
@@ -53,7 +53,8 @@ namespace pizzazz {
             else if (this->key == "Delete"
                     && this->current.x < this->input_end.x)
                 kp_delete();
-            else if (this->key == "Ctrl+Delete")
+            else if (this->key == "Ctrl+Delete"
+                    && this->current.x < this->input_end.x)
                 kp_ctrl_delete();
             else if (this->key == "left arrow"
                     && this->current.x > this->start.x)
@@ -87,6 +88,7 @@ namespace pizzazz {
         }
         this->latest_suggestion = find_suggestion();
         print_suggestion(this->latest_suggestion);
+        set_cursor_coords(this->current);
     }
 
     std::string TextField::find_suggestion() {
@@ -166,7 +168,7 @@ namespace pizzazz {
         return i;
     }
 
-    std::string TextField::kp_enter() {
+    std::optional<std::string> TextField::kp_enter() {
         if (!this->must_use_suggestion) {
             clear_suggestion();
             return this->input;
@@ -174,10 +176,10 @@ namespace pizzazz {
         if (is_suggestion(this->input))
             return this->input;
         red_flash_text();
-        return "";
+        return {};
     }
 
-    std::string TextField::kp_tab() {
+    std::optional<std::string> TextField::kp_tab() {
         if (is_suggestion(this->input))
             return this->input;
         if (is_suggestion(this->latest_suggestion)) {
@@ -185,7 +187,7 @@ namespace pizzazz {
             std::cout << this->latest_suggestion;
             return this->latest_suggestion;
         }
-        return "";
+        return {};
     }
 
     void TextField::kp_char() {
@@ -267,7 +269,7 @@ namespace pizzazz {
 
     void TextField::kp_end() {
         this->current = this->input_end;
-        this->input_index = this->input.size() - 1;
+        this->input_index = this->input.size();
         set_cursor_coords(this->current);
     }
 
