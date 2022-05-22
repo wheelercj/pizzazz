@@ -1,8 +1,8 @@
 # Pizzazz
 
-Add some style, advanced cursor movements, autocomplete suggestions, and more to your C++ terminal app!
+Add some color, style, advanced cursor movements, autocomplete suggestions, and more to your C++ terminal app!
 
-This is a fully cross-platform library. See common.h and TextField.h for the list of functions and their descriptions. Take a look at tests.cpp for examples of how to use them.
+This is a fully cross-platform library. See common.h and TextField.h for the list of functions and their descriptions. Take a look at tests.cpp for examples of how to use them. C++17 or newer is required; in Visual Studio, you can choose the version of C++ with project > Properties > C/C++ > Language > C++ Language Standard.
 
 Here's a simple example of one of this library's functions, getline_autocompleted, which can give autocomplete suggestions and has optional built-in input validation:
 
@@ -25,3 +25,5 @@ int main() {
     return 0;
 }
 ```
+
+![](docs/getline_autocompleted_demo.gif)
