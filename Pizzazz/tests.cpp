@@ -1,5 +1,4 @@
 ﻿#include "pizzazz.h"
-#include "TextField.h"
 #include "tests.h"
 #include <signal.h>
 using namespace std;
@@ -92,7 +91,7 @@ void test_getline_autocompleted_menu() {
 
 void test_getline_autocompleted_with_empty_suggestion() {
 	cout << "\nEnter a month or just press enter to skip: ";
-	string month = paz::getline_autocompleted({ "", "January", "February", "March", "April", "May", "June", "July", "August", "Septemper", "October", "November", "December" });
+	string month = paz::getline_autocompleted({ "", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" });
 	if (month.empty())
 		cout << "\nYou skipped the question";
 	else

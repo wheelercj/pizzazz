@@ -1,7 +1,5 @@
 #include "pizzazz.h"
-#include "TextField.h"
 #include "tests.h"
-#include <iostream>
 using namespace std;
 namespace paz = pizzazz;  // shorter alias for easier use
 using paz::Style;
