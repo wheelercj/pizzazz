@@ -235,7 +235,7 @@ namespace pizzazz {
             //case '†': return "Ctrl+Page Up";  // conflicts with F12
             case 'v': return "Ctrl+Page Down";
             case 'w': return "Ctrl+Home";
-            case 'u': return "Ctrl+Home";
+            case 'u': return "Ctrl+End";
             case '“': return "Ctrl+Delete";
             case '…': return "F11";
             case '†': return "F12";
