@@ -12,6 +12,8 @@ void run_tests() {
 	test_read_key();
 	test_getline_autocompleted();
 	test_getline_autocompleted_menu();
+	test_getline_autocompleted_with_empty_suggestion();
+	test_getline_autocompleted_without_input_validation();
 	test_set_cursor_style();
 	test_set_window_title();
 	test_wide_set_window_title();
@@ -86,6 +88,23 @@ void test_getline_autocompleted_menu() {
 		{ "Create", "Read", "Update", "Delete" },
 		"type an option");
 	cout << "\nYou chose " << choice << "\n\n";
+}
+
+void test_getline_autocompleted_with_empty_suggestion() {
+	cout << "\nEnter a month or just press enter to skip: ";
+	string month = paz::getline_autocompleted({ "", "January", "February", "March", "April", "May", "June", "July", "August", "Septemper", "October", "November", "December" });
+	if (month.empty())
+		cout << "\nYou skipped the question";
+	else
+		cout << "\nYou chose " << month;
+}
+
+void test_getline_autocompleted_without_input_validation() {
+	cout << "\nEnter a color or make up your own:\n";
+	string color = paz::getline_autocompleted(
+		{ "red", "orange", "yellow", "green", "blue", "purple" },
+		"type a color", false);
+	cout << "\nYou entered: " << color;
 }
 
 void test_set_cursor_style() {

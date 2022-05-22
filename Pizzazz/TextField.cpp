@@ -32,12 +32,12 @@ namespace pizzazz {
             this->key = read_key();
             if (this->key == "Enter") {
                 result = kp_enter();
-                if (result.size())
+                if (result.size() || !must_use_suggestion || is_suggestion(result))
                     return result;
             }
             else if (this->key == "Tab") {
                 result = kp_tab();
-                if (result.size())
+                if (result.size() || is_suggestion(result))
                     return result;
             }
             else if (this->key.size() == 1)
@@ -83,24 +83,44 @@ namespace pizzazz {
         if (this->input.empty()) {
             if (this->default_message.size())
                 print_suggestion(this->default_message);
-            set_cursor_coords(this->current);
             return;
         }
+        this->latest_suggestion = find_suggestion();
+        print_suggestion(this->latest_suggestion);
+    }
+
+    std::string TextField::find_suggestion() {
         for (auto it = this->suggestions.begin(); it != this->suggestions.end(); it++) {
             std::string suggestion = *it;
             std::string lc_suggestion = suggestion;
-            std::string lc_input = this->input;
+            std::string lc_str = this->input;
             if (!this->case_sensitive) {
-                lc_input = to_lower(lc_input);
+                lc_str = to_lower(lc_str);
                 lc_suggestion = to_lower(lc_suggestion);
             }
-            if (lc_suggestion.find(lc_input) == 0) {
-                this->latest_suggestion = suggestion;
-                print_suggestion(suggestion);
-                break;
+            if (lc_suggestion.find(lc_str) == 0)
+                return suggestion;
+        }
+        return "";
+    }
+
+    /* This function changes the capitalization of the parameter to match the
+       suggestion if the function returns true. */
+    bool TextField::is_suggestion(std::string& str) {
+        for (auto it = this->suggestions.begin(); it != this->suggestions.end(); it++) {
+            std::string suggestion = *it;
+            std::string lc_suggestion = suggestion;
+            std::string lc_str = str;
+            if (!this->case_sensitive) {
+                lc_str = to_lower(lc_str);
+                lc_suggestion = to_lower(lc_suggestion);
+            }
+            if (lc_suggestion == lc_str) {
+                str = suggestion;
+                return true;
             }
         }
-        set_cursor_coords(this->current);
+        return false;
     }
 
     void TextField::clear_suggestion() {
@@ -120,9 +140,12 @@ namespace pizzazz {
     }
 
     void TextField::print_suggestion(std::string suggestion) {
+        if (suggestion.size() <= this->input.size())
+            return;
         std::string suffix = suggestion.substr(this->input.size());
         print_styled(suffix, { Style::bright_gray });
         this->suggestion_end = get_cursor_coords();
+        set_cursor_coords(this->current);
     }
 
     int TextField::find_previous_space() {
@@ -144,39 +167,25 @@ namespace pizzazz {
     }
 
     std::string TextField::kp_enter() {
-        if (this->must_use_suggestion) {
-            if (this->case_sensitive) {
-                if (this->latest_suggestion != this->input)
-                    red_flash_text();
-                else {
-                    clear_suggestion();
-                    return this->latest_suggestion;
-                }
-            }
-            else if (to_lower(this->latest_suggestion) != to_lower(this->input))
-                red_flash_text();
-            else {
-                clear_suggestion();
-                return this->latest_suggestion;
-            }
-        }
-        else {
+        if (!this->must_use_suggestion) {
             clear_suggestion();
             return this->input;
         }
+        if (is_suggestion(this->input))
+            return this->input;
+        red_flash_text();
         return "";
     }
 
     std::string TextField::kp_tab() {
-        if (this->latest_suggestion.empty()) {
-            if (!this->must_use_suggestion)
-                return this->input;
-            red_flash_text();
-            return "";
+        if (is_suggestion(this->input))
+            return this->input;
+        if (is_suggestion(this->latest_suggestion)) {
+            set_cursor_coords(this->start);
+            std::cout << this->latest_suggestion;
+            return this->latest_suggestion;
         }
-        set_cursor_coords(this->start);
-        std::cout << this->latest_suggestion;
-        return this->latest_suggestion;
+        return "";
     }
 
     void TextField::kp_char() {

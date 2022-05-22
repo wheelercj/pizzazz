@@ -6,12 +6,15 @@
 namespace pizzazz {
 
     /* Gets a line of input while showing autocomplete suggestions.
-       Press Tab to accept a suggestion. */
+       Press Tab to accept a suggestion. Optional parameters:
+       * a default message to show
+       * whether to require choosing a suggestion
+       * whether to require case sensitivity */
     std::string getline_autocompleted(
         const std::vector<std::string>& suggestions,
-        std::string = "",  // a default message to show
-        bool = true,  // whether to require choosing a suggestion
-        bool = false);  // whether to require case sensitivity
+        std::string = "",
+        bool = true,
+        bool = false);
 
     class TextField {
     public:
@@ -32,6 +35,8 @@ namespace pizzazz {
         bool case_sensitive;
 
         void find_and_print_suggestion();
+        std::string find_suggestion();
+        bool is_suggestion(std::string& str);
         void clear_suggestion();
         void red_flash_text();
         void print_suggestion(std::string suggestion);
