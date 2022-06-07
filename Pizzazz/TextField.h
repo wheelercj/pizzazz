@@ -6,12 +6,12 @@
 
 namespace pizzazz {
 
-    /* Gets a line of input while showing autocomplete suggestions.
+    /* Gets a line of input while showing autocomplete suggestions (not autocorrect).
        Press Tab to accept a suggestion. Optional parameters:
        * a default message to show
        * whether to require choosing a suggestion
        * whether to require case sensitivity */
-    std::string getline_autocompleted(
+    std::string getline_ac(
         const std::vector<std::string>& suggestions,
         std::string = "",
         bool = true,
@@ -20,7 +20,7 @@ namespace pizzazz {
     class TextField {
     public:
         TextField(const std::vector<std::string>& suggestions, std::string default_message, bool must_use_suggestion, bool case_sensitive);
-        std::string getline_autocompleted();
+        std::string getline_ac();
     private:
         std::string key = "";
         std::string input = "";
@@ -45,18 +45,18 @@ namespace pizzazz {
         int find_next_space();
         std::optional<std::string> kp_enter();
         std::optional<std::string> kp_tab();
-        void kp_char();
-        void kp_backspace();
-        void kp_ctrl_backspace();
-        void kp_delete();
-        void kp_ctrl_delete();
-        void kp_left_arrow();
-        void kp_right_arrow();
-        void kp_up_arrow();
-        void kp_down_arrow();
-        void kp_home();
-        void kp_end();
-        void kp_ctrl_left_arrow();
-        void kp_ctrl_right_arrow();
+        void key_char();
+        void key_backspace();
+        void key_ctrl_backspace();
+        void key_delete();
+        void key_ctrl_delete();
+        void key_left_arrow();
+        void key_right_arrow();
+        void key_up_arrow();
+        void key_down_arrow();
+        void key_home();
+        void key_end();
+        void key_ctrl_left_arrow();
+        void key_ctrl_right_arrow();
     };
 }

@@ -2,13 +2,13 @@
 
 namespace pizzazz {
 
-    std::string getline_autocompleted(
+    std::string getline_ac(
             const std::vector<std::string>& suggestions,
             std::string default_message,
             bool must_use_suggestion,
             bool case_sensitive) {
         TextField tf(suggestions, default_message, must_use_suggestion, case_sensitive);
-        return tf.getline_autocompleted();
+        return tf.getline_ac();
     }
 
     TextField::TextField(
@@ -26,10 +26,10 @@ namespace pizzazz {
         }
     }
 
-    std::string TextField::getline_autocompleted() {
+    std::string TextField::getline_ac() {
         std::optional<std::string> result;
         while (true) {
-            this->key = read_key();
+            this->key = get_key();
             if (this->key == "Enter") {
                 result = kp_enter();
                 if (result && (result->size() || !must_use_suggestion || is_suggestion(*result)))
@@ -41,41 +41,41 @@ namespace pizzazz {
                     return *result;
             }
             else if (this->key.size() == 1)
-                kp_char();
+                key_char();
             else if (this->key == "Backspace"
                     && this->current.x > this->start.x
                     && this->input.size())
-                kp_backspace();
+                key_backspace();
             else if (this->key == "Ctrl+Backspace"
                     && this->current.x > this->start.x
                     && this->input.size())
-                kp_ctrl_backspace();
+                key_ctrl_backspace();
             else if (this->key == "Delete"
                     && this->current.x < this->input_end.x)
-                kp_delete();
+                key_delete();
             else if (this->key == "Ctrl+Delete"
                     && this->current.x < this->input_end.x)
-                kp_ctrl_delete();
+                key_ctrl_delete();
             else if (this->key == "left arrow"
                     && this->current.x > this->start.x)
-                kp_left_arrow();
+                key_left_arrow();
             else if (this->key == "right arrow"
                     && this->current.x < this->input_end.x)
-                kp_right_arrow();
+                key_right_arrow();
             else if (this->key == "up arrow")
-                kp_up_arrow();
+                key_up_arrow();
             else if (this->key == "down arrow")
-                kp_down_arrow();
+                key_down_arrow();
             else if (this->key == "Home")
-                kp_home();
+                key_home();
             else if (this->key == "End")
-                kp_end();
+                key_end();
             else if (this->key == "Ctrl+left arrow"
                     && this->input_index > 0)
-                kp_ctrl_left_arrow();
+                key_ctrl_left_arrow();
             else if (this->key == "Ctrl+right arrow"
                     && this->input_index < this->input.size())
-                kp_ctrl_right_arrow();
+                key_ctrl_right_arrow();
         }
     }
 
@@ -190,7 +190,7 @@ namespace pizzazz {
         return {};
     }
 
-    void TextField::kp_char() {
+    void TextField::key_char() {
         if (this->input_index < this->input.size())
             this->input[this->input_index] = this->key[0];
         else {
@@ -203,7 +203,7 @@ namespace pizzazz {
         find_and_print_suggestion();
     }
 
-    void TextField::kp_backspace() {
+    void TextField::key_backspace() {
         this->input.erase(this->input_index - 1, 1);
         backspace_chars(1);
         this->current.x -= 1;
@@ -212,7 +212,7 @@ namespace pizzazz {
         find_and_print_suggestion();
     }
 
-    void TextField::kp_ctrl_backspace() {
+    void TextField::key_ctrl_backspace() {
         int s = find_previous_space();
         int i = int(this->input_index);
         int diff = i - s;
@@ -224,14 +224,14 @@ namespace pizzazz {
         find_and_print_suggestion();
     }
 
-    void TextField::kp_delete() {
+    void TextField::key_delete() {
         delete_chars(1);
         this->input_end.x -= 1;
         this->input.erase(this->input_index, 1);
         find_and_print_suggestion();
     }
 
-    void TextField::kp_ctrl_delete() {
+    void TextField::key_ctrl_delete() {
         int s = find_next_space();
         int i = int(this->input_index);
         int diff = s - i;
@@ -241,46 +241,46 @@ namespace pizzazz {
         find_and_print_suggestion();
     }
 
-    void TextField::kp_left_arrow() {
+    void TextField::key_left_arrow() {
         this->current.x -= 1;
         this->input_index -= 1;
         set_cursor_coords(this->current);
     }
 
-    void TextField::kp_right_arrow() {
+    void TextField::key_right_arrow() {
         this->current.x += 1;
         this->input_index += 1;
         set_cursor_coords(this->current);
     }
 
-    void TextField::kp_up_arrow() {
+    void TextField::key_up_arrow() {
         // TODO
     }
 
-    void TextField::kp_down_arrow() {
+    void TextField::key_down_arrow() {
         // TODO
     }
 
-    void TextField::kp_home() {
+    void TextField::key_home() {
         this->current = this->start;
         this->input_index = 0;
         set_cursor_coords(this->current);
     }
 
-    void TextField::kp_end() {
+    void TextField::key_end() {
         this->current = this->input_end;
         this->input_index = this->input.size();
         set_cursor_coords(this->current);
     }
 
-    void TextField::kp_ctrl_left_arrow() {
+    void TextField::key_ctrl_left_arrow() {
         int i = find_previous_space();
         this->current.x -= int(this->input_index) - i;
         this->input_index = i;
         set_cursor_coords(this->current);
     }
 
-    void TextField::kp_ctrl_right_arrow() {
+    void TextField::key_ctrl_right_arrow() {
         int i = find_next_space();
         this->current.x += i - int(this->input_index);
         this->input_index = i;

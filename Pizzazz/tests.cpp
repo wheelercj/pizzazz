@@ -8,11 +8,11 @@ using paz::CursorStyle;
 using paz::Coord;
 
 void run_tests() {
-	test_read_key();
-	test_getline_autocompleted();
-	test_getline_autocompleted_menu();
-	test_getline_autocompleted_with_empty_suggestion();
-	test_getline_autocompleted_without_input_validation();
+	test_get_key();
+	test_getline_ac();
+	test_getline_ac_menu();
+	test_getline_ac_with_empty_suggestion();
+	test_getline_ac_without_input_validation();
 	test_set_cursor_style();
 	test_set_window_title();
 	test_wide_set_window_title();
@@ -50,7 +50,7 @@ void run_tests() {
 	test_delete_lines();
 	test_alternate_screen_buffer();
 	test_sleep_();
-	test_read_key_with_cursor_movements();
+	test_get_key_with_cursor_movements();
 }
 
 void signal_callback_handler(int signal_number) {
@@ -58,49 +58,49 @@ void signal_callback_handler(int signal_number) {
 	exit(signal_number);
 }
 
-void test_read_key() {
+void test_get_key() {
 	signal(SIGINT, signal_callback_handler);
 	cout << "Press any key and its name will be shown on the next line. Press escape to stop.\n";
 	string input = "";
 	while (input != "Escape") {
-		input = paz::read_key();
+		input = paz::get_key();
 		cout << "\r                           \r" << input;
 	}
 	cout << endl;
 }
 
-void test_getline_autocompleted() {
+void test_getline_ac() {
 	cout << "Autocomplete suggestions example:\n";
 	vector<string> large_city_names = { "Ahmedabad", "Alexandria", "Atlanta", "Baghdad", "Bangalore", "Bangkok", "Barcelona", "Beijing", "Belo Horizonte", "Bogotá", "Buenos Aires", "Cairo", "Chengdu", "Chennai", "Chicago", "Chongqing", "Dalian", "Dallas", "Dar es Salaam", "Delhi", "Dhaka", "Dongguan", "Foshan", "Fukuoka", "Guadalajara", "Guangzhou", "Hangzhou", "Harbin", "Ho Chi Minh City", "Hong Kong", "Houston", "Hyderabad", "Istanbul", "Jakarta", "Jinan", "Karachi", "Khartoum", "Kinshasa", "Kolkata", "Kuala Lumpur", "Lagos", "Lahore", "Lima", "London", "Los Angeles", "Luanda", "Madrid", "Manila", "Mexico City", "Miami", "Moscow", "Mumbai", "Nagoya", "Nanjing", "New York", "Osaka", "Paris", "Philadelphia", "Pune", "Qingdao", "Rio de Janeiro", "Riyadh", "Saint Petersburg", "Santiago", "Seoul", "Shanghai", "Shenyang", "Shenzhen", "Singapore", "Surat", "Suzhou", "São Paulo", "Tehran", "Tianjin", "Tokyo", "Toronto", "Washington", "Wuhan", "Xi'an", "Yangon" };
-	string name = paz::getline_autocompleted(large_city_names, "type a large city's name");
+	string name = paz::getline_ac(large_city_names, "type a large city's name");
 	cout << "\nYou chose " << name << endl;
 }
 
-void test_getline_autocompleted_menu() {
+void test_getline_ac_menu() {
 	cout << "\nSample menu:\n"
 		" * Create\n"
 		" * Read\n"
 		" * Update\n"
 		" * Delete\n"
 		"> ";
-	string choice = paz::getline_autocompleted(
+	string choice = paz::getline_ac(
 		{ "Create", "Read", "Update", "Delete" },
 		"type an option");
 	cout << "\nYou chose " << choice << "\n\n";
 }
 
-void test_getline_autocompleted_with_empty_suggestion() {
+void test_getline_ac_with_empty_suggestion() {
 	cout << "\nEnter a month or just press enter to skip: ";
-	string month = paz::getline_autocompleted({ "", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" });
+	string month = paz::getline_ac({ "", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" });
 	if (month.empty())
 		cout << "\nYou skipped the question";
 	else
 		cout << "\nYou chose " << month;
 }
 
-void test_getline_autocompleted_without_input_validation() {
+void test_getline_ac_without_input_validation() {
 	cout << "\nEnter a color or make up your own:\n";
-	string color = paz::getline_autocompleted(
+	string color = paz::getline_ac(
 		{ "red", "orange", "yellow", "green", "blue", "purple" },
 		"type a color", false);
 	cout << "\nYou entered: " << color;
@@ -349,7 +349,7 @@ void test_kbhit__() {
 	cout << "Waiting for you to press a key.";
 	while (!paz::kbhit__());
 	cout << "\nYou pressed a key.\n";
-	string _ = paz::read_key();
+	string _ = paz::get_key();
 }
 
 void test_getch_if_kbhit() {
@@ -435,12 +435,12 @@ void test_sleep_() {
 	cout << "5 seconds have passed.\n";
 }
 
-void test_read_key_with_cursor_movements() {
+void test_get_key_with_cursor_movements() {
 	paz::pause();
 	cout << "\nTry moving the cursor with the arrow keys. Press any other key to stop.";
 	paz::set_cursor_style(CursorStyle::steady_default);
 	while (true) {
-		string input = paz::read_key();
+		string input = paz::get_key();
 		if (input == "up arrow")
 			paz::move_cursor_up();
 		else if (input == "left arrow")

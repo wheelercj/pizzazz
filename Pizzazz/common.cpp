@@ -181,7 +181,7 @@ namespace pizzazz {
         return str;
     }
 
-    std::string read_key() {
+    std::string get_key() {
         char input = getch_();
         switch (input) {
         case '\r': return "Enter";
@@ -361,9 +361,9 @@ namespace pizzazz {
         }
     }
 
-    std::string read_key_if_kbhit() {
+    std::string get_key_if_kbhit() {
         if (kbhit__())
-            return read_key();
+            return get_key();
         return "";
     }
 

@@ -4,7 +4,7 @@ Add some color, style, advanced cursor movements, autocomplete suggestions, and 
 
 This is a fully cross-platform library. See common.h and TextField.h for the list of functions and their descriptions. Take a look at tests.cpp for examples of how to use them. C++17 or newer is required; in Visual Studio, you can choose the version of C++ with project > Properties > C/C++ > Language > C++ Language Standard.
 
-Here's a simple example of one of this library's functions, getline_autocompleted, which can give autocomplete suggestions and has optional built-in input validation:
+Here's a simple example of one of this library's functions, getline_ac, which can give autocomplete suggestions (not autocorrect) and has optional built-in input validation:
 
 ```cpp
 #include "pizzazz.h"
@@ -18,7 +18,7 @@ int main() {
         " * Update\n"
         " * Delete\n"
         "> ";
-    string choice = paz::getline_autocompleted(
+    string choice = paz::getline_ac(
         { "Create", "Read", "Update", "Delete" },
         "type an option");
     cout << "\nYou chose " << choice << endl;

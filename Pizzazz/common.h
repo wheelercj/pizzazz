@@ -228,7 +228,7 @@ namespace pizzazz {
     /* Waits for and gets a keypress of input without requiring an Enter keypress.
        Some possible return values are entire words or multiple words, such as "Enter"
        or "left arrow". To see all possible return values, you can look through the
-       function definition or run the tests (the first test is for the read_key function).
+       function definition or run the tests (the first test is for the get_key function).
        Here are some potentially unexpected return values:
        Ctrl+c -> (ends the program early)
        Ctrl+2 -> (ends the program early)
@@ -236,11 +236,11 @@ namespace pizzazz {
        Ctrl+i -> "Tab"
        Ctrl+j -> "Ctrl+Enter"
        Ctrl+m -> "Enter" */
-    std::string read_key();
+    std::string get_key();
 
     /* Waits for and gets a keypress without requiring an Enter keypress only if there is input.
        Returns an empty string if there is no input. */
-    std::string read_key_if_kbhit();
+    std::string get_key_if_kbhit();
 
     /* Waits for and gets a character input without requiring an Enter keypress.
        See a list of many possible return values here: https://gist.github.com/wheelercj/3e6dd4f9c8b267145cbd746d8daccf80
