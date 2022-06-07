@@ -181,7 +181,9 @@ namespace pizzazz {
         return str;
     }
 
-    std::string get_key() {
+    std::string get_key(bool wait) {
+        if (!wait and !kbhit__())
+            return "";
         char input = getch_();
         switch (input) {
         case '\r': return "Enter";
@@ -361,12 +363,6 @@ namespace pizzazz {
         }
     }
 
-    std::string get_key_if_kbhit() {
-        if (kbhit__())
-            return get_key();
-        return "";
-    }
-
     char getch_() {
 #ifdef _WIN32
         char input = _getch();
@@ -419,12 +415,6 @@ namespace pizzazz {
         tcflush(0, TCIFLUSH);
         return hit;
 #endif
-    }
-
-    char getch_if_kbhit() {
-        if (kbhit__())
-            return getch_();
-        return 0;
     }
 
     void pause() {

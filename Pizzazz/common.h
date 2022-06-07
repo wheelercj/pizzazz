@@ -225,7 +225,10 @@ namespace pizzazz {
     /* Makes an entire string lowercase. */
     std::string to_lower(std::string str);
 
-    /* Waits for and gets a keypress of input without requiring an Enter keypress.
+    /* Gets a keypress of input without requiring an Enter keypress.
+       Optional parameters:
+       * whether to wait for the keypress.
+       
        Some possible return values are entire words or multiple words, such as "Enter"
        or "left arrow". To see all possible return values, you can look through the
        function definition or run the tests (the first test is for the get_key function).
@@ -236,11 +239,7 @@ namespace pizzazz {
        Ctrl+i -> "Tab"
        Ctrl+j -> "Ctrl+Enter"
        Ctrl+m -> "Enter" */
-    std::string get_key();
-
-    /* Waits for and gets a keypress without requiring an Enter keypress only if there is input.
-       Returns an empty string if there is no input. */
-    std::string get_key_if_kbhit();
+    std::string get_key(bool = true);
 
     /* Waits for and gets a character input without requiring an Enter keypress.
        See a list of many possible return values here: https://gist.github.com/wheelercj/3e6dd4f9c8b267145cbd746d8daccf80
@@ -251,10 +250,6 @@ namespace pizzazz {
        Ignores modifier keys.
        Cross-platform, unlike _kbhit from conio.h. */
     bool kbhit__();
-
-    /* Gets a character input without requiring an Enter keypress only if there is input.
-       Returns 0 if there is no input. */
-    char getch_if_kbhit();
 
     /* Pauses the program until the user presses a key.
        Modifier keys are ignored. */

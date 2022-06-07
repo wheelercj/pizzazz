@@ -9,6 +9,7 @@ using paz::Coord;
 
 void run_tests() {
 	test_get_key();
+	test_get_key_without_waiting();
 	test_getline_ac();
 	test_getline_ac_menu();
 	test_getline_ac_with_empty_suggestion();
@@ -67,6 +68,20 @@ void test_get_key() {
 		cout << "\r                           \r" << input;
 	}
 	cout << endl;
+}
+
+void test_get_key_without_waiting() {
+	paz::set_cursor_style(CursorStyle::hidden);
+	string input;
+	for (int i = 0; "yes"; i++) {
+		cout << "\r(" << i << ") Waiting for you to press a key without blocking.";
+		input = paz::get_key(false);
+		if (input.size())
+			break;
+		paz::sleep_(1000);
+	}
+	paz::set_cursor_style(CursorStyle::not_hidden);
+	cout << "\nYou pressed " << input << endl;
 }
 
 void test_getline_ac() {
@@ -354,10 +369,11 @@ void test_kbhit__() {
 
 void test_getch_if_kbhit() {
 	paz::set_cursor_style(CursorStyle::hidden);
-	char input;
+	char input = 0;
 	for (int i = 0; "yes"; i++) {
 		cout << "\r(" << i << ") Waiting for you to press a key without blocking.";
-		input = paz::getch_if_kbhit();
+		if (paz::kbhit__())
+		input = paz::getch_();
 		if (input != 0)
 			break;
 		paz::sleep_(1000);

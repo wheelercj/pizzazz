@@ -1,6 +1,7 @@
 void run_tests();
 void signal_callback_handler(int signal_number);
 void test_get_key();
+void test_get_key_without_waiting();
 void test_getline_ac();
 void test_getline_ac_menu();
 void test_getline_ac_with_empty_suggestion();
