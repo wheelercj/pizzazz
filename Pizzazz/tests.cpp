@@ -63,7 +63,7 @@ void test_get_key() {
 	signal(SIGINT, signal_callback_handler);
 	cout << "Press any key and its name will be shown on the next line. Press escape to stop.\n";
 	string input = "";
-	while (input != "Escape") {
+	while (input != "escape") {
 		input = paz::get_key();
 		cout << "\r                           \r" << input;
 	}

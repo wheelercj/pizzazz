@@ -30,30 +30,30 @@ namespace pizzazz {
         std::optional<std::string> result;
         while (true) {
             this->key = get_key();
-            if (this->key == "Enter") {
+            if (this->key == "enter") {
                 result = kp_enter();
                 if (result && (result->size() || !must_use_suggestion || is_suggestion(*result)))
                     return *result;
             }
-            else if (this->key == "Tab") {
+            else if (this->key == "tab") {
                 result = kp_tab();
                 if (result && (result->size() || is_suggestion(*result)))
                     return *result;
             }
             else if (this->key.size() == 1)
                 key_char();
-            else if (this->key == "Backspace"
+            else if (this->key == "backspace"
                     && this->current.x > this->start.x
                     && this->input.size())
                 key_backspace();
-            else if (this->key == "Ctrl+Backspace"
+            else if (this->key == "ctrl+backspace"
                     && this->current.x > this->start.x
                     && this->input.size())
                 key_ctrl_backspace();
-            else if (this->key == "Delete"
+            else if (this->key == "delete"
                     && this->current.x < this->input_end.x)
                 key_delete();
-            else if (this->key == "Ctrl+Delete"
+            else if (this->key == "ctrl+delete"
                     && this->current.x < this->input_end.x)
                 key_ctrl_delete();
             else if (this->key == "left arrow"
@@ -66,14 +66,14 @@ namespace pizzazz {
                 key_up_arrow();
             else if (this->key == "down arrow")
                 key_down_arrow();
-            else if (this->key == "Home")
+            else if (this->key == "home")
                 key_home();
-            else if (this->key == "End")
+            else if (this->key == "end")
                 key_end();
-            else if (this->key == "Ctrl+left arrow"
+            else if (this->key == "ctrl+left arrow"
                     && this->input_index > 0)
                 key_ctrl_left_arrow();
-            else if (this->key == "Ctrl+right arrow"
+            else if (this->key == "ctrl+right arrow"
                     && this->input_index < this->input.size())
                 key_ctrl_right_arrow();
         }
