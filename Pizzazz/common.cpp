@@ -248,7 +248,8 @@ namespace pizzazz {
             case '‹': return "alt+f11";
             case 'Œ': return "alt+f12";
             default:
-                throw std::exception("Key not recognized.");
+                std::cerr << "Key not recognized." << std::endl;
+                return "";
             }
         case '\0':
             if (!kbhit__())
@@ -354,7 +355,8 @@ namespace pizzazz {
             case 'p': return "alt+f9";
             case 'q': return "alt+f10";
             default:
-                throw std::exception("Key not recognized.");
+                std::cerr << "Key not recognized." << std::endl;
+                return "";
             }
         default:
             std::string result;
