@@ -6,8 +6,9 @@ namespace pizzazz {
             const std::vector<std::string>& suggestions,
             std::string default_message,
             bool must_use_suggestion,
-            bool case_sensitive) {
-        TextField tf(suggestions, default_message, must_use_suggestion, case_sensitive);
+            bool case_sensitive,
+            bool show_suggestions) {
+        TextField tf(suggestions, default_message, must_use_suggestion, case_sensitive, show_suggestions);
         return tf.getline_ac();
     }
 
@@ -15,11 +16,13 @@ namespace pizzazz {
             const std::vector<std::string>& suggestions,
             std::string default_message,
             bool must_use_suggestion,
-            bool case_sensitive) {
+            bool case_sensitive,
+            bool show_suggestions) {
         this->suggestions = suggestions;
         this->default_message = default_message;
         this->must_use_suggestion = must_use_suggestion;
         this->case_sensitive = case_sensitive;
+        this->show_suggestions = show_suggestions;
         if (default_message.size()) {
             find_and_print_suggestion();
             this->latest_suggestion = default_message;
@@ -82,12 +85,13 @@ namespace pizzazz {
     void TextField::find_and_print_suggestion() {
         clear_suggestion();
         if (this->input.empty()) {
-            if (this->default_message.size())
+            if (show_suggestions && this->default_message.size())
                 print_suggestion(this->default_message);
             return;
         }
         this->latest_suggestion = find_suggestion();
-        print_suggestion(this->latest_suggestion);
+        if (show_suggestions)
+            print_suggestion(this->latest_suggestion);
         set_cursor_coords(this->current);
     }
 

@@ -10,16 +10,18 @@ namespace pizzazz {
        Press Tab to accept a suggestion. Optional parameters:
        * a default message to show
        * whether to require choosing a suggestion
-       * whether to require case sensitivity */
+       * whether to require case sensitivity
+       * whether to show suggestions */
     std::string getline_ac(
         const std::vector<std::string>& suggestions,
         std::string = "",
         bool = true,
-        bool = false);
+        bool = false,
+        bool = true);
 
     class TextField {
     public:
-        TextField(const std::vector<std::string>& suggestions, std::string default_message, bool must_use_suggestion, bool case_sensitive);
+        TextField(const std::vector<std::string>& suggestions, std::string default_message, bool must_use_suggestion, bool case_sensitive, bool show_suggestions);
         std::string getline_ac();
     private:
         std::string key = "";
@@ -34,6 +36,7 @@ namespace pizzazz {
         std::string default_message;
         bool must_use_suggestion;
         bool case_sensitive;
+        bool show_suggestions;
 
         void find_and_print_suggestion();
         std::string find_suggestion();

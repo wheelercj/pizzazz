@@ -1,6 +1,7 @@
 ﻿#include "pizzazz.h"
 #include "tests.h"
 #include <signal.h>
+#include <fstream>
 using namespace std;
 namespace paz = pizzazz;  // shorter alias for easier use
 using paz::Style;
@@ -12,8 +13,10 @@ void run_tests() {
 	test_get_key_without_waiting();
 	test_getline_ac();
 	test_getline_ac_menu();
+	test_getline_ac_numbered_menu();
 	test_getline_ac_with_empty_suggestion();
 	test_getline_ac_without_input_validation();
+	test_getline_ac_without_showing_suggestions();
 	test_set_cursor_style();
 	test_set_window_title();
 	test_wide_set_window_title();
@@ -92,16 +95,42 @@ void test_getline_ac() {
 }
 
 void test_getline_ac_menu() {
-	cout << "\nSample menu:\n"
-		" * Create\n"
-		" * Read\n"
-		" * Update\n"
-		" * Delete\n"
-		"> ";
+	cout << "\nSample menu:"
+		"\n * Create"
+		"\n * Read"
+		"\n * Update"
+		"\n * Delete"
+		"\n> ";
 	string choice = paz::getline_ac(
 		{ "Create", "Read", "Update", "Delete" },
 		"type an option");
 	cout << "\nYou chose " << choice << "\n\n";
+}
+
+void test_getline_ac_numbered_menu() {
+	cout << "\nSample menu:"
+		"\n 1. New"
+		"\n 2. View"
+		"\n 3. Edit"
+		"\n 4. Remove"
+		"\n> ";
+	string choice = paz::getline_ac({ "1", "2", "3", "4" });
+	cout << "\nYou chose ";
+	switch (choice[0]) {
+	case '1':
+		cout << "New";
+		break;
+	case '2':
+		cout << "View";
+		break;
+	case '3':
+		cout << "Edit";
+		break;
+	case '4':
+		cout << "Delete";
+		break;
+	}
+	cout << "\n\n";
 }
 
 void test_getline_ac_with_empty_suggestion() {
@@ -119,6 +148,29 @@ void test_getline_ac_without_input_validation() {
 		{ "red", "orange", "yellow", "green", "blue", "purple" },
 		"type a color", false);
 	cout << "\nYou entered: " << color;
+}
+
+void test_getline_ac_without_showing_suggestions() {
+	ifstream file("dictionary.txt");
+	if (!file)
+		throw runtime_error("Could not load dictionary.txt");
+	vector<string> words;
+	string word;
+	cout << "\nLoading dictionary.txt";
+	while (!file.eof())
+	{
+		file >> word;
+		if (word.empty())
+			throw runtime_error("Not loading words correctly.");
+		words.push_back(word);
+	}
+	cout << "\nTry typing a few letters and pressing tab. Enter stop to stop.\n";
+	string input = "";
+	while (input != "stop")
+	{
+		input = paz::getline_ac(words, "", true, false, false);
+		cout << " ";
+	}
 }
 
 void test_set_cursor_style() {
@@ -373,7 +425,7 @@ void test_getch_if_kbhit() {
 	for (int i = 0; "yes"; i++) {
 		cout << "\r(" << i << ") Waiting for you to press a key without blocking.";
 		if (paz::kbhit__())
-		input = paz::getch_();
+			input = paz::getch_();
 		if (input != 0)
 			break;
 		paz::sleep_(1000);
