@@ -5,9 +5,10 @@ namespace pizzazz {
     std::string getline_ac(
             const std::vector<std::string>& suggestions,
             std::string default_message,
-            bool must_use_suggestion,
-            bool case_sensitive,
-            bool show_suggestions) {
+            opt options) {
+        bool must_use_suggestion = !(int(options) & int(opt::no_validation));
+        bool case_sensitive = int(options) & int(opt::case_sensitive);
+        bool show_suggestions = !(int(options) & int(opt::hide_suggestions));
         TextField tf(suggestions, default_message, must_use_suggestion, case_sensitive, show_suggestions);
         return tf.getline_ac();
     }
@@ -34,12 +35,12 @@ namespace pizzazz {
         while (true) {
             this->key = get_key();
             if (this->key == "enter") {
-                result = kp_enter();
+                result = key_enter();
                 if (result && (result->size() || !must_use_suggestion || is_suggestion(*result)))
                     return *result;
             }
             else if (this->key == "tab") {
-                result = kp_tab();
+                result = key_tab();
                 if (result && (result->size() || is_suggestion(*result)))
                     return *result;
             }
@@ -172,7 +173,7 @@ namespace pizzazz {
         return i;
     }
 
-    std::optional<std::string> TextField::kp_enter() {
+    std::optional<std::string> TextField::key_enter() {
         if (!this->must_use_suggestion) {
             clear_suggestion();
             return this->input;
@@ -183,7 +184,7 @@ namespace pizzazz {
         return {};
     }
 
-    std::optional<std::string> TextField::kp_tab() {
+    std::optional<std::string> TextField::key_tab() {
         if (is_suggestion(this->input))
             return this->input;
         if (is_suggestion(this->latest_suggestion)) {

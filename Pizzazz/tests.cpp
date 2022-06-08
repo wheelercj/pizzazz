@@ -77,7 +77,7 @@ void test_get_key_without_waiting() {
 	paz::set_cursor_style(CursorStyle::hidden);
 	string input;
 	for (int i = 0; "yes"; i++) {
-		cout << "\r(" << i << ") Waiting for you to press a key without blocking.";
+		cout << "\r(" << i << ") Waiting for you to press a key without completely blocking.";
 		input = paz::get_key(false);
 		if (input.size())
 			break;
@@ -146,7 +146,7 @@ void test_getline_ac_without_input_validation() {
 	cout << "\nEnter a color or make up your own:\n";
 	string color = paz::getline_ac(
 		{ "red", "orange", "yellow", "green", "blue", "purple" },
-		"type a color", false);
+		"type a color", paz::opt::no_validation);
 	cout << "\nYou entered: " << color;
 }
 
@@ -168,7 +168,7 @@ void test_getline_ac_without_showing_suggestions() {
 	string input = "";
 	while (input != "stop")
 	{
-		input = paz::getline_ac(words, "", true, false, false);
+		input = paz::getline_ac(words, "", paz::opt::hide_suggestions);
 		cout << " ";
 	}
 }

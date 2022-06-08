@@ -6,18 +6,25 @@
 
 namespace pizzazz {
 
+    enum class opt {
+        none = 0x00,
+        no_validation = 0x01,
+        case_sensitive = 0x02,
+        hide_suggestions = 0x04
+    };
+
     /* Gets a line of input while showing autocomplete suggestions (not autocorrect).
-       Press Tab to accept a suggestion. Optional parameters:
+       Press tab to accept a suggestion.
+       Optional arguments:
        * a default message to show
-       * whether to require choosing a suggestion
-       * whether to require case sensitivity
-       * whether to show suggestions */
+       * flags for choosing options that can be combined with the bitwise OR operator (|):
+            * opt::no_validation - don't require using a suggestion
+            * opt::case_sensitive - require case to match that of suggestions for suggestions to match
+            * opt::hide_suggestions - hide suggestions */
     std::string getline_ac(
         const std::vector<std::string>& suggestions,
         std::string = "",
-        bool = true,
-        bool = false,
-        bool = true);
+        opt = opt::none);
 
     class TextField {
     public:
@@ -46,8 +53,8 @@ namespace pizzazz {
         void print_suggestion(std::string suggestion);
         int find_previous_space();
         int find_next_space();
-        std::optional<std::string> kp_enter();
-        std::optional<std::string> kp_tab();
+        std::optional<std::string> key_enter();
+        std::optional<std::string> key_tab();
         void key_char();
         void key_backspace();
         void key_ctrl_backspace();
