@@ -91,12 +91,12 @@ namespace pizzazz {
             return;
         }
         this->latest_suggestion = find_suggestion();
-        if (show_suggestions)
-            print_suggestion(this->latest_suggestion);
+        if (show_suggestions && this->latest_suggestion)
+            print_suggestion(*this->latest_suggestion);
         set_cursor_coords(this->current);
     }
 
-    std::string TextField::find_suggestion() {
+    std::optional<std::string> TextField::find_suggestion() {
         for (auto it = this->suggestions.begin(); it != this->suggestions.end(); it++) {
             std::string suggestion = *it;
             std::string lc_suggestion = suggestion;
@@ -108,7 +108,7 @@ namespace pizzazz {
             if (lc_suggestion.find(lc_str) == 0)
                 return suggestion;
         }
-        return "";
+        return {};
     }
 
     /* This function changes the capitalization of the parameter to match the
@@ -134,7 +134,7 @@ namespace pizzazz {
         set_cursor_coords(this->input_end);
         delete_chars(this->suggestion_end.x - this->input_end.x);
         this->suggestion_end = this->input_end;
-        this->latest_suggestion = "";
+        this->latest_suggestion = {};
     }
 
     void TextField::red_flash_text() {
@@ -187,10 +187,10 @@ namespace pizzazz {
     std::optional<std::string> TextField::key_tab() {
         if (is_suggestion(this->input))
             return this->input;
-        if (is_suggestion(this->latest_suggestion)) {
+        if (this->latest_suggestion && is_suggestion(*this->latest_suggestion)) {
             set_cursor_coords(this->start);
-            std::cout << this->latest_suggestion;
-            return this->latest_suggestion;
+            std::cout << *this->latest_suggestion;
+            return *this->latest_suggestion;
         }
         return {};
     }

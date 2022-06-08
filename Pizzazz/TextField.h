@@ -34,7 +34,7 @@ namespace pizzazz {
         std::string key = "";
         std::string input = "";
         size_t input_index = 0;
-        std::string latest_suggestion = "";
+        std::optional<std::string> latest_suggestion;
         Coord start = get_cursor_coords();
         Coord current = start;
         Coord input_end = current;
@@ -46,7 +46,7 @@ namespace pizzazz {
         bool show_suggestions;
 
         void find_and_print_suggestion();
-        std::string find_suggestion();
+        std::optional<std::string> find_suggestion();
         bool is_suggestion(std::string& str);
         void clear_suggestion();
         void red_flash_text();
