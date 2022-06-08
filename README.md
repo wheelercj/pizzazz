@@ -12,18 +12,18 @@ using namespace std;
 namespace paz = pizzazz;  // shorter alias for easier use
 
 int main() {
-    cout << "\nSample menu:\n"
-        " * Create\n"
-        " * Read\n"
-        " * Update\n"
-        " * Delete\n"
-        "> ";
+    cout << "\n  Sample menu:\n"
+        "   * Create\n"
+        "   * Read\n"
+        "   * Update\n"
+        "   * Delete\n"
+        "  > ";
     string choice = paz::getline_ac(
         { "Create", "Read", "Update", "Delete" },
         "type an option");
-    cout << "\nYou chose " << choice << endl;
+    cout << "\n  You chose " << choice << endl;
     return 0;
 }
 ```
 
-![](docs/getline_autocompleted_demo.gif)
+![](https://media.giphy.com/media/Rqoco5DR2a2AjDAqtX/giphy.gif)
