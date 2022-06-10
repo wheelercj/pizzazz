@@ -69,6 +69,16 @@ namespace tests
 			assert_equal(4, v.size());
 		}
 
+		TEST_METHOD(test_join)
+		{
+			assert_equal("1, 2, 3", paz::join({ "1", "2", "3" }, ", "));
+		}
+
+		TEST_METHOD(test_join_on_empty_string)
+		{
+			assert_equal("123", paz::join({ "1", "2", "3" }));
+		}
+
 		TEST_METHOD(test_strip)
 		{
 			assert_equal("e", paz::strip("abc", "baceabca"));
@@ -82,6 +92,36 @@ namespace tests
 		TEST_METHOD(test_rstrip)
 		{
 			assert_equal("bace", paz::rstrip("abc", "baceabca"));
+		}
+
+		TEST_METHOD(test_startswith)
+		{
+			assert_equal(true, paz::startswith("abc", "a"));
+		}
+
+		TEST_METHOD(test_startswith_multiple_characters)
+		{
+			assert_equal(true, paz::startswith("abc", "ab"));
+		}
+
+		TEST_METHOD(test_not_startswith)
+		{
+			assert_equal(false, paz::startswith("abc", "d"));
+		}
+
+		TEST_METHOD(test_endswith)
+		{
+			assert_equal(true, paz::endswith("abc", "c"));
+		}
+
+		TEST_METHOD(test_endswith_multiple_characters)
+		{
+			assert_equal(true, paz::endswith("abc", "bc"));
+		}
+
+		TEST_METHOD(test_not_endswith)
+		{
+			assert_equal(false, paz::endswith("abc", "d"));
 		}
 
 	};

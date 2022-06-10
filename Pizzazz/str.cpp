@@ -25,6 +25,18 @@ namespace pizzazz
 		return result;
 	}
 
+	std::string join(std::vector<std::string> strings, std::string join_by)
+	{
+		std::string result;
+		for (int i = 0; i < strings.size(); i++)
+		{
+			result.append(strings[i]);
+			if (i < strings.size() - 1)
+				result.append(join_by);
+		}
+		return result;
+	}
+
 	std::string strip(std::string to_remove, std::string str)
 	{
 		return lstrip(to_remove, rstrip(to_remove, str));
@@ -70,6 +82,31 @@ namespace pizzazz
 			return str;
 		z += 2;
 		return str.erase(z);
+	}
+
+	bool startswith(std::string str, std::string prefix)
+	{
+		if (prefix.size() > str.size())
+			return false;
+		for (size_t i = 0; i < prefix.size(); i++)
+		{
+			if (prefix[i] != str[i])
+				return false;
+		}
+		return true;
+	}
+
+	bool endswith(std::string str, std::string suffix)
+	{
+		if (suffix.size() > str.size())
+			return false;
+		for (size_t i = 0; i < suffix.size(); i++)
+		{
+			size_t j = str.size() - suffix.size() + i;
+			if (suffix[i] != str[j])
+				return false;
+		}
+		return true;
 	}
 
 }
