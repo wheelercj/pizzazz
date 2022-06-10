@@ -3,3 +3,4 @@
 #pragma once
 #include "common.h"
 #include "TextField.h"
+#include "str.h"
