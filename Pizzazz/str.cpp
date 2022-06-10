@@ -1,10 +1,13 @@
 #include "str.h"
+#include <stdexcept>
 
 namespace pizzazz
 {
 
 	std::vector<std::string> split(std::string str, std::string split_by)
 	{
+		if (split_by.empty())
+			throw std::invalid_argument("split_by must not be empty.");
 		std::vector<std::string> result;
 		size_t prev = 0;
 		size_t i = 0;

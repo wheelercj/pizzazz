@@ -4,7 +4,8 @@
 
 namespace pizzazz
 {
-	/* Splits a string by a substring. */
+	/* Splits a string by a substring.
+	   Throws std::invalid_argument if split_by is an empty string. */
 	std::vector<std::string> split(std::string str, std::string split_by = " ");
 
 	/* Joins strings, optionally putting another string between them. */

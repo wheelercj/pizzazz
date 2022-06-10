@@ -52,11 +52,17 @@ namespace tests
 			assert_equal(3, v.size());
 		}
 
-		TEST_METHOD(test_split_with_no_split)
+		TEST_METHOD(test_split_with_no_matches)
 		{
 			vector<string> v = paz::split("sldkfj", "3");
 			assert_equal("sldkfj", v[0]);
 			assert_equal(1, v.size());
+		}
+
+		TEST_METHOD(test_split_with_empty_string)
+		{
+			auto func = [] {paz::split("sldkfj", ""); };
+			Assert::ExpectException<invalid_argument>(func);
 		}
 
 		TEST_METHOD(test_split_by_multiple_characters)
