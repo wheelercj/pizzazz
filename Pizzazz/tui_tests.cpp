@@ -1,5 +1,5 @@
 ﻿#include "pizzazz.h"
-#include "tests.h"
+#include "tui_tests.h"
 #include <signal.h>
 #include <fstream>
 using namespace std;
@@ -8,7 +8,7 @@ using paz::Style;
 using paz::CursorStyle;
 using paz::Coord;
 
-void run_tests() {
+void run_tui_tests() {
 	test_get_key();
 	test_get_key_without_waiting();
 	test_getline_ac();
