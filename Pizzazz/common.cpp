@@ -2,9 +2,11 @@
 #define ESC "\x1b"
 #define LESC L"\x1b"
 
-namespace pizzazz {
+namespace pizzazz
+{
 
-    void set_cursor_style(CursorStyle style) {
+    void set_cursor_style(CursorStyle style)
+    {
         if (style == CursorStyle::not_hidden)
             std::cout << ESC "[?25h";
         else if (style == CursorStyle::hidden)
@@ -17,15 +19,18 @@ namespace pizzazz {
             std::cout << "\x1b[" << int(style) << " q";
     }
 
-    void set_window_title(std::string title) {
+    void set_window_title(std::string title)
+    {
         std::cout << ESC "]0;" + title + ESC "[";
     }
 
-    void set_window_title(std::wstring title) {
+    void set_window_title(std::wstring title)
+    {
         wprint(LESC "]0;" + title + LESC "[");
     }
 
-    void wprint(std::wstring message) {
+    void wprint(std::wstring message)
+    {
 #ifdef _WIN32
         fflush(stdout);
         int previous_mode = _setmode(_fileno(stdout), _O_U16TEXT);
@@ -36,88 +41,104 @@ namespace pizzazz {
 #endif
     }
 
-    void print_styled(std::string message, std::vector<Style> styles) {
+    void print_styled(std::string message, std::vector<Style> styles)
+    {
         set_style(styles);
         std::cout << message;
         reset_style();
     }
 
-    void print_styled(std::wstring message, std::vector<Style> styles) {
+    void print_styled(std::wstring message, std::vector<Style> styles)
+    {
         set_style(styles);
         wprint(message);
         reset_style();
     }
 
-    void set_style(std::vector<Style> styles) {
+    void set_style(std::vector<Style> styles)
+    {
         for (Style style : styles)
             std::cout << ESC "[" << int(style) << "m";
     }
 
-    void reset_style() {
+    void reset_style()
+    {
         std::cout << "\x1b[0m";
     }
 
-    void print_rgb(unsigned red, unsigned green, unsigned blue, std::string message) {
+    void print_rgb(unsigned red, unsigned green, unsigned blue, std::string message)
+    {
         set_rgb(red, green, blue);
         std::cout << message;
         reset_style();
     }
 
-    void print_rgb(unsigned red, unsigned green, unsigned blue, std::wstring message) {
+    void print_rgb(unsigned red, unsigned green, unsigned blue, std::wstring message)
+    {
         set_rgb(red, green, blue);
         wprint(message);
         reset_style();
     }
 
-    void print_bg_rgb(unsigned red, unsigned green, unsigned blue, std::string message) {
+    void print_bg_rgb(unsigned red, unsigned green, unsigned blue, std::string message)
+    {
         set_bg_rgb(red, green, blue);
         std::cout << message;
         reset_style();
     }
 
-    void print_bg_rgb(unsigned red, unsigned green, unsigned blue, std::wstring message) {
+    void print_bg_rgb(unsigned red, unsigned green, unsigned blue, std::wstring message)
+    {
         set_bg_rgb(red, green, blue);
         wprint(message);
         reset_style();
     }
 
-    void set_rgb(unsigned red, unsigned green, unsigned blue) {
+    void set_rgb(unsigned red, unsigned green, unsigned blue)
+    {
         if (red > 255 || green > 255 || blue > 255)
             throw std::invalid_argument("Error: the values for the colors must be within the range [0,255].");
         std::cout << ESC "[38;2;" << red << ";" << green << ";" << blue << "m";
     }
 
-    void set_bg_rgb(unsigned red, unsigned green, unsigned blue) {
+    void set_bg_rgb(unsigned red, unsigned green, unsigned blue)
+    {
         if (red > 255 || green > 255 || blue > 255)
             throw std::invalid_argument("Error: the values for the colors must be within the range [0,255].");
         std::cout << ESC "[48;2;" << red << ";" << green << ";" << blue << "m";
     }
 
-    void print_at(unsigned x, unsigned y, std::string message) {
+    void print_at(unsigned x, unsigned y, std::string message)
+    {
         set_cursor_coords(x, y);
         std::cout << message;
     }
 
-    void print_at(unsigned x, unsigned y, std::wstring message) {
+    void print_at(unsigned x, unsigned y, std::wstring message)
+    {
         set_cursor_coords(x, y);
         wprint(message);
     }
 
-    void set_cursor_coords(unsigned x, unsigned y) {
+    void set_cursor_coords(unsigned x, unsigned y)
+    {
         std::cout << ESC "[" << y << ";" << x << "H";
     }
 
-    void set_cursor_coords(Coord coord) {
+    void set_cursor_coords(Coord coord)
+    {
         std::cout << ESC "[" << coord.y << ";" << coord.x << "H";
     }
 
-    Coord get_cursor_coords() {
+    Coord get_cursor_coords()
+    {
         std::cout << ESC "[6n";  // request coordinates in the format \x1b[y;xR
         char input;
         input = getch_();  // \x1b
         input = getch_();  // [
         std::string number;
-        while (input != ';') {
+        while (input != ';')
+        {
             input = getch_();
             if (input >= '0' && input <= '9')
                 number.push_back(input);
@@ -125,7 +146,8 @@ namespace pizzazz {
         Coord coord;
         coord.y = std::stoi(number);
         number = "";
-        while (input != 'R') {
+        while (input != 'R')
+        {
             input = getch_();
             if (input >= '0' && input <= '9')
                 number.push_back(input);
@@ -134,31 +156,38 @@ namespace pizzazz {
         return coord;
     }
 
-    void save_cursor_location() {
+    void save_cursor_location()
+    {
         std::cout << ESC "[s";
     }
 
-    void restore_cursor_location() {
+    void restore_cursor_location()
+    {
         std::cout << ESC "[u";
     }
 
-    void move_cursor_up(size_t lines) {
+    void move_cursor_up(size_t lines)
+    {
         std::cout << ESC "[" << lines << "A";
     }
 
-    void move_cursor_down(size_t lines) {
+    void move_cursor_down(size_t lines)
+    {
         std::cout << ESC "[" << lines << "B";
     }
 
-    void move_cursor_right(size_t columns) {
+    void move_cursor_right(size_t columns)
+    {
         std::cout << ESC "[" << columns << "C";
     }
 
-    void move_cursor_left(size_t columns) {
+    void move_cursor_left(size_t columns)
+    {
         std::cout << ESC "[" << columns << "D";
     }
 
-    Coord get_window_size() {
+    Coord get_window_size()
+    {
 #ifdef _WIN32
         HANDLE hStdIn = GetStdHandle(STD_OUTPUT_HANDLE);
         if (hStdIn == INVALID_HANDLE_VALUE)
@@ -175,17 +204,20 @@ namespace pizzazz {
 #endif
     }
 
-    std::string to_lower(std::string str) {
+    std::string to_lower(std::string str)
+    {
         for (char& ch : str)
             ch = tolower(ch);
         return str;
     }
 
-    std::string get_key(bool wait) {
+    std::string get_key(bool wait)
+    {
         if (!wait and !kbhit__())
             return "";
         char input = getch_();
-        switch (input) {
+        switch (input)
+        {
         case '\r': return "enter";
         case '\t': return "tab";
         case '\x1b': return "escape";
@@ -219,7 +251,8 @@ namespace pizzazz {
             if (!kbhit__())
                 return "à";
             input = getch_();
-            switch (input) {
+            switch (input)
+            {
             case 'S': return "delete";
             case 'H': return "up arrow";
             case 'P': return "down arrow";
@@ -255,7 +288,8 @@ namespace pizzazz {
             if (!kbhit__())
                 return "\0";
             input = getch_();
-            switch (input) {
+            switch (input)
+            {
             case ';': return "f1";
             case '<': return "f2";
             case '=': return "f3";
@@ -365,7 +399,8 @@ namespace pizzazz {
         }
     }
 
-    char getch_() {
+    char getch_()
+    {
 #ifdef _WIN32
         char input = _getch();
         if (input == '\x3')
@@ -386,20 +421,23 @@ namespace pizzazz {
     }
 
 #ifndef _WIN32
-    bool _POSIX_kbhit() {
+    bool _POSIX_kbhit()
+    {
         int bytes_waiting;
         ioctl(0, FIONREAD, &bytes_waiting);
         return bytes_waiting > 0;
     }
 
-    void _enable_raw_mode() {
+    void _enable_raw_mode()
+    {
         termios term;
         tcgetattr(0, &term);
         term.c_lflag &= ~(ICANON | ECHO);
         tcsetattr(0, TCSANOW, &term);
     }
 
-    void _disable_raw_mode() {
+    void _disable_raw_mode()
+    {
         termios term;
         tcgetattr(0, &term);
         term.c_lflag |= ICANON | ECHO;
@@ -407,7 +445,8 @@ namespace pizzazz {
     }
 #endif
 
-    bool kbhit__() {
+    bool kbhit__()
+    {
 #ifdef _WIN32
         return _kbhit();
 #else
@@ -419,54 +458,65 @@ namespace pizzazz {
 #endif
     }
 
-    void pause() {
+    void pause()
+    {
         char _ = getch_();
         while (kbhit__())  // some keys are multiple characters
             _ = getch_();
     }
 
-    void insert(std::string text) {
+    void insert(std::string text)
+    {
         std::cout << ESC "[" << text.size() << "@";
         std::cout << ESC "[" << text.size() << "D";
         std::cout << text;
     }
 
-    void insert(std::wstring text) {
+    void insert(std::wstring text)
+    {
         std::cout << ESC "[" << text.size() << "@";
         std::cout << ESC "[" << text.size() << "D";
         wprint(text);
     }
 
-    void delete_chars(size_t count) {
+    void delete_chars(size_t count)
+    {
         std::cout << ESC "[" << count << "P";
     }
 
-    void backspace_chars(size_t count) {
+    void backspace_chars(size_t count)
+    {
         move_cursor_left(count);
         delete_chars(count);
     }
 
-    void insert_lines(size_t count) {
+    void insert_lines(size_t count)
+    {
         std::cout << ESC "[" << count << "L";
     }
 
-    void delete_lines(size_t count) {
+    void delete_lines(size_t count)
+    {
         std::cout << ESC "[" << count << "M";
     }
 
-    void clear_screen() {
+    void clear_screen()
+    {
         std::cout << ESC "[2J";
     }
 
-    void alternate_screen_buffer() {
+    void alternate_screen_buffer()
+    {
         std::cout << ESC "[?1049h";
     }
 
-    void restore_screen_buffer() {
+    void restore_screen_buffer()
+    {
         std::cout << ESC "[?1049l";
     }
 
-    void sleep_(unsigned milliseconds) {
+    void sleep_(unsigned milliseconds)
+    {
 #ifdef _WIN32
         Sleep(milliseconds);
 #else
@@ -474,11 +524,13 @@ namespace pizzazz {
 #endif
     }
 
-    void set_window_width_to_132() {
+    void set_window_width_to_132()
+    {
         std::cout << ESC "[?3h";
     }
 
-    void set_window_width_to_80() {
+    void set_window_width_to_80()
+    {
         std::cout << ESC "[?3l";
     }
 }

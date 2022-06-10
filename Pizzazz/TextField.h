@@ -4,9 +4,11 @@
 #include <vector>
 #include <optional>  // C++17+
 
-namespace pizzazz {
+namespace pizzazz
+{
 
-    enum class opt {
+    enum class opt
+    {
         none = 0x00,
         no_validation = 0x01,
         case_sensitive = 0x02,
@@ -26,7 +28,8 @@ namespace pizzazz {
         std::string = "",
         opt = opt::none);
 
-    class TextField {
+    class TextField
+    {
     public:
         TextField(const std::vector<std::string>& suggestions, std::string default_message, bool must_use_suggestion, bool case_sensitive, bool show_suggestions);
         std::string getline_ac();

@@ -7,7 +7,8 @@ using paz::Style;
 using paz::CursorStyle;
 using paz::Coord;
 
-int main() {
+int main()
+{
 	run_tui_tests();
 	cout << endl;
 	return 0;

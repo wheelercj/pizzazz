@@ -27,23 +27,28 @@
 // https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#main
 // http://xn--rpa.cc/irl/term.html
 
-namespace pizzazz {
+namespace pizzazz
+{
 
-    struct Coord {
+    struct Coord
+    {
         int x;
         int y;
-        Coord() {
+        Coord()
+        {
             x = 0;
             y = 0;
         }
-        Coord(int new_x, int new_y) {
+        Coord(int new_x, int new_y)
+        {
             x = new_x;
             y = new_y;
         }
     };
 
     /* Values to pass to a function to control the cursor's appearance. */
-    enum class CursorStyle {
+    enum class CursorStyle
+    {
         blinking_block = 1,
         steady_block,
         blinking_underline,
@@ -58,7 +63,8 @@ namespace pizzazz {
 
     /* Values to pass to functions that control the terminal's text style.
        Some styles don't work in all terminals. */
-    enum class Style {
+    enum class Style
+    {
         reset_all,
         bold,
         dim,

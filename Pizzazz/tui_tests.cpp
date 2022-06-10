@@ -8,7 +8,8 @@ using paz::Style;
 using paz::CursorStyle;
 using paz::Coord;
 
-void run_tui_tests() {
+void run_tui_tests()
+{
 	test_get_key();
 	test_get_key_without_waiting();
 	test_getline_ac();
@@ -57,26 +58,31 @@ void run_tui_tests() {
 	test_get_key_with_cursor_movements();
 }
 
-void signal_callback_handler(int signal_number) {
+void signal_callback_handler(int signal_number)
+{
 	cout << "\r                           \rYou pressed Ctrl+c or Ctrl+2 which ends the program early.";
 	exit(signal_number);
 }
 
-void test_get_key() {
+void test_get_key()
+{
 	signal(SIGINT, signal_callback_handler);
 	cout << "Press any key and its name will be shown on the next line. Press escape to stop.\n";
 	string input = "";
-	while (input != "escape") {
+	while (input != "escape")
+	{
 		input = paz::get_key();
 		cout << "\r                           \r" << input;
 	}
 	cout << endl;
 }
 
-void test_get_key_without_waiting() {
+void test_get_key_without_waiting()
+{
 	paz::set_cursor_style(CursorStyle::hidden);
 	string input;
-	for (int i = 0; "yes"; i++) {
+	for (int i = 0; "yes"; i++)
+	{
 		cout << "\r(" << i << ") Waiting for you to press a key without completely blocking.";
 		input = paz::get_key(false);
 		if (input.size())
@@ -87,14 +93,16 @@ void test_get_key_without_waiting() {
 	cout << "\nYou pressed " << input << endl;
 }
 
-void test_getline_ac() {
+void test_getline_ac()
+{
 	cout << "Autocomplete suggestions example:\n";
 	vector<string> large_city_names = { "Ahmedabad", "Alexandria", "Atlanta", "Baghdad", "Bangalore", "Bangkok", "Barcelona", "Beijing", "Belo Horizonte", "Bogotá", "Buenos Aires", "Cairo", "Chengdu", "Chennai", "Chicago", "Chongqing", "Dalian", "Dallas", "Dar es Salaam", "Delhi", "Dhaka", "Dongguan", "Foshan", "Fukuoka", "Guadalajara", "Guangzhou", "Hangzhou", "Harbin", "Ho Chi Minh City", "Hong Kong", "Houston", "Hyderabad", "Istanbul", "Jakarta", "Jinan", "Karachi", "Khartoum", "Kinshasa", "Kolkata", "Kuala Lumpur", "Lagos", "Lahore", "Lima", "London", "Los Angeles", "Luanda", "Madrid", "Manila", "Mexico City", "Miami", "Moscow", "Mumbai", "Nagoya", "Nanjing", "New York", "Osaka", "Paris", "Philadelphia", "Pune", "Qingdao", "Rio de Janeiro", "Riyadh", "Saint Petersburg", "Santiago", "Seoul", "Shanghai", "Shenyang", "Shenzhen", "Singapore", "Surat", "Suzhou", "São Paulo", "Tehran", "Tianjin", "Tokyo", "Toronto", "Washington", "Wuhan", "Xi'an", "Yangon" };
 	string name = paz::getline_ac(large_city_names, "type a large city's name");
 	cout << "\nYou chose " << name << endl;
 }
 
-void test_getline_ac_menu() {
+void test_getline_ac_menu()
+{
 	cout << "\nSample menu:"
 		"\n * Create"
 		"\n * Read"
@@ -107,7 +115,8 @@ void test_getline_ac_menu() {
 	cout << "\nYou chose " << choice << "\n\n";
 }
 
-void test_getline_ac_numbered_menu() {
+void test_getline_ac_numbered_menu()
+{
 	cout << "\nSample menu:"
 		"\n 1. New"
 		"\n 2. View"
@@ -116,7 +125,8 @@ void test_getline_ac_numbered_menu() {
 		"\n> ";
 	string choice = paz::getline_ac({ "1", "2", "3", "4" });
 	cout << "\nYou chose ";
-	switch (choice[0]) {
+	switch (choice[0])
+	{
 	case '1':
 		cout << "New";
 		break;
@@ -133,7 +143,8 @@ void test_getline_ac_numbered_menu() {
 	cout << "\n\n";
 }
 
-void test_getline_ac_with_empty_suggestion() {
+void test_getline_ac_with_empty_suggestion()
+{
 	cout << "\nEnter a month or just press enter to skip: ";
 	string month = paz::getline_ac({ "", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" });
 	if (month.empty())
@@ -142,7 +153,8 @@ void test_getline_ac_with_empty_suggestion() {
 		cout << "\nYou chose " << month;
 }
 
-void test_getline_ac_without_input_validation() {
+void test_getline_ac_without_input_validation()
+{
 	cout << "\nEnter a color or make up your own:\n";
 	string color = paz::getline_ac(
 		{ "red", "orange", "yellow", "green", "blue", "purple" },
@@ -150,7 +162,8 @@ void test_getline_ac_without_input_validation() {
 	cout << "\nYou entered: " << color;
 }
 
-void test_getline_ac_without_showing_suggestions() {
+void test_getline_ac_without_showing_suggestions()
+{
 	ifstream file("dictionary.txt");
 	if (!file)
 		throw runtime_error("Could not load dictionary.txt");
@@ -173,7 +186,8 @@ void test_getline_ac_without_showing_suggestions() {
 	}
 }
 
-void test_set_cursor_style() {
+void test_set_cursor_style()
+{
 	cout << "\nCursor visible";
 	paz::pause();
 	paz::set_cursor_style(CursorStyle::hidden);
@@ -212,65 +226,75 @@ void test_set_cursor_style() {
 	cout << endl;
 }
 
-void test_set_window_title() {
+void test_set_window_title()
+{
 	paz::set_window_title("hey look, a custom title!");
 	cout << "Title set to \"hey look, a custom title!\" The title will only be "
 		"visible in some terminals such as Command Prompt.\n\n";
 	paz::pause();
 }
 
-void test_wide_set_window_title() {
+void test_wide_set_window_title()
+{
 	paz::set_window_title(L"a custom title with emoji! 🔥");
 	cout << "Title set to \"a custom title with emoji! (flame emoji here)\" The "
 		"title will only be visible in some terminals such as Command Prompt.\n";
 	paz::pause();
 }
 
-void test_wide_print() {
+void test_wide_print()
+{
 	paz::wprint(L"A message with emoji! ✨ The emoji will not be visible in some "
 		"terminals such as Command Prompt.\n");
 	paz::pause();
 }
 
-void test_print_styled() {
+void test_print_styled()
+{
 	paz::print_styled("This is underlined.", { Style::underlined });
 	paz::pause();
 }
 
-void test_wide_print_styled() {
+void test_wide_print_styled()
+{
 	paz::print_styled(L"\nThis text has a bright red background.", { Style::bright_bg_red });
 	paz::pause();
 }
 
-void test_print_multi_styled() {
+void test_print_multi_styled()
+{
 	paz::print_styled("\nThis is magenta with a green background and strikethrough. "
 		"The strikethrough is only visible in some terminals such as Windows Terminal.",
 		{ Style::magenta, Style::bg_green, Style::strikethrough });
 	paz::pause();
 }
 
-void test_wide_print_multi_styled() {
+void test_wide_print_multi_styled()
+{
 	paz::print_styled(L"\nThis is overlined, double underlined, and italic with an emoji: ✅. "
 		"These are only visible in some terminals such as Windows Terminal.\n",
 		{ Style::double_underlined, Style::overlined, Style::italic });
 	paz::pause();
 }
 
-void test_set_style() {
+void test_set_style()
+{
 	paz::set_style({ Style::bright_blue });
 	cout << "This is \"bright\" blue.\n\n";
 	paz::reset_style();
 	paz::pause();
 }
 
-void test_set_multi_style() {
+void test_set_multi_style()
+{
 	paz::set_style({ Style::bg_white, Style::black, Style::bold });
 	cout << "This is black and bold with a white background.\n\n";
 	paz::reset_style();
 	paz::pause();
 }
 
-void test_reset_style() {
+void test_reset_style()
+{
 	paz::set_style({ Style::red });
 	cout << "This is red.\n\n";
 	paz::reset_style();
@@ -278,52 +302,62 @@ void test_reset_style() {
 	paz::pause();
 }
 
-void test_print_rgb() {
+void test_print_rgb()
+{
 	paz::print_rgb(95, 255, 95, "This is bright green.\n");
 	paz::pause();
 }
 
-void test_print_invalid_rgb() {
+void test_print_invalid_rgb()
+{
 	cout << "Attempting to use an invalid rgb value.\n";
-	try {
+	try
+	{
 		paz::print_rgb(95, 256, 95, "This will raise an exception.");
 	}
-	catch (invalid_argument& e) {
+	catch (invalid_argument& e)
+	{
 		cout << e.what() << endl;
 	}
 }
 
-void test_wide_print_rgb() {
+void test_wide_print_rgb()
+{
 	paz::print_rgb(37, 100, 188, L"This is blue, and here's an emoji that's only visible in "
 		"some terminals like Windows Terminal: ⚓.\n");
 	paz::pause();
 }
 
-void test_print_background_rgb() {
+void test_print_background_rgb()
+{
 	paz::print_bg_rgb(242, 203, 30, "This has a yellow background.\n");
 	paz::pause();
 }
 
-void test_wide_print_background_rgb() {
+void test_wide_print_background_rgb()
+{
 	paz::print_bg_rgb(183, 84, 4, L"This has a brown/orange background, and here's an "
 		"emoji that's only visible in some terminals like Windows Terminal: ☃.\n");
 	paz::pause();
 }
 
-void test_save_cursor_coords() {
+void test_save_cursor_coords()
+{
 	cout << "Saving cursor location after this message.\n";
 	paz::save_cursor_location();
 	paz::pause();
 }
 
-void test_print_at() {
+void test_print_at()
+{
 	paz::set_style({ Style::red });
 	paz::print_at(0, 0, "This is in the top left corner of the window.");
 	paz::reset_style();
 	paz::pause();
 }
 
-void test_wide_print_at() {
+void test_wide_print_at()
+{
 	paz::set_style({ Style::bg_blue });
 	paz::print_at(10, 10, L"This starts at coordinates (10,10), and here's an emoji "
 		"that's only visible in some terminals like Windows Terminal: ☔.\n");
@@ -331,7 +365,8 @@ void test_wide_print_at() {
 	paz::pause();
 }
 
-void test_set_cursor_coordinates() {
+void test_set_cursor_coordinates()
+{
 	paz::set_style({ Style::bright_bg_magenta });
 	paz::set_cursor_coords(5, 5);
 	cout << "This starts at coordinates (5,5).\n";
@@ -339,7 +374,8 @@ void test_set_cursor_coordinates() {
 	paz::pause();
 }
 
-void test_get_cursor_location() {
+void test_get_cursor_location()
+{
 	paz::set_style({ Style::bright_bg_green });
 	Coord coords = paz::get_cursor_coords();
 	cout << "The cursor was at coordinates (" << coords.x << "," << coords.y << ") at "
@@ -348,13 +384,15 @@ void test_get_cursor_location() {
 	paz::pause();
 }
 
-void test_restore_cursor_location() {
+void test_restore_cursor_location()
+{
 	paz::restore_cursor_location();
 	paz::print_rgb(105, 127, 68, "Restored to the saved cursor location.");
 	paz::pause();
 }
 
-void test_move_cursor_up() {
+void test_move_cursor_up()
+{
 	paz::set_style({ Style::bg_magenta });
 	paz::move_cursor_up(3);
 	cout << "This is 3 lines higher than the last output.";
@@ -362,7 +400,8 @@ void test_move_cursor_up() {
 	paz::pause();
 }
 
-void test_move_cursor_down() {
+void test_move_cursor_down()
+{
 	paz::set_style({ Style::bg_magenta });
 	paz::move_cursor_down(3);
 	cout << "This is 3 lines lower than the last output.";
@@ -370,7 +409,8 @@ void test_move_cursor_down() {
 	paz::pause();
 }
 
-void test_move_cursor_right() {
+void test_move_cursor_right()
+{
 	cout << endl;
 	paz::set_style({ Style::bg_blue });
 	paz::move_cursor_right(3);
@@ -379,7 +419,8 @@ void test_move_cursor_right() {
 	paz::pause();
 }
 
-void test_move_cursor_left() {
+void test_move_cursor_left()
+{
 	paz::save_cursor_location();
 	paz::move_cursor_right(20);
 	paz::move_cursor_up(15);
@@ -395,7 +436,8 @@ void test_move_cursor_left() {
 	paz::pause();
 }
 
-void test_get_window_size() {
+void test_get_window_size()
+{
 	Coord window_size = paz::get_window_size();
 	cout << "\nThe window has a size of (" << window_size.x << "," << window_size.y << ").\n";
 	cout << "Try resizing the window now.\n";
@@ -405,24 +447,28 @@ void test_get_window_size() {
 	paz::pause();
 }
 
-void test_getch_() {
+void test_getch_()
+{
 	cout << "Waiting for you to press a key.\n";
 	char input = paz::getch_();
 	cout << "You pressed " << input << endl;
 	paz::pause();
 }
 
-void test_kbhit__() {
+void test_kbhit__()
+{
 	cout << "Waiting for you to press a key.";
 	while (!paz::kbhit__());
 	cout << "\nYou pressed a key.\n";
 	string _ = paz::get_key();
 }
 
-void test_getch_if_kbhit() {
+void test_getch_if_kbhit()
+{
 	paz::set_cursor_style(CursorStyle::hidden);
 	char input = 0;
-	for (int i = 0; "yes"; i++) {
+	for (int i = 0; "yes"; i++)
+	{
 		cout << "\r(" << i << ") Waiting for you to press a key without blocking.";
 		if (paz::kbhit__())
 			input = paz::getch_();
@@ -435,7 +481,8 @@ void test_getch_if_kbhit() {
 	paz::pause();
 }
 
-void test_insert() {
+void test_insert()
+{
 	string message = "This is printed first.";
 	cout << message;
 	paz::move_cursor_left(message.size());
@@ -443,7 +490,8 @@ void test_insert() {
 	paz::pause();
 }
 
-void test_wide_insert() {
+void test_wide_insert()
+{
 	cout << endl;
 	wstring message = L"This is also printed first.";
 	paz::wprint(message);
@@ -455,7 +503,8 @@ void test_wide_insert() {
 	paz::pause();
 }
 
-void test_delete_chars() {
+void test_delete_chars()
+{
 	cout << "\nHere is yet more text. ";
 	string message1 = "This is sentence is about to be deleted. ";
 	cout << message1;
@@ -466,7 +515,8 @@ void test_delete_chars() {
 	paz::delete_chars(message1.size());
 }
 
-void test_insert_lines() {
+void test_insert_lines()
+{
 	cout << "\n-----------\n";
 	paz::move_cursor_up();
 	paz::pause();
@@ -475,14 +525,16 @@ void test_insert_lines() {
 	paz::pause();
 }
 
-void test_delete_lines() {
+void test_delete_lines()
+{
 	cout << "This line is about to disappear.\nSo is this one.";
 	paz::pause();
 	paz::move_cursor_up(1);
 	paz::delete_lines(2);
 }
 
-void test_alternate_screen_buffer() {
+void test_alternate_screen_buffer()
+{
 	cout << "Now opening the alternate screen buffer.\n";
 	paz::pause();
 	paz::alternate_screen_buffer();
@@ -497,17 +549,20 @@ void test_alternate_screen_buffer() {
 	paz::pause();
 }
 
-void test_sleep_() {
+void test_sleep_()
+{
 	cout << "Sleeping for 5 seconds.\n";
 	paz::sleep_(5000);
 	cout << "5 seconds have passed.\n";
 }
 
-void test_get_key_with_cursor_movements() {
+void test_get_key_with_cursor_movements()
+{
 	paz::pause();
 	cout << "\nTry moving the cursor with the arrow keys. Press any other key to stop.";
 	paz::set_cursor_style(CursorStyle::steady_default);
-	while (true) {
+	while (true)
+	{
 		string input = paz::get_key();
 		if (input == "up arrow")
 			paz::move_cursor_up();
@@ -517,7 +572,8 @@ void test_get_key_with_cursor_movements() {
 			paz::move_cursor_down();
 		else if (input == "right arrow")
 			paz::move_cursor_right();
-		else {
+		else
+		{
 			paz::set_cursor_style(CursorStyle::blinking_default);
 			return;
 		}
