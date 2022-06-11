@@ -7,12 +7,19 @@ namespace pizzazz
     std::string getline_ac(
             const std::vector<std::string>& suggestions,
             std::string default_message,
-            opt options)
+            opt options,
+            int max_width)
             {
         bool must_use_suggestion = !(int(options) & int(opt::no_validation));
         bool case_sensitive = int(options) & int(opt::case_sensitive);
         bool show_suggestions = !(int(options) & int(opt::hide_suggestions));
-        TextField tf(suggestions, default_message, must_use_suggestion, case_sensitive, show_suggestions);
+        TextField tf(
+            suggestions,
+            default_message,
+            must_use_suggestion,
+            case_sensitive,
+            show_suggestions,
+            max_width);
         return tf.getline_ac();
     }
 
@@ -21,7 +28,8 @@ namespace pizzazz
             std::string default_message,
             bool must_use_suggestion,
             bool case_sensitive,
-            bool show_suggestions)
+            bool show_suggestions,
+            int max_width)
             {
         this->suggestions = suggestions;
         this->default_message = default_message;
@@ -33,6 +41,7 @@ namespace pizzazz
             find_and_print_suggestion();
             this->latest_suggestion = default_message;
         }
+        this->max_width = max_width;
     }
 
     std::string TextField::getline_ac()
@@ -55,25 +64,17 @@ namespace pizzazz
             }
             else if (this->key.size() == 1)
                 key_char();
-            else if (this->key == "backspace"
-                    && this->current.x > this->start.x
-                    && this->input.size())
+            else if (this->key == "backspace")
                 key_backspace();
-            else if (this->key == "ctrl+backspace"
-                    && this->current.x > this->start.x
-                    && this->input.size())
+            else if (this->key == "ctrl+backspace")
                 key_ctrl_backspace();
-            else if (this->key == "delete"
-                    && this->current.x < this->input_end.x)
+            else if (this->key == "delete")
                 key_delete();
-            else if (this->key == "ctrl+delete"
-                    && this->current.x < this->input_end.x)
+            else if (this->key == "ctrl+delete")
                 key_ctrl_delete();
-            else if (this->key == "left arrow"
-                    && this->current.x > this->start.x)
+            else if (this->key == "left arrow")
                 key_left_arrow();
-            else if (this->key == "right arrow"
-                    && this->current.x < this->input_end.x)
+            else if (this->key == "right arrow")
                 key_right_arrow();
             else if (this->key == "up arrow")
                 key_up_arrow();
@@ -83,11 +84,9 @@ namespace pizzazz
                 key_home();
             else if (this->key == "end")
                 key_end();
-            else if (this->key == "ctrl+left arrow"
-                    && this->input_index > 0)
+            else if (this->key == "ctrl+left arrow")
                 key_ctrl_left_arrow();
-            else if (this->key == "ctrl+right arrow"
-                    && this->input_index < this->input.size())
+            else if (this->key == "ctrl+right arrow")
                 key_ctrl_right_arrow();
         }
     }
@@ -206,6 +205,8 @@ namespace pizzazz
     {
         if (this->input_index < this->input.size())
             this->input[this->input_index] = this->key[0];
+        else if (this->input.size() == this->max_width)
+            return;
         else
         {
             this->input.append(this->key);
@@ -219,6 +220,8 @@ namespace pizzazz
 
     void TextField::key_backspace()
     {
+        if (this->current.x <= this->start.x || !this->input.size())
+            return;
         this->input.erase(this->input_index - 1, 1);
         backspace_chars(1);
         this->current.x -= 1;
@@ -229,7 +232,11 @@ namespace pizzazz
 
     void TextField::key_ctrl_backspace()
     {
+        if (this->current.x <= this->start.x || !this->input.size())
+            return;
         int s = find_previous_space(this->input, this->input_index - 1);
+        if (s == -1)
+            s = 0;
         int i = int(this->input_index);
         int diff = i - s;
         backspace_chars(diff);
@@ -242,6 +249,8 @@ namespace pizzazz
 
     void TextField::key_delete()
     {
+        if (this->current.x >= this->input_end.x)
+            return;
         delete_chars(1);
         this->input_end.x -= 1;
         this->input.erase(this->input_index, 1);
@@ -250,7 +259,11 @@ namespace pizzazz
 
     void TextField::key_ctrl_delete()
     {
+        if (this->current.x >= this->input_end.x)
+            return;
         int s = find_next_space(this->input, this->input_index + 1);
+        if (s == -1)
+            s = int(this->input.size());
         int i = int(this->input_index);
         int diff = s - i;
         delete_chars(diff);
@@ -261,6 +274,8 @@ namespace pizzazz
 
     void TextField::key_left_arrow()
     {
+        if (this->current.x <= this->start.x)
+            return;
         this->current.x -= 1;
         this->input_index -= 1;
         set_cursor_coords(this->current);
@@ -268,6 +283,8 @@ namespace pizzazz
 
     void TextField::key_right_arrow()
     {
+        if (this->current.x >= this->input_end.x)
+            return;
         this->current.x += 1;
         this->input_index += 1;
         set_cursor_coords(this->current);
@@ -299,7 +316,11 @@ namespace pizzazz
 
     void TextField::key_ctrl_left_arrow()
     {
+        if (this->input_index <= 0)
+            return;
         int i = find_previous_space(this->input, this->input_index - 1);
+        if (i == -1)
+            i = 0;
         this->current.x -= int(this->input_index) - i;
         this->input_index = i;
         set_cursor_coords(this->current);
@@ -307,7 +328,11 @@ namespace pizzazz
 
     void TextField::key_ctrl_right_arrow()
     {
+        if (this->input_index >= this->input.size())
+            return;
         int i = find_next_space(this->input, this->input_index + 1);
+        if (i == -1)
+            i = int(this->input.size());
         this->current.x += i - int(this->input_index);
         this->input_index = i;
         set_cursor_coords(this->current);

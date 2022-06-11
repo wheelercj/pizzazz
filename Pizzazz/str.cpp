@@ -146,7 +146,7 @@ namespace pizzazz
 	int find_next_space(std::string str, size_t start)
 	{
 		if (start >= str.size())
-			throw std::invalid_argument("start index out of range.");
+			return -1;
 		while (start < str.size() && str[start] != ' ')
 			start++;
 		if (str[start] != ' ')
@@ -159,7 +159,7 @@ namespace pizzazz
 		if (start == std::string::npos)
 			start = str.size() - 1;
 		if (start >= str.size())
-			throw std::invalid_argument("start index out of range.");
+			return -1;
 		while (start > 0 && str[start] != ' ')
 			start--;
 		if (str[start] != ' ')

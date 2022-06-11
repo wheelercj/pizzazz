@@ -20,18 +20,27 @@ namespace pizzazz
        Optional arguments:
        * a default message to show
        * flags for choosing options that can be combined with the bitwise OR operator (|):
+            * opt::none - for not choosing any special options
             * opt::no_validation - don't require using a suggestion
             * opt::case_sensitive - require case to match that of suggestions for suggestions to match
-            * opt::hide_suggestions - hide suggestions */
+            * opt::hide_suggestions - hide suggestions
+       * the maximum width of the input field, or -1 for no limit */
     std::string getline_ac(
         const std::vector<std::string>& suggestions,
-        std::string = "",
-        opt = opt::none);
+        std::string default_message = "",
+        opt options = opt::none,
+        int max_width = -1);
 
     class TextField
     {
     public:
-        TextField(const std::vector<std::string>& suggestions, std::string default_message, bool must_use_suggestion, bool case_sensitive, bool show_suggestions);
+        TextField(
+            const std::vector<std::string>& suggestions,
+            std::string default_message,
+            bool must_use_suggestion,
+            bool case_sensitive,
+            bool show_suggestions,
+            int max_width);
         std::string getline_ac();
     private:
         std::string key = "";
@@ -47,6 +56,7 @@ namespace pizzazz
         bool must_use_suggestion;
         bool case_sensitive;
         bool show_suggestions;
+        int max_width;
 
         void find_and_print_suggestion();
         std::optional<std::string> find_suggestion();
