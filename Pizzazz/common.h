@@ -292,10 +292,12 @@ namespace pizzazz
 
     /* Switches the terminal app to a different "window" in the terminal.
        Some terminal apps move the cursor to the top when the new "window" opens, and some
-       do not. */
+       do not. This can be called multiple times consecutively, but only the original 
+       buffer can be restored. */
     void alternate_screen_buffer();
 
-    /* Restores the terminal app's original "window". */
+    /* Restores the terminal app's original "window". Does nothing if already on the
+    original buffer. */
     void restore_screen_buffer();
 
     /* Pauses the program for a chosen amount of time.
