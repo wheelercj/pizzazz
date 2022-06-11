@@ -1,5 +1,6 @@
 ﻿#include "pizzazz.h"
 #include "tui_tests.h"
+#include "str.h"
 #include <signal.h>
 #include <fstream>
 using namespace std;
@@ -18,6 +19,7 @@ void run_tui_tests()
 	test_getline_ac_with_empty_suggestion();
 	test_getline_ac_without_input_validation();
 	test_getline_ac_without_showing_suggestions();
+	test_wrap();
 	test_set_cursor_style();
 	test_set_window_title();
 	test_wide_set_window_title();
@@ -184,6 +186,12 @@ void test_getline_ac_without_showing_suggestions()
 		input = paz::getline_ac(words, "", paz::opt::hide_suggestions);
 		cout << " ";
 	}
+}
+
+void test_wrap()
+{
+	Coord window_size = paz::get_window_size();
+	cout << "\n" << paz::wrap("This is a very long sentence that will be nicely wrapped in the terminal window no matter what size the terminal window is, unless the terminal window changes size after this is printed.", window_size.x, "    ");
 }
 
 void test_set_cursor_style()

@@ -8,6 +8,7 @@ void test_getline_ac_numbered_menu();
 void test_getline_ac_with_empty_suggestion();
 void test_getline_ac_without_input_validation();
 void test_getline_ac_without_showing_suggestions();
+void test_wrap();
 void test_set_cursor_style();
 void test_set_window_title();
 void test_wide_set_window_title();

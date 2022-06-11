@@ -112,6 +112,36 @@ namespace pizzazz
 		return true;
 	}
 
+	std::string wrap(std::string str, int width, std::string line_prefix)
+	{
+		if (line_prefix.size() >= width)
+			throw std::invalid_argument("The wrap width must be greater than the line prefix width.");
+		std::vector<std::string> lines;
+		while (true)
+		{
+			if (str.empty())
+				break;
+			str = line_prefix + str;
+			if (str.size() < width)
+			{
+				lines.push_back(str);
+				str.clear();
+				break;
+			}
+			int prev_space = find_previous_space(str, width);
+			if (prev_space >= 0)
+			{
+				lines.push_back(str.substr(0, prev_space));
+				str.erase(0, prev_space + 1);
+			}
+			else
+			{
+				lines.push_back(str.substr(0, width));
+				str.erase(0, width);
+			}
+		}
+		return join(lines, "\n");
+	}
 
 	int find_next_space(std::string str, size_t start)
 	{
@@ -119,6 +149,8 @@ namespace pizzazz
 			throw std::invalid_argument("start index out of range.");
 		while (start < str.size() && str[start] != ' ')
 			start++;
+		if (str[start] != ' ')
+			return -1;
 		return int(start);
 	}
 
@@ -130,6 +162,8 @@ namespace pizzazz
 			throw std::invalid_argument("start index out of range.");
 		while (start > 0 && str[start] != ' ')
 			start--;
+		if (str[start] != ' ')
+			return -1;
 		return int(start);
 	}
 

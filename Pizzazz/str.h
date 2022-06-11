@@ -1,4 +1,5 @@
 #pragma once
+#include "common.h"
 #include <string>
 #include <vector>
 
@@ -26,9 +27,15 @@ namespace pizzazz
 	/* Determines whether a string ends with a given substr. */
 	bool endswith(std::string str, std::string suffix);
 
-	/* Finds the next space after an optional starting index. */
+	/* Wraps words cleanly into lines. Throws std::invalid_argument if the wrap
+	width is not greater than the line prefix width. */
+	std::string wrap(std::string str, int width, std::string line_prefix = "");
+
+	/* Finds the index of the next space after an optional starting index.
+	   Returns -1 if there is no next space. */
 	int find_next_space(std::string str, size_t start = 0);
 	
-	/* Finds the latest space before an optional starting index. */
+	/* Finds the index of the latest space before an optional starting index.
+	   Returns -1 if there is no previous space. */
 	int find_previous_space(std::string str, size_t start = std::string::npos);
 }

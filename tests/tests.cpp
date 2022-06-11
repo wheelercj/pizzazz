@@ -130,6 +130,33 @@ namespace tests
 			assert_equal(false, paz::endswith("abc", "d"));
 		}
 
+		TEST_METHOD(test_wrap)
+		{
+			assert_equal("a aa\naaa", paz::wrap("a aa aaa", 7));
+		}
+
+		TEST_METHOD(test_wrap_with_indentation)
+		{
+			assert_equal("  a aa\n  aaa", paz::wrap("a aa aaa", 7, "  "));
+		}
+
+		TEST_METHOD(test_dont_wrap)
+		{
+			assert_equal("a aa aaa", paz::wrap("a aa aaa", 30));
+		}
+
+		TEST_METHOD(test_wrap_with_word_that_is_too_long)
+		{
+			assert_equal("what if long word\nfloccinaucinihilipil\nification",
+				paz::wrap("what if long word floccinaucinihilipilification", 20));
+		}
+
+		TEST_METHOD(test_wrap_with_invalid_width)
+		{
+			auto func = [] { paz::wrap("blah blah", 5, "more than 5 characters"); };
+			Assert::ExpectException<std::invalid_argument>(func);
+		}
+
 		TEST_METHOD(test_find_next_space_at_start)
 		{
 			assert_equal(0, paz::find_next_space(" hi"));
