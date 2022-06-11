@@ -1,4 +1,5 @@
 #include "TextField.h"
+#include "str.h"
 
 namespace pizzazz
 {
@@ -175,26 +176,6 @@ namespace pizzazz
         set_cursor_coords(this->current);
     }
 
-    int TextField::find_previous_space()
-    {
-        int i = int(this->input_index) - 1;
-        if (i < 0)
-            return int(this->input_index);
-        while (i > 0 && this->input[i] != ' ')
-            i--;
-        return i;
-    }
-
-    int TextField::find_next_space()
-    {
-        int i = int(this->input_index) + 1;
-        if (i == this->input.size())
-            return int(this->input_index);
-        while (i < this->input.size() && this->input[i] != ' ')
-            i++;
-        return i;
-    }
-
     std::optional<std::string> TextField::key_enter()
     {
         if (!this->must_use_suggestion)
@@ -248,7 +229,7 @@ namespace pizzazz
 
     void TextField::key_ctrl_backspace()
     {
-        int s = find_previous_space();
+        int s = find_previous_space(this->input, this->input_index - 1);
         int i = int(this->input_index);
         int diff = i - s;
         backspace_chars(diff);
@@ -269,7 +250,7 @@ namespace pizzazz
 
     void TextField::key_ctrl_delete()
     {
-        int s = find_next_space();
+        int s = find_next_space(this->input, this->input_index + 1);
         int i = int(this->input_index);
         int diff = s - i;
         delete_chars(diff);
@@ -318,7 +299,7 @@ namespace pizzazz
 
     void TextField::key_ctrl_left_arrow()
     {
-        int i = find_previous_space();
+        int i = find_previous_space(this->input, this->input_index - 1);
         this->current.x -= int(this->input_index) - i;
         this->input_index = i;
         set_cursor_coords(this->current);
@@ -326,7 +307,7 @@ namespace pizzazz
 
     void TextField::key_ctrl_right_arrow()
     {
-        int i = find_next_space();
+        int i = find_next_space(this->input, this->input_index + 1);
         this->current.x += i - int(this->input_index);
         this->input_index = i;
         set_cursor_coords(this->current);

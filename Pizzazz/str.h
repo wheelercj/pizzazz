@@ -25,4 +25,10 @@ namespace pizzazz
 
 	/* Determines whether a string ends with a given substr. */
 	bool endswith(std::string str, std::string suffix);
+
+	/* Finds the next space after an optional starting index. */
+	int find_next_space(std::string str, size_t start = 0);
+	
+	/* Finds the latest space before an optional starting index. */
+	int find_previous_space(std::string str, size_t start = std::string::npos);
 }

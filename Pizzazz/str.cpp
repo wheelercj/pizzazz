@@ -112,4 +112,25 @@ namespace pizzazz
 		return true;
 	}
 
+
+	int find_next_space(std::string str, size_t start)
+	{
+		if (start >= str.size())
+			throw std::invalid_argument("start index out of range.");
+		while (start < str.size() && str[start] != ' ')
+			start++;
+		return int(start);
+	}
+
+	int find_previous_space(std::string str, size_t start)
+	{
+		if (start == std::string::npos)
+			start = str.size() - 1;
+		if (start >= str.size())
+			throw std::invalid_argument("start index out of range.");
+		while (start > 0 && str[start] != ' ')
+			start--;
+		return int(start);
+	}
+
 }

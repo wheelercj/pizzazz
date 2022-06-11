@@ -54,8 +54,6 @@ namespace pizzazz
         void clear_suggestion();
         void red_flash_text();
         void print_suggestion(std::string suggestion);
-        int find_previous_space();
-        int find_next_space();
         std::optional<std::string> key_enter();
         std::optional<std::string> key_tab();
         void key_char();

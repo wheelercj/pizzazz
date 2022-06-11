@@ -130,5 +130,44 @@ namespace tests
 			assert_equal(false, paz::endswith("abc", "d"));
 		}
 
+		TEST_METHOD(test_find_next_space_at_start)
+		{
+			assert_equal(0, paz::find_next_space(" hi"));
+		}
+
+		TEST_METHOD(test_find_next_space)
+		{
+			assert_equal(1, paz::find_next_space("h i"));
+		}
+
+		TEST_METHOD(test_find_next_space_at_end)
+		{
+			assert_equal(2, paz::find_next_space("hi "));
+		}
+
+		TEST_METHOD(test_find_next_space_starting_in_middle)
+		{
+			assert_equal(9, paz::find_next_space("hey there ", 4));
+		}
+
+		TEST_METHOD(test_find_previous_space_at_end)
+		{
+			assert_equal(2, paz::find_previous_space("hi "));
+		}
+
+		TEST_METHOD(test_find_previous_space)
+		{
+			assert_equal(1, paz::find_previous_space("h i"));
+		}
+
+		TEST_METHOD(test_find_previous_space_at_start)
+		{
+			assert_equal(0, paz::find_previous_space(" hi"));
+		}
+
+		TEST_METHOD(test_find_previous_space_starting_in_middle)
+		{
+			assert_equal(0, paz::find_previous_space(" there hey", 5));
+		}
 	};
 }
