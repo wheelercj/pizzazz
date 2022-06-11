@@ -208,22 +208,22 @@ namespace pizzazz
     /* Moves the terminal cursor up a chosen number of lines.
        If the cursor is at the top of the window, this function will
        have no effect. */
-    void move_cursor_up(size_t = 1);
+    void move_cursor_up(size_t lines = 1);
 
     /* Moves the terminal cursor down a chosen number of lines.
        If the cursor is at the bottom of the window, this function will
        have no effect. */
-    void move_cursor_down(size_t = 1);
+    void move_cursor_down(size_t lines = 1);
 
     /* Moves the terminal cursor to the right a chosen number of columns.
        If the cursor is at the right edge of the window, this function will
        have no effect. */
-    void move_cursor_right(size_t = 1);
+    void move_cursor_right(size_t columns = 1);
 
     /* Moves the terminal cursor to the left a chosen number of columns.
        If the cursor is at the left edge of the window, this function will
        have no effect. */
-    void move_cursor_left(size_t = 1);
+    void move_cursor_left(size_t columns = 1);
 
     /* Detects the terminal window's current size in columns and rows. */
     Coord get_window_size();
@@ -245,7 +245,7 @@ namespace pizzazz
        Ctrl+i -> "Tab"
        Ctrl+j -> "Ctrl+Enter"
        Ctrl+m -> "Enter" */
-    std::string get_key(bool = true);
+    std::string get_key(bool wait = true);
 
     /* Waits for and gets a character input without requiring an Enter keypress.
        See a list of many possible return values here: https://gist.github.com/wheelercj/3e6dd4f9c8b267145cbd746d8daccf80
