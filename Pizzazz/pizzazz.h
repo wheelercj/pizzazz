@@ -4,3 +4,4 @@
 #include "terminal.h"
 #include "InputField.h"
 #include "str.h"
+#include "common.h"
