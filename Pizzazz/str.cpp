@@ -4,6 +4,30 @@
 namespace pizzazz
 {
 
+	std::string slice(std::string str, int start, int end, int step)
+	{
+		if (step == 0)
+			throw std::invalid_argument("step must not be zero.");
+		bool reversed = false;
+		if (step < 0)
+		{
+			reversed = true;
+			step *= -1;
+		}
+		while (start < 0)
+			start += int(str.size());
+		while (end < 0)
+			end += int(str.size());
+		if (end > str.size())
+			end = int(str.size());
+		std::string result = "";
+		for (int i = start; i < end; i += step)
+			result.push_back(str[i]);
+		if (reversed)
+			std::reverse(result.begin(), result.end());
+		return result;
+	}
+
 	std::vector<std::string> split(std::string str, std::string split_by)
 	{
 		if (split_by.empty())
@@ -110,6 +134,37 @@ namespace pizzazz
 				return false;
 		}
 		return true;
+	}
+
+	std::string indent(std::string str, std::string line_prefix)
+	{
+		std::vector<std::string> lines = split(str, "\n");
+		for (std::string& line : lines)
+			line = line_prefix + line;
+		return join(lines, "\n");
+	}
+
+	std::string dedent(std::string str)
+	{
+		if (str.empty())
+			return "";
+		std::vector<std::string> lines = split(str, "\n");
+		std::string whitespace_char = " ";
+		if (lines[0].size() - lstrip("\t", lines[0]).size())
+			whitespace_char = "\t";
+		// Find the lowest number of tabs or spaces at the starts of the lines.
+		size_t min_count = 99999;
+		for (size_t i = 0; i < lines.size(); i++)
+		{
+			size_t count = lines[i].size() - lstrip(whitespace_char, lines[i]).size();
+			if (count < min_count)
+				min_count = count;
+		}
+		if (!min_count)
+			return str;
+		for (size_t i = 0; i < lines.size(); i++)
+			lines[i] = slice(lines[i], min_count);
+		return join(lines, "\n");
 	}
 
 	std::string wrap(std::string str, int width, std::string line_prefix)

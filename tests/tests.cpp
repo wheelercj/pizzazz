@@ -23,7 +23,77 @@ namespace tests
 	TEST_CLASS(tests)
 	{
 	public:
-		
+
+		TEST_METHOD(test_dont_slice)
+		{
+			assert_equal("abcdefg", paz::slice("abcdefg", 0));
+		}
+
+		TEST_METHOD(test_slice)
+		{
+			assert_equal("defg", paz::slice("abcdefg", 3));
+		}
+
+		TEST_METHOD(test_slice_with_negative_start)
+		{
+			assert_equal("efg", paz::slice("abcdefg", -3));
+		}
+
+		TEST_METHOD(test_slice_with_negative_start_and_end)
+		{
+			assert_equal("e", paz::slice("abcdefg", -3, -2));
+		}
+
+		TEST_METHOD(test_slice_with_early_end)
+		{
+			assert_equal("abcd", paz::slice("abcdefg", 0, 4));
+		}
+
+		TEST_METHOD(test_slice_with_empty_return)
+		{
+			assert_equal("", paz::slice("abcdefg", -1, 4));
+		}
+
+		TEST_METHOD(test_slice_returning_one_character)
+		{
+			assert_equal("c", paz::slice("abcdefg", 2, 3));
+		}
+
+		TEST_METHOD(test_slice_returning_two_characters)
+		{
+			assert_equal("cd", paz::slice("abcdefg", 2, 4));
+		}
+
+		TEST_METHOD(test_slice_with_negative_end)
+		{
+			assert_equal("cde", paz::slice("abcdefg", 2, -2));
+		}
+
+		TEST_METHOD(test_slice_with_step_of_1)
+		{
+			assert_equal("abcdef", paz::slice("abcdefg", 0, 6, 1));
+		}
+
+		TEST_METHOD(test_slice_with_step_of_2)
+		{
+			assert_equal("ace", paz::slice("abcdefg", 0, 6, 2));
+		}
+
+		TEST_METHOD(test_slice_with_step_of_3)
+		{
+			assert_equal("ad", paz::slice("abcdefg", 0, 6, 3));
+		}
+
+		TEST_METHOD(test_slice_with_step_of_negative_1)
+		{
+			assert_equal("fedcba", paz::slice("abcdefg", 0, 6, -1));
+		}
+
+		TEST_METHOD(test_slice_with_step_of_negative_2)
+		{
+			assert_equal("eca", paz::slice("abcdefg", 0, 6, -2));
+		}
+
 		TEST_METHOD(test_split_with_default_argument)
 		{
 			vector<string> v = paz::split("a b c");
@@ -128,6 +198,41 @@ namespace tests
 		TEST_METHOD(test_not_endswith)
 		{
 			assert_equal(false, paz::endswith("abc", "d"));
+		}
+
+		TEST_METHOD(test_indent)
+		{
+			assert_equal("    first\n    second\n    third", paz::indent("first\nsecond\nthird"));
+		}
+
+		TEST_METHOD(test_indent_tabs)
+		{
+			assert_equal("\tfirst\n\tsecond\n\tthird", paz::indent("first\nsecond\nthird", "\t"));
+		}
+
+		TEST_METHOD(test_indent_bullet_points)
+		{
+			assert_equal("* first\n* second\n* third", paz::indent("first\nsecond\nthird", "* "));
+		}
+
+		TEST_METHOD(test_dedent)
+		{
+			assert_equal("first\nsecond\nthird", paz::dedent("   first\n   second\n   third"));
+		}
+
+		TEST_METHOD(test_dedent_with_tabs)
+		{
+			assert_equal("first\nsecond\nthird", paz::dedent("\tfirst\n\tsecond\n\tthird"));
+		}
+
+		TEST_METHOD(test_dedent_with_uneven_spaces)
+		{
+			assert_equal("first\n second\n  third", paz::dedent(" first\n  second\n   third"));
+		}
+
+		TEST_METHOD(test_dedent_with_uneven_tabs)
+		{
+			assert_equal("\tfirst\nsecond\n\t\tthird", paz::dedent("\t\tfirst\n\tsecond\n\t\t\tthird"));
 		}
 
 		TEST_METHOD(test_wrap)

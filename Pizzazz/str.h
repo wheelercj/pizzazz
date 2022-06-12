@@ -2,11 +2,19 @@
 #include "common.h"
 #include <string>
 #include <vector>
+#include <limits.h>  // INT_MAX
 
 namespace pizzazz
 {
-	/* Splits a string by a substring.
-	   Throws std::invalid_argument if split_by is an empty string. */
+	/* Returns part of a given string. The start, end, and step parameters can be
+	   negative. A negative start and/or end counts from the end of the string
+	   instead of the beginning. A negative step reverses the result. An end
+	   value greater than the length of the string is changed to length of the
+	   string. The start is inclusive but the end is exclusive. */
+	std::string slice(std::string str, int start, int end = INT_MAX, int step = 1);
+
+	/* Splits a string by a substring. Throws std::invalid_argument if split_by
+	   is an empty string. */
 	std::vector<std::string> split(std::string str, std::string split_by = " ");
 
 	/* Joins strings, optionally putting another string between them. */
@@ -27,8 +35,14 @@ namespace pizzazz
 	/* Determines whether a string ends with a given substr. */
 	bool endswith(std::string str, std::string suffix);
 
+	/* Prepends a prefix to each line of a multiline string. */
+	std::string indent(std::string str, std::string line_prefix = "    ");
+
+	/* Evenly removes leading whitespace from each line of a multiline string. */
+	std::string dedent(std::string str);
+
 	/* Wraps words cleanly into lines. Throws std::invalid_argument if the wrap
-	width is not greater than the line prefix width. */
+	   width is not greater than the line prefix width. */
 	std::string wrap(std::string str, int width, std::string line_prefix = "");
 
 	/* Finds the index of the next space after an optional starting index.
