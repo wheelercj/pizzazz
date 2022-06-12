@@ -1,7 +1,7 @@
 #include "str.h"
 #include <stdexcept>
 
-namespace pizzazz
+namespace ynot
 {
 
 	std::string to_lower(std::string str)

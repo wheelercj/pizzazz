@@ -2,7 +2,7 @@
 #include "str.h"
 #include "common.h"
 
-namespace pizzazz
+namespace ynot
 {
 
     std::string getline_ac(

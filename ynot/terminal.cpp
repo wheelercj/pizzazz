@@ -2,7 +2,7 @@
 #define ESC "\x1b"
 #define LESC L"\x1b"
 
-namespace pizzazz
+namespace ynot
 {
 
     void set_cursor_style(CursorStyle style)

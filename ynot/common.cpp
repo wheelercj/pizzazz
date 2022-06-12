@@ -3,7 +3,7 @@
 #include <windows.h>
 #endif
 
-namespace pizzazz
+namespace ynot
 {
 
     void sleep_(unsigned milliseconds)

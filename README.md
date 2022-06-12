@@ -1,15 +1,14 @@
-# Pizzazz
+# ynot
 
-Add some color, style, advanced cursor movements, autocomplete suggestions, and more to your C++ terminal app!
+Add some color, style, advanced cursor movements, autocomplete suggestions, and more to your C++ terminal app! This fully cross-platform library also includes various functions and classes to make some common challenges easier.
 
-This is a fully cross-platform library. See the header files for the lists of functions and their descriptions. Take a look at the test files for examples of how to use them. C++17 or newer is required; in Visual Studio, you can choose the version of C++ with project > Properties > C/C++ > Language > C++ Language Standard.
+See the header files for the lists of functions and their descriptions. Take a look at the test files for examples of how to use them. C++17 or newer is required; in Visual Studio, you can choose the version of C++ with project > Properties > C/C++ > Language > C++ Language Standard.
 
 Here's a simple example of one of this library's functions, getline_ac, which can give autocomplete suggestions (not autocorrect) and has optional built-in input validation:
 
 ```cpp
-#include "pizzazz.h"
+#include "ynot.h"
 using namespace std;
-namespace paz = pizzazz;  // shorter alias for easier use
 
 int main() {
     cout << "\n  Sample menu:\n"
@@ -18,7 +17,7 @@ int main() {
         "   * Update\n"
         "   * Delete\n"
         "  > ";
-    string choice = paz::getline_ac(
+    string choice = ynot::getline_ac(
         { "Create", "Read", "Update", "Delete" },
         "type an option");
     cout << "\n  You chose " << choice << endl;

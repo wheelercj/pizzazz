@@ -3,7 +3,7 @@
 #include <vector>
 #include <limits.h>  // INT_MAX
 
-namespace pizzazz
+namespace ynot
 {
 	/* Makes an entire string lowercase. */
 	std::string to_lower(std::string str);

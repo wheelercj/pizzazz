@@ -27,7 +27,7 @@
 // https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#main
 // http://xn--rpa.cc/irl/term.html
 
-namespace pizzazz
+namespace ynot
 {
 
     struct Coord
