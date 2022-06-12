@@ -1,6 +1,7 @@
 ﻿#include "pizzazz.h"
 #include "tui_tests.h"
 #include "str.h"
+#include "common.h"
 #include <signal.h>
 #include <fstream>
 using namespace std;

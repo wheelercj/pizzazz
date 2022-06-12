@@ -1,5 +1,6 @@
 #include "InputField.h"
 #include "str.h"
+#include "common.h"
 
 namespace pizzazz
 {

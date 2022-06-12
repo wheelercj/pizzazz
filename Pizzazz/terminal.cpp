@@ -7,6 +7,7 @@ namespace pizzazz
 
     void set_cursor_style(CursorStyle style)
     {
+        // TODO: figure out why the program crashes if ctrl+c is pressed right before this function is called.
         if (style == CursorStyle::not_hidden)
             std::cout << ESC "[?25h";
         else if (style == CursorStyle::hidden)
@@ -506,15 +507,6 @@ namespace pizzazz
     void restore_screen_buffer()
     {
         std::cout << ESC "[?1049l";
-    }
-
-    void sleep_(unsigned milliseconds)
-    {
-#ifdef _WIN32
-        Sleep(milliseconds);
-#else
-        usleep(milliseconds * 1000);
-#endif
     }
 
     void set_window_width_to_132()
