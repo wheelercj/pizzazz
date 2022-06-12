@@ -4,6 +4,20 @@
 namespace pizzazz
 {
 
+	std::string to_lower(std::string str)
+	{
+		for (char& ch : str)
+			ch = tolower(ch);
+		return str;
+	}
+
+	std::string to_upper(std::string str)
+	{
+		for (char& ch : str)
+			ch = toupper(ch);
+		return str;
+	}
+
 	std::string slice(std::string str, int start, int end, int step)
 	{
 		if (step == 0)
@@ -163,7 +177,7 @@ namespace pizzazz
 		if (!min_count)
 			return str;
 		for (size_t i = 0; i < lines.size(); i++)
-			lines[i] = slice(lines[i], min_count);
+			lines[i] = slice(lines[i], int(min_count));
 		return join(lines, "\n");
 	}
 

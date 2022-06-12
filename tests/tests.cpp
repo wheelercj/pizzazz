@@ -24,6 +24,16 @@ namespace tests
 	{
 	public:
 
+		TEST_METHOD(test_tolower)
+		{
+			assert_equal("abcdefg", paz::to_lower("AbCdEfG"));
+		}
+
+		TEST_METHOD(test_toupper)
+		{
+			assert_equal("ABCDEFG", paz::to_upper("AbCdEfG"));
+		}
+
 		TEST_METHOD(test_dont_slice)
 		{
 			assert_equal("abcdefg", paz::slice("abcdefg", 0));

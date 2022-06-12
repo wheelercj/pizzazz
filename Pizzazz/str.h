@@ -6,6 +6,12 @@
 
 namespace pizzazz
 {
+	/* Makes an entire string lowercase. */
+	std::string to_lower(std::string str);
+
+	/* Makes an entire string uppercase. */
+	std::string to_upper(std::string str);
+
 	/* Returns part of a given string. The start, end, and step parameters can be
 	   negative. A negative start and/or end counts from the end of the string
 	   instead of the beginning. A negative step reverses the result. An end

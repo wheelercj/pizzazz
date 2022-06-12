@@ -228,9 +228,6 @@ namespace pizzazz
     /* Detects the terminal window's current size in columns and rows. */
     Coord get_window_size();
 
-    /* Makes an entire string lowercase. */
-    std::string to_lower(std::string str);
-
     /* Gets a keypress of input without requiring an Enter keypress.
        Optional parameters:
        * whether to wait for the keypress.

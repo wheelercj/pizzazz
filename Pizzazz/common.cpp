@@ -204,13 +204,6 @@ namespace pizzazz
 #endif
     }
 
-    std::string to_lower(std::string str)
-    {
-        for (char& ch : str)
-            ch = tolower(ch);
-        return str;
-    }
-
     std::string get_key(bool wait)
     {
         if (!wait and !kbhit__())
