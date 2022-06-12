@@ -1,4 +1,4 @@
-#include "TextField.h"
+#include "InputField.h"
 #include "str.h"
 
 namespace pizzazz
@@ -13,17 +13,17 @@ namespace pizzazz
         bool must_use_suggestion = !(int(options) & int(opt::no_validation));
         bool case_sensitive = int(options) & int(opt::case_sensitive);
         bool show_suggestions = !(int(options) & int(opt::hide_suggestions));
-        TextField tf(
+        InputField input_field(
             suggestions,
             default_message,
             must_use_suggestion,
             case_sensitive,
             show_suggestions,
             max_width);
-        return tf.getline_ac();
+        return input_field.getline_ac();
     }
 
-    TextField::TextField(
+    InputField::InputField(
             const std::vector<std::string>& suggestions,
             std::string default_message,
             bool must_use_suggestion,
@@ -44,7 +44,7 @@ namespace pizzazz
         this->max_width = max_width;
     }
 
-    std::string TextField::getline_ac()
+    std::string InputField::getline_ac()
     {
         std::optional<std::string> result;
         while (true)
@@ -91,7 +91,7 @@ namespace pizzazz
         }
     }
 
-    void TextField::find_and_print_suggestion()
+    void InputField::find_and_print_suggestion()
     {
         clear_suggestion();
         if (this->input.empty())
@@ -106,7 +106,7 @@ namespace pizzazz
         set_cursor_coords(this->current);
     }
 
-    std::optional<std::string> TextField::find_suggestion()
+    std::optional<std::string> InputField::find_suggestion()
     {
         for (auto it = this->suggestions.begin(); it != this->suggestions.end(); it++)
         {
@@ -126,7 +126,7 @@ namespace pizzazz
 
     /* This function changes the capitalization of the parameter to match the
        suggestion if the function returns true. */
-    bool TextField::is_suggestion(std::string& str)
+    bool InputField::is_suggestion(std::string& str)
     {
         for (auto it = this->suggestions.begin(); it != this->suggestions.end(); it++)
         {
@@ -147,15 +147,15 @@ namespace pizzazz
         return false;
     }
 
-    void TextField::clear_suggestion()
+    void InputField::clear_suggestion()
     {
         set_cursor_coords(this->input_end);
-        delete_chars(this->suggestion_end.x - this->input_end.x);
+        delete_chars(size_t(this->suggestion_end.x) - size_t(this->input_end.x));
         this->suggestion_end = this->input_end;
         this->latest_suggestion = {};
     }
 
-    void TextField::red_flash_text()
+    void InputField::red_flash_text()
     {
         set_cursor_coords(this->start);
         print_styled(this->input, { Style::red });
@@ -165,7 +165,7 @@ namespace pizzazz
         set_cursor_coords(this->current);
     }
 
-    void TextField::print_suggestion(std::string suggestion)
+    void InputField::print_suggestion(std::string suggestion)
     {
         if (suggestion.size() <= this->input.size())
             return;
@@ -175,7 +175,7 @@ namespace pizzazz
         set_cursor_coords(this->current);
     }
 
-    std::optional<std::string> TextField::key_enter()
+    std::optional<std::string> InputField::key_enter()
     {
         if (!this->must_use_suggestion)
         {
@@ -188,7 +188,7 @@ namespace pizzazz
         return {};
     }
 
-    std::optional<std::string> TextField::key_tab()
+    std::optional<std::string> InputField::key_tab()
     {
         if (is_suggestion(this->input))
             return this->input;
@@ -201,7 +201,7 @@ namespace pizzazz
         return {};
     }
 
-    void TextField::key_char()
+    void InputField::key_char()
     {
         if (this->input_index < this->input.size())
             this->input[this->input_index] = this->key[0];
@@ -218,7 +218,7 @@ namespace pizzazz
         find_and_print_suggestion();
     }
 
-    void TextField::key_backspace()
+    void InputField::key_backspace()
     {
         if (this->current.x <= this->start.x || !this->input.size())
             return;
@@ -230,7 +230,7 @@ namespace pizzazz
         find_and_print_suggestion();
     }
 
-    void TextField::key_ctrl_backspace()
+    void InputField::key_ctrl_backspace()
     {
         if (this->current.x <= this->start.x || !this->input.size())
             return;
@@ -247,7 +247,7 @@ namespace pizzazz
         find_and_print_suggestion();
     }
 
-    void TextField::key_delete()
+    void InputField::key_delete()
     {
         if (this->current.x >= this->input_end.x)
             return;
@@ -257,7 +257,7 @@ namespace pizzazz
         find_and_print_suggestion();
     }
 
-    void TextField::key_ctrl_delete()
+    void InputField::key_ctrl_delete()
     {
         if (this->current.x >= this->input_end.x)
             return;
@@ -272,7 +272,7 @@ namespace pizzazz
         find_and_print_suggestion();
     }
 
-    void TextField::key_left_arrow()
+    void InputField::key_left_arrow()
     {
         if (this->current.x <= this->start.x)
             return;
@@ -281,7 +281,7 @@ namespace pizzazz
         set_cursor_coords(this->current);
     }
 
-    void TextField::key_right_arrow()
+    void InputField::key_right_arrow()
     {
         if (this->current.x >= this->input_end.x)
             return;
@@ -290,31 +290,31 @@ namespace pizzazz
         set_cursor_coords(this->current);
     }
 
-    void TextField::key_up_arrow()
+    void InputField::key_up_arrow()
     {
         // TODO
     }
 
-    void TextField::key_down_arrow()
+    void InputField::key_down_arrow()
     {
         // TODO
     }
 
-    void TextField::key_home()
+    void InputField::key_home()
     {
         this->current = this->start;
         this->input_index = 0;
         set_cursor_coords(this->current);
     }
 
-    void TextField::key_end()
+    void InputField::key_end()
     {
         this->current = this->input_end;
         this->input_index = this->input.size();
         set_cursor_coords(this->current);
     }
 
-    void TextField::key_ctrl_left_arrow()
+    void InputField::key_ctrl_left_arrow()
     {
         if (this->input_index <= 0)
             return;
@@ -326,7 +326,7 @@ namespace pizzazz
         set_cursor_coords(this->current);
     }
 
-    void TextField::key_ctrl_right_arrow()
+    void InputField::key_ctrl_right_arrow()
     {
         if (this->input_index >= this->input.size())
             return;

@@ -31,10 +31,10 @@ namespace pizzazz
         opt options = opt::none,
         int max_width = -1);
 
-    class TextField
+    class InputField
     {
     public:
-        TextField(
+        InputField(
             const std::vector<std::string>& suggestions,
             std::string default_message,
             bool must_use_suggestion,
