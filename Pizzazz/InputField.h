@@ -1,5 +1,5 @@
 #pragma once
-#include "common.h"
+#include "terminal.h"
 #include <string>
 #include <vector>
 #include <optional>  // C++17+

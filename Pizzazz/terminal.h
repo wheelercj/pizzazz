@@ -299,7 +299,7 @@ namespace pizzazz
 
     /* Pauses the program for a chosen amount of time.
        1 second is 1000 milliseconds. */
-    void sleep_(unsigned milliseconds);
+    void sleep_(unsigned milliseconds);  // TODO: move this to a different file.
 
     void set_window_width_to_132();
 

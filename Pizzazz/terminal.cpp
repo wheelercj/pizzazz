@@ -1,4 +1,4 @@
-﻿#include "common.h"
+﻿#include "terminal.h"
 #define ESC "\x1b"
 #define LESC L"\x1b"
 
