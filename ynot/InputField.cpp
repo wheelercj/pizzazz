@@ -158,12 +158,14 @@ namespace ynot
 
     void InputField::red_flash_text()
     {
+        set_cursor_style(CursorStyle::hidden);
         set_cursor_coords(this->start);
         print_styled(this->input, { Style::red });
         sleep_(300);
         set_cursor_coords(this->start);
         std::cout << this->input;
         set_cursor_coords(this->current);
+        set_cursor_style(CursorStyle::not_hidden);
     }
 
     void InputField::print_suggestion(std::string suggestion)
