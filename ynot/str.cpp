@@ -125,6 +125,31 @@ namespace ynot
 		return str.erase(z);
 	}
 
+	std::string center(std::string str, int width, char fill_char)
+	{
+		while (int(str.size()) < width)
+		{
+			str.push_back(fill_char);
+			if (int(str.size()) < width)
+				str.insert(str.begin(), fill_char);
+		}
+		return str;
+	}
+
+	std::string ljust(std::string str, int width, char fill_char)
+	{
+		while (int(str.size()) < width)
+			str.push_back(fill_char);
+		return str;
+	}
+
+	std::string rjust(std::string str, int width, char fill_char)
+	{
+		while (int(str.size()) < width)
+			str.insert(str.begin(), fill_char);
+		return str;
+	}
+
 	bool startswith(std::string str, std::string prefix)
 	{
 		if (prefix.size() > str.size())
@@ -216,7 +241,7 @@ namespace ynot
 	{
 		for (size_t i = 0; i + substr.size() < str.size(); i++)
 		{
-			if (substr == slice(str, i, i + substr.size()))
+			if (substr == slice(str, int(i), int(i + substr.size())))
 				return true;
 		}
 		return false;

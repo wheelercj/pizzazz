@@ -22,12 +22,12 @@ namespace tests
 	{
 	public:
 		
-		TEST_METHOD(test_tolower)
+		TEST_METHOD(test_to_lower)
 		{
 			assert_equal("abcdefg", ynot::to_lower("AbCdEfG"));
 		}
 
-		TEST_METHOD(test_toupper)
+		TEST_METHOD(test_to_upper)
 		{
 			assert_equal("ABCDEFG", ynot::to_upper("AbCdEfG"));
 		}
@@ -130,14 +130,14 @@ namespace tests
 			assert_equal(3, v.size());
 		}
 
-		TEST_METHOD(test_split_with_no_matches)
+		TEST_METHOD(test_dont_split)
 		{
 			vector<string> v = ynot::split("sldkfj", "3");
 			assert_equal("sldkfj", v[0]);
 			assert_equal(1, v.size());
 		}
 
-		TEST_METHOD(test_split_with_empty_string)
+		TEST_METHOD(test_split_by_empty_string)
 		{
 			auto func = [] {ynot::split("sldkfj", ""); };
 			Assert::ExpectException<invalid_argument>(func);
@@ -178,6 +178,59 @@ namespace tests
 			assert_equal("bace", ynot::rstrip("abc", "baceabca"));
 		}
 
+		TEST_METHOD(test_center)
+		{
+			assert_equal("  hi  ", ynot::center("hi", 6));
+		}
+
+		TEST_METHOD(test_center_multiple_times)
+		{
+			std::string str = ynot::center("hi", 6);
+			str = ynot::center(str, 8, '*');
+			str = ynot::center(str, 10, '~');
+			assert_equal("~*  hi  *~", str);
+		}
+
+		TEST_METHOD(test_center_with_width_that_prevents_perfect_centering)
+		{
+			assert_equal(" hi  ", ynot::center("hi", 5));
+		}
+
+		TEST_METHOD(test_center_with_small_width)
+		{
+			assert_equal("hello", ynot::center("hello", 3));
+		}
+
+		TEST_METHOD(test_ljust)
+		{
+			assert_equal("hi   ", ynot::ljust("hi", 5));
+		}
+
+		TEST_METHOD(test_ljust_with_stars)
+		{
+			assert_equal("hi***", ynot::ljust("hi", 5, '*'));
+		}
+
+		TEST_METHOD(test_ljust_with_small_width)
+		{
+			assert_equal("hello", ynot::ljust("hello", 3));
+		}
+
+		TEST_METHOD(test_rjust)
+		{
+			assert_equal("   hi", ynot::rjust("hi", 5));
+		}
+
+		TEST_METHOD(test_rjust_with_stars)
+		{
+			assert_equal("***hi", ynot::rjust("hi", 5, '*'));
+		}
+
+		TEST_METHOD(test_rjust_with_small_width)
+		{
+			assert_equal("hello", ynot::rjust("hello", 3));
+		}
+
 		TEST_METHOD(test_startswith)
 		{
 			assert_equal(true, ynot::startswith("abc", "a"));
@@ -213,12 +266,12 @@ namespace tests
 			assert_equal("    first\n    second\n    third", ynot::indent("first\nsecond\nthird"));
 		}
 
-		TEST_METHOD(test_indent_tabs)
+		TEST_METHOD(test_indent_with_tabs)
 		{
 			assert_equal("\tfirst\n\tsecond\n\tthird", ynot::indent("first\nsecond\nthird", "\t"));
 		}
 
-		TEST_METHOD(test_indent_bullet_points)
+		TEST_METHOD(test_indent_with_bullet_points)
 		{
 			assert_equal("* first\n* second\n* third", ynot::indent("first\nsecond\nthird", "* "));
 		}

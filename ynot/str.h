@@ -34,6 +34,18 @@ namespace ynot
 	/* Removes characters from the right edge of a string. */
 	std::string rstrip(std::string characters, std::string str);
 
+	/* Centers text, filling with a chosen character if needed.
+	   Returns the string unchanged if width is <= the string's width. */
+	std::string center(std::string str, int width, char fill_char = ' ');
+
+	/* Justifies text to the left, filling with a chosen character if needed.
+	   Returns the string unchanged if width is <= the string's width. */
+	std::string ljust(std::string str, int width, char fill_char = ' ');
+
+	/* Justifies text to the right, filling with a chosen character if needed.
+       Returns the string unchanged if width is <= the string's width. */
+	std::string rjust(std::string str, int width, char fill_char = ' ');
+
 	/* Determines whether a string starts with a given substr. */
 	bool startswith(std::string str, std::string prefix);
 
