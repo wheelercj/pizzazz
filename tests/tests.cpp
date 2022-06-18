@@ -270,6 +270,31 @@ namespace tests
 			Assert::ExpectException<std::invalid_argument>(func);
 		}
 
+		TEST_METHOD(test_contains)
+		{
+			assert_equal(true, ynot::contains("slkdjflsk\nslkdjflks", "\n"));
+		}
+
+		TEST_METHOD(test_contains_with_multiple_characters)
+		{
+			assert_equal(true, ynot::contains("abcdefghijklm", "ghi"));
+		}
+
+		TEST_METHOD(test_not_contains)
+		{
+			assert_equal(false, ynot::contains("asdfasdfasdf", "z"));
+		}
+
+		TEST_METHOD(test_not_contains_multiple_characters)
+		{
+			assert_equal(false, ynot::contains("asdfasdfsafd", "zxc"));
+		}
+
+		TEST_METHOD(test_contains_empty_string)
+		{
+			assert_equal(true, ynot::contains("asjdfklj", ""));
+		}
+
 		TEST_METHOD(test_find_next_space_at_start)
 		{
 			assert_equal(0, ynot::find_next_space(" hi"));

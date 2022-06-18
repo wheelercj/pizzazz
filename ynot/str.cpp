@@ -212,6 +212,16 @@ namespace ynot
 		return join(lines, "\n");
 	}
 
+	bool contains(std::string str, std::string substr)
+	{
+		for (size_t i = 0; i + substr.size() < str.size(); i++)
+		{
+			if (substr == slice(str, i, i + substr.size()))
+				return true;
+		}
+		return false;
+	}
+
 	int find_next_space(std::string str, size_t start)
 	{
 		if (start >= str.size())

@@ -50,6 +50,9 @@ namespace ynot
 	   width is not greater than the line prefix width. */
 	std::string wrap(std::string str, int width, std::string line_prefix = "");
 
+	/* Determines whether a string contains a given substring. */
+	bool contains(std::string str, std::string substr);
+
 	/* Finds the index of the next space after an optional starting index.
 	   Returns -1 if there is no next space. */
 	int find_next_space(std::string str, size_t start = 0);
