@@ -85,44 +85,26 @@ namespace ynot
 
 	std::string lstrip(std::string to_remove, std::string str)
 	{
-		bool found = false;
-		unsigned a = 0;
-		for (; a < str.size() && !found; a++)
+		while (str.size())
 		{
-			found = true;
-			for (unsigned i = 0; i < to_remove.size() && found; i++)
-			{
-				if (str[a] == to_remove[i])
-				{
-					found = false;
-				}
-			}
+			if (contains(to_remove, str[0]))
+				str.erase(str.begin(), str.begin() + 1);
+			else
+				return str;
 		}
-		if (!found)
-			return str;
-		a--;
-		return str.erase(0, a);
+		return str;
 	}
 
 	std::string rstrip(std::string to_remove, std::string str)
 	{
-		bool found = false;
-		size_t z = str.size() - 1;
-		for (; z > 0 && !found; z--)
+		while (str.size())
 		{
-			found = true;
-			for (unsigned i = 0; i < to_remove.size() && found; i++)
-			{
-				if (str[z] == to_remove[i])
-				{
-					found = false;
-				}
-			}
+			if (contains(to_remove, str[str.size() - 1]))
+				str.pop_back();
+			else
+				return str;
 		}
-		if (!found)
-			return str;
-		z += 2;
-		return str.erase(z);
+		return str;
 	}
 
 	std::string center(std::string str, int width, char fill_char)
@@ -242,6 +224,16 @@ namespace ynot
 		for (size_t i = 0; i + substr.size() < str.size(); i++)
 		{
 			if (substr == slice(str, int(i), int(i + substr.size())))
+				return true;
+		}
+		return false;
+	}
+
+	bool contains(std::string str, char ch)
+	{
+		for (size_t i = 0; i < str.size(); i++)
+		{
+			if (ch == str[i])
 				return true;
 		}
 		return false;

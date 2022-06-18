@@ -65,6 +65,9 @@ namespace ynot
 	/* Determines whether a string contains a given substring. */
 	bool contains(std::string str, std::string substr);
 
+	/* Determines whether a string contains a given character. */
+	bool contains(std::string str, char ch);
+
 	/* Finds the index of the next space after an optional starting index.
 	   Returns -1 if there is no next space. */
 	int find_next_space(std::string str, size_t start = 0);

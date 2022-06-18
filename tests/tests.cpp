@@ -173,9 +173,19 @@ namespace tests
 			assert_equal("eabca", ynot::lstrip("abc", "baceabca"));
 		}
 
+		TEST_METHOD(test_lstrip_with_only_characters_to_strip)
+		{
+			assert_equal("", ynot::lstrip("\n\n\n\n", "\n"));
+		}
+
 		TEST_METHOD(test_rstrip)
 		{
 			assert_equal("bace", ynot::rstrip("abc", "baceabca"));
+		}
+
+		TEST_METHOD(test_rstrip_with_only_characters_to_strip)
+		{
+			assert_equal("", ynot::lstrip("\n\n\n\n", "\n"));
 		}
 
 		TEST_METHOD(test_center)
