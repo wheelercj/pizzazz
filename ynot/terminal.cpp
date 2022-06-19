@@ -207,7 +207,7 @@ namespace ynot
 
     std::string get_key(bool wait)
     {
-        if (!wait and !kbhit__())
+        if (!wait && !kbhit__())
             return "";
         char input = getch_();
         switch (input)
