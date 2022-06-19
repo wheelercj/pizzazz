@@ -1,9 +1,10 @@
-﻿#include "ynot.h"
-#include "tui_tests.h"
-#include "str.h"
-#include "common.h"
-#include <signal.h>
+﻿#include "common.h"
 #include <fstream>
+#include "Paginator.h"
+#include <signal.h>
+#include "str.h"
+#include "tui_tests.h"
+#include "ynot.h"
 using namespace std;
 using ynot::Style;
 using ynot::CursorStyle;
@@ -20,6 +21,7 @@ void run_tui_tests()
 	test_getline_ac_without_input_validation();
 	test_getline_ac_without_showing_suggestions();
 	test_wrap();
+	test_paginator();
 	test_set_cursor_style();
 	test_set_window_title();
 	test_wide_set_window_title();
@@ -162,14 +164,17 @@ void test_getline_ac_without_input_validation()
 	string color = ynot::getline_ac(
 		{ "red", "orange", "yellow", "green", "blue", "purple" },
 		"type a color", ynot::opt::no_validation);
-	cout << "\nYou entered: " << color;
+	cout << "\nYou entered: " << color << "\n";
 }
 
 void test_getline_ac_without_showing_suggestions()
 {
 	ifstream file("dictionary.txt");
 	if (!file)
-		throw runtime_error("Could not load dictionary.txt");
+	{
+		cout << "Error: could not load dictionary.txt";
+		return;
+	}
 	vector<string> words;
 	string word;
 	cout << "\nLoading dictionary.txt";
@@ -193,6 +198,29 @@ void test_wrap()
 {
 	Coord window_size = ynot::get_window_size();
 	cout << "\n" << ynot::wrap("This is a very long sentence that will be nicely wrapped in the terminal window no matter what size the terminal window is, unless the terminal window changes size after this is printed.", window_size.x, "    ");
+}
+
+void test_paginator()
+{
+	std::cout << "\nPaginator test. Press any key to start the paginator, and escape to close the paginator.";
+	ynot::pause();
+	std::string title = "Recursive descent parser";
+	std::string line_prefix = "\n    ";
+	std::string body = ynot::dedent(R"(
+		In computer science, a recursive descent parser is a kind of top-down parser built from a set of mutually recursive procedures (or a non-recursive equivalent) where each such procedure implements one of the nonterminals of the grammar. Thus the structure of the resulting program closely mirrors that of the grammar it recognizes. [1]
+
+		A predictive parser is a recursive descent parser that does not require backtracking. [2] Predictive parsing is possible only for the class of LL(k) grammars, which are the context - free grammars for which there exists some positive integer k that allows a recursive descent parser to decide which production to use by examining only the next k tokens of input. The LL(k) grammars therefore exclude all ambiguous grammars, as well as all grammars that contain left recursion. Any context - free grammar can be transformed into an equivalent grammar that has no left recursion, but removal of left recursion does not always yield an LL(k) grammar. A predictive parser runs in linear time.
+
+		Recursive descent with backtracking is a technique that determines which production to use by trying each production in turn. Recursive descent with backtracking is not limited to LL(k) grammars, but is not guaranteed to terminate unless the grammar is LL(k). Even when they terminate, parsers that use recursive descent with backtracking may require exponential time.
+
+		Although predictive parsers are widely used, and are frequently chosen if writing a parser by hand, programmers often prefer to use a table - based parser produced by a parser generator [citation needed], either for an LL(k) language or using an alternative parser, such as LALR or LR. This is particularly the case if a grammar is not in LL(k) form, as transforming the grammar to LL to make it suitable for predictive parsing is involved. Predictive parsers can also be automatically generated, using tools like ANTLR.
+
+		Predictive parsers can be depicted using transition diagrams for each non - terminal symbol where the edges between the initial and the final states are labelled by the symbols(terminals and non - terminals) of the right side of the production rule. [3]
+
+		Source: https://en.wikipedia.org/wiki/Recursive_descent_parser)");
+	ynot::Paginator paginator(title, body, line_prefix);
+	paginator.run();
+	std::cout << endl;
 }
 
 void test_set_cursor_style()
@@ -232,7 +260,7 @@ void test_set_cursor_style()
 	ynot::set_cursor_style(CursorStyle::blinking_default);
 	cout << "\nBack to the default cursor";
 	ynot::pause();
-	cout << endl;
+	cout << "\n\n";
 }
 
 void test_set_window_title()
