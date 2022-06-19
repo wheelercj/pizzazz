@@ -1,5 +1,7 @@
 #include "Paginator.h"
 #include <regex>
+#include "str.h"
+#include "terminal.h"
 
 namespace ynot
 {
@@ -14,6 +16,8 @@ namespace ynot
 		int page_width,
 		bool show_page_numbers)
 	{
+		if (text.empty())
+			throw std::invalid_argument("Text must be given.");
 		this->page_width = page_width;
 		this->show_page_numbers = show_page_numbers;
 		this->line_prefix = line_prefix;
@@ -49,6 +53,8 @@ namespace ynot
 		int page_width,
 		bool show_page_number)
 	{
+		if (lines.empty())
+			throw std::invalid_argument("Lines must be given.");
 		this->page_width = page_width;
 		this->show_page_numbers = show_page_numbers;
 		this->line_prefix = line_prefix;
@@ -77,14 +83,18 @@ namespace ynot
 		set_cursor_style(CursorStyle::hidden);
 		this->page_number = start_page;
 		alternate_screen_buffer();
+		bool page_changed = true;
 		std::string key = "";
 		while (key != "escape")
 		{
-			set_cursor_coords(1, 1);
-			print_page();
+			if (page_changed)
+			{
+				clear_screen();
+				set_cursor_coords(1, 1);
+				print_page();
+			}
 			key = get_key();
-			navigate(key);
-			clear_screen();
+			page_changed = navigate(key);
 		}
 		restore_screen_buffer();
 		restore_cursor_location();
@@ -124,38 +134,69 @@ namespace ynot
 		std::cout << this->line_suffix;
 	}
 
-	void Paginator::navigate(std::string key)
+	bool Paginator::navigate(std::string key)
 	{
 		if (key == "left arrow" || key == "up arrow" || key == "page up")
-			go_to_previous_page();
+		{
+			if (go_to_previous_page())
+				return true;
+		}
 		else if (key == "right arrow" || key == "down arrow" || key == "page down")
-			go_to_next_page();
+		{
+			if (go_to_next_page())
+				return true;
+		}
 		else if (key == "home")
-			go_to_first_page();
+		{
+			if (go_to_first_page())
+				return true;
+		}
 		else if (key == "end")
-			go_to_last_page();
+		{
+			if (go_to_last_page())
+				return true;
+		}
+		return false;
 	}
 
-	void Paginator::go_to_previous_page()
+	bool Paginator::go_to_previous_page()
 	{
 		if (this->page_number > 0)
+		{
 			this->page_number -= 1;
+			return true;
+		}
+		return false;
 	}
 
-	void Paginator::go_to_next_page()
+	bool Paginator::go_to_next_page()
 	{
 		if (this->page_number < pages.size() - 1)
+		{
 			this->page_number += 1;
+			return true;
+		}
+		return false;
 	}
 
-	void Paginator::go_to_first_page()
+	bool Paginator::go_to_first_page()
 	{
-		this->page_number = 0;
+		if (this->page_number > 0)
+		{
+			this->page_number = 0;
+			return true;
+		}
+		return false;
 	}
 
-	void Paginator::go_to_last_page()
+	bool Paginator::go_to_last_page()
 	{
-		this->page_number = int(pages.size()) - 1;
+		if (this->page_number < pages.size() - 1)
+		{
+			this->page_number = int(pages.size()) - 1;
+			return true;
+		}
+		return false;
 	}
 	
 	std::string Paginator::improve_spacing(std::string text)

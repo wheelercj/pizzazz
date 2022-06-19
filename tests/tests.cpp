@@ -1,8 +1,12 @@
-#include "pch.h"
+#include "pch.h"  // This must be the first include.
 #include "CppUnitTest.h"
+#include <vector>
+#include "../ynot/Paginator.h"
+#include "../ynot/Paginator.cpp"
 #include "../ynot/str.h"
 #include "../ynot/str.cpp"
-#include <vector>
+#include "../ynot/terminal.h"
+#include "../ynot/terminal.cpp"
 using namespace std;
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -419,6 +423,12 @@ namespace tests
 		TEST_METHOD(test_find_previous_space_starting_in_middle)
 		{
 			assert_equal(0, ynot::find_previous_space(" there hey", 5));
+		}
+
+		TEST_METHOD(test_paginator_with_empty_text)
+		{
+			auto func = [] { ynot::Paginator("this is the title", "").run(); };
+			Assert::ExpectException<invalid_argument>(func);
 		}
 	};
 }
