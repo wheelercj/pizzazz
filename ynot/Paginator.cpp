@@ -16,6 +16,8 @@ namespace ynot
 	{
 		this->page_width = page_width;
 		this->show_page_numbers = show_page_numbers;
+		this->line_prefix = line_prefix;
+		this->line_suffix = line_suffix;
 		text = improve_spacing(text);
 		text = wrap(text, page_width, line_prefix, line_suffix);
 		if (startswith(text, "\n"))
@@ -49,6 +51,8 @@ namespace ynot
 	{
 		this->page_width = page_width;
 		this->show_page_numbers = show_page_numbers;
+		this->line_prefix = line_prefix;
+		this->line_suffix = line_suffix;
 		for (std::string& line : lines)
 			line = wrap(line, page_width, line_prefix, line_suffix);
 		std::string page_title = title + "\n";
@@ -96,36 +100,28 @@ namespace ynot
 
 	void Paginator::print_navigation_line()
 	{
-		std::cout << "\n\n     ";
+		int prefix_and_suffix_width = int(this->line_prefix.size() + this->line_suffix.size());
+		std::string page_number_str;
+		if (!this->show_page_numbers)
+			page_number_str = center("", this->page_width - 4 - prefix_and_suffix_width);
+		else
+		{
+			page_number_str =
+				std::to_string(this->page_number + 1)
+				+ "/" + std::to_string(pages.size());
+			page_number_str = center(page_number_str, this->page_width - 4 - prefix_and_suffix_width);
+		}
+		std::cout << "\n" << this->line_prefix;
 		if (this->page_number > 0)
 			std::cout << "<-";
 		else
 			std::cout << "  ";
-		if (!this->show_page_numbers)
-		{
-			int remaining_width = this->page_width - 14;
-			for (int i = 0; i < remaining_width; i++)
-				std::cout << " ";
-		}
-		else
-		{
-			std::string page_number_str = 
-				std::to_string(this->page_number + 1)
-				+ "/" + std::to_string(pages.size());
-			int remaining_width =
-				this->page_width - 14
-				- int(page_number_str.size());
-			for (int i = 0; i < remaining_width / 2; i++)
-				std::cout << " ";
-			std::cout << page_number_str;
-			for (int i = 0; i < remaining_width / 2; i++)
-				std::cout << " ";
-		}
+		std::cout << page_number_str;
 		if (this->page_number < pages.size() - 1)
 			std::cout << "->";
 		else
 			std::cout << "  ";
-		std::cout << "     ";
+		std::cout << this->line_suffix;
 	}
 
 	void Paginator::navigate(std::string key)

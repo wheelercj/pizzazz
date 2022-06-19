@@ -36,6 +36,8 @@ namespace ynot
 		int page_number = 0;
 		int page_width;
 		bool show_page_numbers = true;
+		std::string line_prefix;
+		std::string line_suffix;
 
 		void print_page();
 		void print_navigation_line();
