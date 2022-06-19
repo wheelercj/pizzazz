@@ -197,7 +197,7 @@ void test_getline_ac_without_showing_suggestions()
 void test_wrap()
 {
 	Coord window_size = ynot::get_window_size();
-	cout << "\n" << ynot::wrap("This is a very long sentence that will be nicely wrapped in the terminal window no matter what size the terminal window is, unless the terminal window changes size after this is printed.", window_size.x, "    ");
+	cout << "\n" << ynot::wrap("This is a very long sentence that will be nicely wrapped in the terminal window no matter what size the terminal window is, unless the terminal window changes size after this is printed.", window_size.x, "\n    ") << "\n";
 }
 
 void test_paginator()
