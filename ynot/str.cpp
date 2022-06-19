@@ -171,12 +171,22 @@ namespace ynot
 			return "";
 		std::vector<std::string> lines = split(str, "\n");
 		std::string whitespace_char = " ";
-		if (lines[0].size() - lstrip("\t", lines[0]).size())
-			whitespace_char = "\t";
+		for (size_t i = 0; i < lines.size(); i++)
+		{
+			if (!lines[i].size())
+				continue;
+			if (lines[i].size() - lstrip("\t", lines[i]).size())
+			{
+				whitespace_char = "\t";
+				break;
+			}
+		}
 		// Find the lowest number of tabs or spaces at the starts of the lines.
 		size_t min_count = 99999;
 		for (size_t i = 0; i < lines.size(); i++)
 		{
+			if (!lines[i].size())
+				continue;
 			size_t count = lines[i].size() - lstrip(whitespace_char, lines[i]).size();
 			if (count < min_count)
 				min_count = count;
@@ -188,35 +198,41 @@ namespace ynot
 		return join(lines, "\n");
 	}
 
-	std::string wrap(std::string str, int width, std::string line_prefix)
+	std::string wrap(std::string str, int width, std::string line_prefix, std::string line_suffix)
 	{
-		if (line_prefix.size() >= width)
-			throw std::invalid_argument("The wrap width must be greater than the line prefix width.");
-		std::vector<std::string> lines;
-		while (true)
+		if (line_prefix.size() + line_suffix.size() >= width)
+			throw std::invalid_argument("The wrap width must be greater than the line prefix and suffix width.");
+		str = strip("\n", str);
+		std::vector<std::string> input_lines = split(str, "\n");
+		std::vector<std::string> wrapped_lines;
+		for (size_t i = 0; i < input_lines.size(); i++)
 		{
-			if (str.empty())
-				break;
-			str = line_prefix + str;
-			if (str.size() < width)
+			std::string long_line = input_lines[i];
+			while (true)
 			{
-				lines.push_back(str);
-				str.clear();
-				break;
-			}
-			int prev_space = find_previous_space(str, width);
-			if (prev_space >= 0)
-			{
-				lines.push_back(str.substr(0, prev_space));
-				str.erase(0, prev_space + 1);
-			}
-			else
-			{
-				lines.push_back(str.substr(0, width));
-				str.erase(0, width);
+				long_line = line_prefix + long_line;
+				if (long_line.size() < width)
+				{
+					long_line += line_suffix;
+					wrapped_lines.push_back(long_line);
+					long_line.clear();
+					break;
+				}
+				int prev_space = find_previous_space(long_line, width);
+				if (prev_space >= 0)
+				{
+					wrapped_lines.push_back(long_line.substr(0, prev_space) + line_suffix);
+					long_line.erase(0, prev_space + 1);
+				}
+				else
+				{
+					std::string next_line = long_line.substr(0, width) + line_suffix;
+					wrapped_lines.push_back(next_line);
+					long_line.erase(0, width);
+				}
 			}
 		}
-		return join(lines, "\n");
+		return join(wrapped_lines, "");
 	}
 
 	bool contains(std::string str, std::string substr)

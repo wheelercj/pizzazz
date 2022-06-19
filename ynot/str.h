@@ -59,8 +59,8 @@ namespace ynot
 	std::string dedent(std::string str);
 
 	/* Wraps words cleanly into lines. Throws std::invalid_argument if the wrap
-	   width is not greater than the line prefix width. */
-	std::string wrap(std::string str, int width, std::string line_prefix = "");
+	   width is not greater than the line prefix and suffix widths. */
+	std::string wrap(std::string str, int width, std::string line_prefix = "\n", std::string line_suffix = "");
 
 	/* Determines whether a string contains a given substring. */
 	bool contains(std::string str, std::string substr);
