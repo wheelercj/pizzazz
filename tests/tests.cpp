@@ -169,12 +169,12 @@ namespace tests
 
 		TEST_METHOD(test_strip)
 		{
-			assert_equal("e", ynot::strip("abc", "baceabca"));
+			assert_equal("e", ynot::strip("baceabca", "abc"));
 		}
 
 		TEST_METHOD(test_lstrip)
 		{
-			assert_equal("eabca", ynot::lstrip("abc", "baceabca"));
+			assert_equal("eabca", ynot::lstrip("baceabca", "abc"));
 		}
 
 		TEST_METHOD(test_lstrip_with_only_characters_to_strip)
@@ -184,7 +184,7 @@ namespace tests
 
 		TEST_METHOD(test_rstrip)
 		{
-			assert_equal("bace", ynot::rstrip("abc", "baceabca"));
+			assert_equal("bace", ynot::rstrip("baceabca", "abc"));
 		}
 
 		TEST_METHOD(test_rstrip_with_only_characters_to_strip)

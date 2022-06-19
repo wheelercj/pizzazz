@@ -78,12 +78,12 @@ namespace ynot
 		return result;
 	}
 
-	std::string strip(std::string to_remove, std::string str)
+	std::string strip(std::string str, std::string to_remove)
 	{
-		return lstrip(to_remove, rstrip(to_remove, str));
+		return lstrip(rstrip(str, to_remove), to_remove);
 	}
 
-	std::string lstrip(std::string to_remove, std::string str)
+	std::string lstrip(std::string str, std::string to_remove)
 	{
 		while (str.size())
 		{
@@ -95,7 +95,7 @@ namespace ynot
 		return str;
 	}
 
-	std::string rstrip(std::string to_remove, std::string str)
+	std::string rstrip(std::string str, std::string to_remove)
 	{
 		while (str.size())
 		{
@@ -175,7 +175,7 @@ namespace ynot
 		{
 			if (!lines[i].size())
 				continue;
-			if (lines[i].size() - lstrip("\t", lines[i]).size())
+			if (lines[i].size() - lstrip(lines[i], "\t").size())
 			{
 				whitespace_char = "\t";
 				break;
@@ -187,7 +187,7 @@ namespace ynot
 		{
 			if (!lines[i].size())
 				continue;
-			size_t count = lines[i].size() - lstrip(whitespace_char, lines[i]).size();
+			size_t count = lines[i].size() - lstrip(lines[i], whitespace_char).size();
 			if (count < min_count)
 				min_count = count;
 		}
@@ -202,7 +202,7 @@ namespace ynot
 	{
 		if (line_prefix.size() + line_suffix.size() >= width)
 			throw std::invalid_argument("The wrap width must be greater than the line prefix and suffix width.");
-		str = strip("\n", str);
+		str = strip(str, "\n");
 		std::vector<std::string> input_lines = split(str, "\n");
 		std::vector<std::string> wrapped_lines;
 		for (size_t i = 0; i < input_lines.size(); i++)

@@ -26,13 +26,13 @@ namespace ynot
 	std::string join(std::vector<std::string> strings, std::string join_by = "");
 
 	/* Removes characters from the edges of a string. */
-	std::string strip(std::string characters, std::string str);
+	std::string strip(std::string str, std::string characters);
 	
 	/* Removes characters from the left edge of a string. */
-	std::string lstrip(std::string characters, std::string str);
+	std::string lstrip(std::string str, std::string characters);
 	
 	/* Removes characters from the right edge of a string. */
-	std::string rstrip(std::string characters, std::string str);
+	std::string rstrip(std::string str, std::string characters);
 
 	/* Centers text, filling with a chosen character if needed.
 	   Returns the string unchanged if width is <= the string's width. */
