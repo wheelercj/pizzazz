@@ -7,6 +7,8 @@
 #include "../ynot/str.cpp"
 #include "../ynot/terminal.h"
 #include "../ynot/terminal.cpp"
+#include "../ynot/wstr.h"
+#include "../ynot/wstr.cpp"
 using namespace std;
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -17,9 +19,15 @@ namespace tests
 		Assert::AreEqual(str1, str2);
 	}
 
-	void assert_equal(size_t num1, size_t num2)
+	void assert_equal(std::wstring str1, std::wstring str2)
 	{
-		Assert::AreEqual(num1, num2);
+		Assert::AreEqual(str1, str2);
+	}
+
+	template<class T>
+	void assert_equal(T a, T b)
+	{
+		Assert::AreEqual(a, b);
 	}
 
 	TEST_CLASS(tests)
@@ -31,9 +39,29 @@ namespace tests
 			assert_equal("abcdefg", ynot::to_lower("AbCdEfG"));
 		}
 
+		TEST_METHOD(test_to_lower_with_wchars)
+		{
+			assert_equal(L"abcdefg", ynot::to_lower(L"AbCdEfG"));
+		}
+
+		TEST_METHOD(test_to_lower_with_a_std_string)
+		{
+			assert_equal("abcdefg", ynot::to_lower(std::string("AbCdEfG")));
+		}
+
+		TEST_METHOD(test_to_lower_with_a_std_wstring)
+		{
+			assert_equal(L"abcdefg", ynot::to_lower(std::wstring(L"AbCdEfG")));
+		}
+
 		TEST_METHOD(test_to_upper)
 		{
 			assert_equal("ABCDEFG", ynot::to_upper("AbCdEfG"));
+		}
+
+		TEST_METHOD(test_to_upper_with_wchars)
+		{
+			assert_equal(L"ABCDEFG", ynot::to_upper(L"AbCdEfG"));
 		}
 
 		TEST_METHOD(test_dont_slice)
@@ -106,13 +134,18 @@ namespace tests
 			assert_equal("eca", ynot::slice("abcdefg", 0, 6, -2));
 		}
 
+		TEST_METHOD(test_slice_wchar_t_string)
+		{
+			assert_equal(L"eca", ynot::slice(L"abcdefg", 0, 6, -2));
+		}
+
 		TEST_METHOD(test_split_with_default_argument)
 		{
 			vector<string> v = ynot::split("a b c");
 			assert_equal("a", v[0]);
 			assert_equal("b", v[1]);
 			assert_equal("c", v[2]);
-			assert_equal(3, v.size());
+			assert_equal<size_t>(3, v.size());
 		}
 
 		TEST_METHOD(test_split_with_trailing_split)
@@ -122,7 +155,7 @@ namespace tests
 			assert_equal("23", v[1]);
 			assert_equal("456", v[2]);
 			assert_equal("", v[3]);
-			assert_equal(4, v.size());
+			assert_equal<size_t>(4, v.size());
 		}
 
 		TEST_METHOD(test_split_with_leading_split)
@@ -131,14 +164,14 @@ namespace tests
 			assert_equal("", v[0]);
 			assert_equal("line", v[1]);
 			assert_equal("another line", v[2]);
-			assert_equal(3, v.size());
+			assert_equal<size_t>(3, v.size());
 		}
 
 		TEST_METHOD(test_dont_split)
 		{
 			vector<string> v = ynot::split("sldkfj", "3");
 			assert_equal("sldkfj", v[0]);
-			assert_equal(1, v.size());
+			assert_equal<size_t>(1, v.size());
 		}
 
 		TEST_METHOD(test_split_by_empty_string)
@@ -154,7 +187,7 @@ namespace tests
 			assert_equal("asdfkjs", v[1]);
 			assert_equal("alkj", v[2]);
 			assert_equal("", v[3]);
-			assert_equal(4, v.size());
+			assert_equal<size_t>(4, v.size());
 		}
 
 		TEST_METHOD(test_join)
