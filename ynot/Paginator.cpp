@@ -201,8 +201,6 @@ namespace ynot
 	
 	std::string Paginator::improve_spacing(std::string text)
 	{
-		text = std::regex_replace(text, std::regex(R"(([^\n])\n([^\n]))"), "$1 $2");
-		text = std::regex_replace(text, std::regex(R"(  $)"), "\n");
-		return text;
+		return std::regex_replace(text, std::regex(R"((?!\n|  )\n(?!\n))"), " ");
 	}
 }
