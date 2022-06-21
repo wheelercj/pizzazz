@@ -45,3 +45,9 @@ int main() {
 ```
 
 ![](https://media.giphy.com/media/tAn8Pis7lLUfA39MFa/giphy.gif)
+
+## download
+
+You can download a zip file or a tar.gz file of this library at https://github.com/wheelercj/ynot/tags.
+
+You might want to create a folder in your project just for this library. For example, in the same folder as a `main.cpp` if you have one, you could create a `ynot` folder and put all of ynot's files in that folder. Then you can include the library into any of your files with `#include <ynot/ynot.h>`.
