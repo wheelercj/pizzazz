@@ -26,3 +26,22 @@ int main() {
 ```
 
 ![](https://media.giphy.com/media/Rqoco5DR2a2AjDAqtX/giphy.gif)
+
+Below is another example. With ynot's `Paginator` class, you can cleanly present long pieces of text in a terminal.
+
+```cpp
+#include "ynot.h"
+using namespace std;
+
+int main() {
+	string article_title = "3.6 Git Branching - Rebasing";
+	string article_body = ynot::dedent(R"(
+		Article body here.
+		Indent with tabs or spaces, not both.)");
+	string line_prefix = "\n    ";
+	ynot::Paginator paginator(article_title, article_body, line_prefix);
+	paginator.run();
+}
+```
+
+![](https://media.giphy.com/media/tAn8Pis7lLUfA39MFa/giphy.gif)
