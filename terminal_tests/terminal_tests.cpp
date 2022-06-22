@@ -1,16 +1,25 @@
-﻿#include "common.h"
-#include <fstream>
-#include "Paginator.h"
+﻿#include <fstream>
 #include <signal.h>
-#include "str.h"
-#include "tui_tests.h"
-#include "ynot.h"
+#include "terminal_tests.h"
+#include "../ynot/common.h"
+#include "../ynot/common.cpp"
+#include "../ynot/InputField.h"
+#include "../ynot/InputField.cpp"
+#include "../ynot/Paginator.h"
+#include "../ynot/Paginator.cpp"
+#include "../ynot/str.h"
+#include "../ynot/str.cpp"
+#include "../ynot/terminal.h"
+#include "../ynot/terminal.cpp"
+#include "../ynot/wstr.h"
+#include "../ynot/wstr.cpp"
+#include "../ynot/ynot.h"
 using namespace std;
 using ynot::Style;
 using ynot::CursorStyle;
 using ynot::Coord;
 
-void run_tui_tests()
+int main()
 {
 	test_get_key();
 	test_get_key_without_waiting();
@@ -60,6 +69,8 @@ void run_tui_tests()
 	test_alternate_screen_buffer();
 	test_sleep_();
 	test_get_key_with_cursor_movements();
+	cout << endl;
+	return 0;
 }
 
 void signal_callback_handler(int signal_number)

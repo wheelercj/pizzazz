@@ -1,4 +1,3 @@
-void run_tui_tests();
 void signal_callback_handler(int signal_number);
 void test_get_key();
 void test_get_key_without_waiting();
