@@ -228,20 +228,20 @@ namespace ynot
     /* Detects the terminal window's current size in columns and rows. */
     Coord get_window_size();
 
-    /* Gets a keypress of input without requiring an Enter keypress.
+    /* Gets a keypress of input without requiring an enter keypress.
        Optional parameters:
        * whether to wait for the keypress.
        
-       Some possible return values are entire words or multiple words, such as "Enter"
+       Some possible return values are entire words or multiple words, such as "enter"
        or "left arrow". To see all possible return values, you can look through the
-       function definition or run the tests (the first test is for the get_key function).
+       function definition or run the terminal tests (the first test is for the get_key function).
        Here are some potentially unexpected return values:
-       Ctrl+c -> (ends the program early)
-       Ctrl+2 -> (ends the program early)
-       Ctrl+h -> "Backspace"
-       Ctrl+i -> "Tab"
-       Ctrl+j -> "Ctrl+Enter"
-       Ctrl+m -> "Enter" */
+       ctrl+c -> (ends the program immediately)
+       ctrl+2 -> (ends the program immediately)
+       ctrl+h -> "backspace"
+       ctrl+i -> "tab"
+       ctrl+j -> "ctrl+enter"
+       ctrl+m -> "enter" */
     std::string get_key(bool wait = true);
 
     /* Waits for and gets a character input without requiring an Enter keypress.
