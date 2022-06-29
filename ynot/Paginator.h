@@ -50,7 +50,7 @@ namespace ynot
 
 		/* The navigation functions return true if the page
 		   changed, false otherwise. */
-		bool navigate(std::string key);
+		bool on_key(std::string key);
 		bool go_to_previous_page();
 		bool go_to_next_page();
 		bool go_to_first_page();

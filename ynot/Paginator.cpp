@@ -94,7 +94,7 @@ namespace ynot
 				print_page();
 			}
 			key = get_key();
-			page_changed = navigate(key);
+			page_changed = on_key(key);
 		}
 		restore_screen_buffer();
 		restore_cursor_location();
@@ -134,7 +134,7 @@ namespace ynot
 		std::cout << this->line_suffix;
 	}
 
-	bool Paginator::navigate(std::string key)
+	bool Paginator::on_key(std::string key)
 	{
 		if (key == "left arrow" || key == "up arrow" || key == "page up")
 		{
