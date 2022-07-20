@@ -50,4 +50,4 @@ int main() {
 
 You can download a zip file or a tar.gz file of this library at https://github.com/wheelercj/ynot/tags. The library's version number is saved in ynot.h so that, in the future, you can check whether you have the latest version.
 
-You might want to create a folder in your project just for this library. For example, in the same folder as a `main.cpp` if you have one, you could create a `ynot` folder and put all of ynot's header files and source files in that folder. Then you can include the library into any of your files with `#include "ynot/ynot.h"`.
+You might want to create a folder in your project just for this library. For example, in the same folder as a `main.cpp` if you have one, you could create a `ynot` folder and put all of ynot's header files and source files in that folder. Then you can include the library into any of your files with `#include "ynot/ynot.h"`. You may also want to create a [git submodule](https://git-scm.com/book/en/v2/Git-Tools-Submodules) for this if you are using git.
