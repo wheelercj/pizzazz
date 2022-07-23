@@ -21,7 +21,7 @@ using ynot::Coord;
 
 int main()
 {
-	test_get_key();
+	test_get_key();  // test_get_key should always be the first test in every commit.
 	test_get_key_without_waiting();
 	test_getline_ac();
 	test_getline_ac_menu();
@@ -284,15 +284,15 @@ void test_set_window_title()
 
 void test_wide_set_window_title()
 {
-	ynot::set_window_title(L"a custom title with emoji! 🔥");
-	cout << "Title set to \"a custom title with emoji! (flame emoji here)\" The "
+	ynot::w_set_window_title(L"a custom title with emoji! 🔥");
+	wcout << "Title set to \"a custom title with emoji! (flame emoji here)\" The "
 		"title will only be visible in some terminals such as Command Prompt.\n";
 	ynot::pause();
 }
 
 void test_wide_print()
 {
-	ynot::wprint(L"A message with emoji! ✨ The emoji will not be visible in some "
+	ynot::w_print(L"A message with emoji! ✨ The emoji will not be visible in some "
 		"terminals such as Command Prompt.\n");
 	ynot::pause();
 }
@@ -305,30 +305,34 @@ void test_print_styled()
 
 void test_wide_print_styled()
 {
-	ynot::print_styled(L"\nThis text has a bright red background.", { Style::bright_bg_red });
+	ynot::w_print_styled(L"\nThis text has a bright red background.", { Style::bright_bg_red });
 	ynot::pause();
 }
 
 void test_print_multi_styled()
 {
 	ynot::print_styled("\nThis is magenta with a green background and strikethrough. "
-		"The strikethrough is only visible in some terminals such as Windows Terminal.",
+		"\nThe strikethrough is only visible in some terminals such as Windows Terminal.",
 		{ Style::magenta, Style::bg_green, Style::strikethrough });
 	ynot::pause();
 }
 
 void test_wide_print_multi_styled()
 {
-	ynot::print_styled(L"\nThis is overlined, double underlined, and italic with an emoji: ✅. "
-		"These are only visible in some terminals such as Windows Terminal.\n",
-		{ Style::double_underlined, Style::overlined, Style::italic });
+	ynot::w_print_styled(L"\nThis is blue, overlined, double underlined, and italic with an emoji: ✅",
+		{ Style::double_underlined, Style::overlined, Style::italic, Style::blue });
+	ynot::w_print_styled(L".\nAll of these (except the color) are only visible in some terminals such "
+		L"as Windows Terminal.",
+		{ Style::double_underlined, Style::overlined, Style::italic, Style::blue });
+	// Attempting to print the checkmark emoji in cmd.exe somehow broke the output stream, preventing
+	// the printing of anything after the emoji until the next print function call.
 	ynot::pause();
 }
 
 void test_set_style()
 {
 	ynot::set_style({ Style::bright_blue });
-	cout << "This is \"bright\" blue.\n\n";
+	cout << "\nThis is \"bright\" blue.\n";
 	ynot::reset_style();
 	ynot::pause();
 }
@@ -336,7 +340,7 @@ void test_set_style()
 void test_set_multi_style()
 {
 	ynot::set_style({ Style::bg_white, Style::black, Style::bold });
-	cout << "This is black and bold with a white background.\n\n";
+	cout << "\nThis is black and bold with a white background.\n\n";
 	ynot::reset_style();
 	ynot::pause();
 }
@@ -371,7 +375,7 @@ void test_print_invalid_rgb()
 
 void test_wide_print_rgb()
 {
-	ynot::print_rgb(37, 100, 188, L"This is blue, and here's an emoji that's only visible in "
+	ynot::w_print_rgb(37, 100, 188, L"This is blue, and here's an emoji that's only visible in "
 		"some terminals like Windows Terminal: ⚓.\n");
 	ynot::pause();
 }
@@ -384,7 +388,7 @@ void test_print_background_rgb()
 
 void test_wide_print_background_rgb()
 {
-	ynot::print_bg_rgb(183, 84, 4, L"This has a brown/orange background, and here's an "
+	ynot::w_print_bg_rgb(183, 84, 4, L"This has a brown/orange background, and here's an "
 		"emoji that's only visible in some terminals like Windows Terminal: ☃.\n");
 	ynot::pause();
 }
@@ -407,7 +411,7 @@ void test_print_at()
 void test_wide_print_at()
 {
 	ynot::set_style({ Style::bg_blue });
-	ynot::print_at(10, 10, L"This starts at coordinates (10,10), and here's an emoji "
+	ynot::w_print_at(10, 10, L"This starts at coordinates (10,10), and here's an emoji "
 		"that's only visible in some terminals like Windows Terminal: ☔.\n");
 	ynot::reset_style();
 	ynot::pause();
@@ -542,9 +546,9 @@ void test_wide_insert()
 {
 	cout << endl;
 	wstring message = L"This is also printed first.";
-	ynot::wprint(message);
+	ynot::w_print(message);
 	ynot::move_cursor_left(message.size());
-	ynot::insert(L"Now this is also inserted, with emoji: ☕. ");
+	ynot::w_insert(L"Now this is also inserted, with emoji: ☕. ");
 	// TODO: figure out why the first letter of the first output gets overwritten in
 	// Windows Terminal and not Command Prompt. Does it have something to do with the
 	// use of wide characters?
@@ -554,7 +558,7 @@ void test_wide_insert()
 void test_delete_chars()
 {
 	cout << "\nHere is yet more text. ";
-	string message1 = "This is sentence is about to be deleted. ";
+	string message1 = "This sentence is about to be deleted. ";
 	cout << message1;
 	string message2 = "This sentence will move to the left.";
 	cout << message2;

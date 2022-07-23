@@ -17,7 +17,22 @@ namespace ynot
         else if (style == CursorStyle::steady_default)
             sout << ESC "[7 q" ESC "[?12l";
         else
-            sout << "\x1b[" << int(style) << " q";
+            sout << ESC "[" << int(style) << " q";
+    }
+
+    void w_set_cursor_style(CursorStyle style, std::wostream& wstream)
+    {
+        std::wosyncstream wsout(wstream);
+        if (style == CursorStyle::not_hidden)
+            wsout << LESC L"[?25h";
+        else if (style == CursorStyle::hidden)
+            wsout << LESC L"[?25l";
+        else if (style == CursorStyle::blinking_default)
+            wsout << LESC L"[7 q" LESC L"[?12h";
+        else if (style == CursorStyle::steady_default)
+            wsout << LESC L"[7 q" LESC L"[?12l";
+        else
+            wsout << LESC L"[" << int(style) << L" q";
     }
 
     void set_window_title(std::string title, std::ostream& stream)
@@ -26,24 +41,20 @@ namespace ynot
         sout << ESC "]0;" + title + ESC "[";
     }
 
-    void set_window_title(std::wstring title, std::wostream& wstream, std::ostream& stream)
+    void w_set_window_title(std::wstring title, std::wostream& wstream)
     {
-        std::osyncstream sout(stream);
-        std::wosyncstream wsout(wstream);
-        wprint(LESC "]0;" + title + LESC "[", wsout, sout);
+        w_print(LESC L"]0;" + title + LESC L"[", wstream);
     }
 
-    void wprint(std::wstring message, std::wostream& wstream, std::ostream& stream)
+    void w_print(std::wstring message, std::wostream& wstream)
     {
 #ifdef _WIN32
         fflush(stdout);
         int previous_mode = _setmode(_fileno(stdout), _O_U16TEXT);
-        std::wosyncstream wsout(wstream);
-        wsout << message;
+        wstream << message;
         previous_mode = _setmode(_fileno(stdout), previous_mode);
 #else
-        std::osyncstream sout(stream);
-        sout << std::wstring_convert<std::codecvt_utf8<wchar_t>>().to_bytes(message);
+        wstream << message;
 #endif
     }
 
@@ -55,13 +66,12 @@ namespace ynot
         reset_style(sout);
     }
 
-    void print_styled(std::wstring message, std::vector<Style> styles, std::wostream& wstream, std::ostream& stream)
+    void w_print_styled(std::wstring message, std::vector<Style> styles, std::wostream& wstream)
     {
-        std::osyncstream sout(stream);
         std::wosyncstream wsout(wstream);
-        set_style(styles, sout);
-        wprint(message, wsout, sout);
-        reset_style(sout);
+        w_set_style(styles, wsout);
+        w_print(message, wsout);
+        w_reset_style(wsout);
     }
 
     void set_style(std::vector<Style> styles, std::ostream& stream)
@@ -71,10 +81,23 @@ namespace ynot
             sout << ESC "[" << int(style) << "m";
     }
 
+    void w_set_style(std::vector<Style> styles, std::wostream& wstream)
+    {
+        std::wosyncstream wsout(wstream);
+        for (Style style : styles)
+            wsout << LESC L"[" << int(style) << L"m";
+    }
+
     void reset_style(std::ostream& stream)
     {
         std::osyncstream sout(stream);
         sout << "\x1b[0m";
+    }
+
+    void w_reset_style(std::wostream& wstream)
+    {
+        std::wosyncstream wsout(wstream);
+        wsout << L"\x1b[0m";
     }
 
     void print_rgb(unsigned red, unsigned green, unsigned blue, std::string message, std::ostream& stream)
@@ -85,13 +108,12 @@ namespace ynot
         reset_style(sout);
     }
 
-    void print_rgb(unsigned red, unsigned green, unsigned blue, std::wstring message, std::wostream& wstream, std::ostream& stream)
+    void w_print_rgb(unsigned red, unsigned green, unsigned blue, std::wstring message, std::wostream& wstream)
     {
-        std::osyncstream sout(stream);
         std::wosyncstream wsout(wstream);
-        set_rgb(red, green, blue, sout);
-        wprint(message, wsout, sout);
-        reset_style(sout);
+        w_set_rgb(red, green, blue, wsout);
+        w_print(message, wsout);
+        w_reset_style(wsout);
     }
 
     void print_bg_rgb(unsigned red, unsigned green, unsigned blue, std::string message, std::ostream& stream)
@@ -102,13 +124,12 @@ namespace ynot
         reset_style(sout);
     }
 
-    void print_bg_rgb(unsigned red, unsigned green, unsigned blue, std::wstring message, std::wostream& wstream, std::ostream& stream)
+    void w_print_bg_rgb(unsigned red, unsigned green, unsigned blue, std::wstring message, std::wostream& wstream)
     {
-        std::osyncstream sout(stream);
         std::wosyncstream wsout(wstream);
-        set_bg_rgb(red, green, blue, sout);
-        wprint(message, wsout, sout);
-        reset_style(sout);
+        w_set_bg_rgb(red, green, blue, wsout);
+        w_print(message, wsout);
+        w_reset_style(wsout);
     }
 
     void set_rgb(unsigned red, unsigned green, unsigned blue, std::ostream& stream)
@@ -119,12 +140,28 @@ namespace ynot
         sout << ESC "[38;2;" << red << ";" << green << ";" << blue << "m";
     }
 
+    void w_set_rgb(unsigned red, unsigned green, unsigned blue, std::wostream& wstream)
+    {
+        if (red > 255 || green > 255 || blue > 255)
+            throw std::invalid_argument("Error: the values for the colors must be within the range [0,255].");
+        std::wosyncstream wsout(wstream);
+        wsout << LESC L"[38;2;" << red << L";" << green << L";" << blue << L"m";
+    }
+
     void set_bg_rgb(unsigned red, unsigned green, unsigned blue, std::ostream& stream)
     {
         if (red > 255 || green > 255 || blue > 255)
             throw std::invalid_argument("Error: the values for the colors must be within the range [0,255].");
         std::osyncstream sout(stream);
         sout << ESC "[48;2;" << red << ";" << green << ";" << blue << "m";
+    }
+
+    void w_set_bg_rgb(unsigned red, unsigned green, unsigned blue, std::wostream& wstream)
+    {
+        if (red > 255 || green > 255 || blue > 255)
+            throw std::invalid_argument("Error: the values for the colors must be within the range [0,255].");
+        std::wosyncstream wsout(wstream);
+        wsout << LESC L"[48;2;" << red << L";" << green << L";" << blue << L"m";
     }
 
     void print_at(unsigned x, unsigned y, std::string message, std::ostream& stream)
@@ -134,12 +171,11 @@ namespace ynot
         sout << message;
     }
 
-    void print_at(unsigned x, unsigned y, std::wstring message, std::wostream& wstream, std::ostream& stream)
+    void w_print_at(unsigned x, unsigned y, std::wstring message, std::wostream& wstream)
     {
-        std::osyncstream sout(stream);
         std::wosyncstream wsout(wstream);
-        set_cursor_coords(x, y, sout);
-        wprint(message, wsout, sout);
+        w_set_cursor_coords(x, y, wsout);
+        w_print(message, wsout);
     }
 
     void set_cursor_coords(unsigned x, unsigned y, std::ostream& stream)
@@ -148,18 +184,26 @@ namespace ynot
         sout << ESC "[" << y << ";" << x << "H";
     }
 
+    void w_set_cursor_coords(unsigned x, unsigned y, std::wostream& wstream)
+    {
+        std::wosyncstream wsout(wstream);
+        wsout << LESC L"[" << y << L";" << x << L"H";
+    }
+
     void set_cursor_coords(Coord coord, std::ostream& stream)
     {
         std::osyncstream sout(stream);
         sout << ESC "[" << coord.y << ";" << coord.x << "H";
     }
 
-    Coord get_cursor_coords(std::ostream& stream)
+    void w_set_cursor_coords(Coord coord, std::wostream& wstream)
     {
-        {
-            std::osyncstream sout(stream);
-            sout << ESC "[6n";  // request coordinates in the format \x1b[y;xR
-        }
+        std::wosyncstream wsout(wstream);
+        wsout << LESC L"[" << coord.y << L";" << coord.x << L"H";
+    }
+
+    Coord __get_cursor_coords()
+    {
         char input;
         input = getch_();  // \x1b
         input = getch_();  // [
@@ -183,10 +227,34 @@ namespace ynot
         return coord;
     }
 
+    Coord get_cursor_coords(std::ostream& stream)
+    {
+        {
+            std::osyncstream sout(stream);
+            sout << ESC "[6n";  // request coordinates in the format \x1b[y;xR
+        }
+        return __get_cursor_coords();
+    }
+
+    Coord w_get_cursor_coords(std::wostream& wstream)
+    {
+        {
+            std::wosyncstream wsout(wstream);
+            wsout << LESC L"[6n";  // request coordinates in the format \x1b[y;xR
+        }
+        return __get_cursor_coords();
+    }
+
     void save_cursor_location(std::ostream& stream)
     {
         std::osyncstream sout(stream);
         sout << ESC "[s";
+    }
+
+    void w_save_cursor_location(std::wostream& wstream)
+    {
+        std::wosyncstream wsout(wstream);
+        wsout << LESC L"[s";
     }
 
     void restore_cursor_location(std::ostream& stream)
@@ -195,10 +263,22 @@ namespace ynot
         sout << ESC "[u";
     }
 
+    void w_restore_cursor_location(std::wostream& wstream)
+    {
+        std::wosyncstream wsout(wstream);
+        wsout << LESC L"[u";
+    }
+
     void move_cursor_up(size_t lines, std::ostream& stream)
     {
         std::osyncstream sout(stream);
         sout << ESC "[" << lines << "A";
+    }
+
+    void w_move_cursor_up(size_t lines, std::wostream& wstream)
+    {
+        std::wosyncstream wsout(wstream);
+        wsout << LESC L"[" << lines << L"A";
     }
 
     void move_cursor_down(size_t lines, std::ostream& stream)
@@ -207,16 +287,34 @@ namespace ynot
         sout << ESC "[" << lines << "B";
     }
 
+    void w_move_cursor_down(size_t lines, std::wostream& wstream)
+    {
+        std::wosyncstream wsout(wstream);
+        wsout << LESC L"[" << lines << L"B";
+    }
+
     void move_cursor_right(size_t columns, std::ostream& stream)
     {
         std::osyncstream sout(stream);
         sout << ESC "[" << columns << "C";
     }
 
+    void w_move_cursor_right(size_t columns, std::wostream& wstream)
+    {
+        std::wosyncstream wsout(wstream);
+        wsout << LESC L"[" << columns << L"C";
+    }
+
     void move_cursor_left(size_t columns, std::ostream& stream)
     {
         std::osyncstream sout(stream);
         sout << ESC "[" << columns << "D";
+    }
+
+    void w_move_cursor_left(size_t columns, std::wostream& wstream)
+    {
+        std::wosyncstream wsout(wstream);
+        wsout << LESC L"[" << columns << L"D";
     }
 
     Coord get_window_size()
@@ -499,19 +597,24 @@ namespace ynot
         sout << text;
     }
 
-    void insert(std::wstring text, std::wostream& wstream, std::ostream& stream)
+    void w_insert(std::wstring text, std::wostream& wstream)
     {
-        std::osyncstream sout(stream);
         std::wosyncstream wsout(wstream);
-        wsout << ESC "[" << text.size() << "@";
-        wsout << ESC "[" << text.size() << "D";
-        wprint(text, wsout, sout);
+        wsout << LESC L"[" << text.size() << L"@";
+        wsout << LESC L"[" << text.size() << L"D";
+        w_print(text, wsout);
     }
 
     void delete_chars(size_t count, std::ostream& stream)
     {
         std::osyncstream sout(stream);
         sout << ESC "[" << count << "P";
+    }
+
+    void w_delete_chars(size_t count, std::wostream& wstream)
+    {
+        std::wosyncstream wsout(wstream);
+        wsout << LESC L"[" << count << L"P";
     }
 
     void backspace_chars(size_t count, std::ostream& stream)
@@ -521,10 +624,23 @@ namespace ynot
         delete_chars(count, sout);
     }
 
+    void w_backspace_chars(size_t count, std::wostream& wstream)
+    {
+        std::wosyncstream wsout(wstream);
+        w_move_cursor_left(count, wsout);
+        w_delete_chars(count, wsout);
+    }
+
     void insert_lines(size_t count, std::ostream& stream)
     {
         std::osyncstream sout(stream);
         sout << ESC "[" << count << "L";
+    }
+
+    void w_insert_lines(size_t count, std::wostream& wstream)
+    {
+        std::wosyncstream wsout(wstream);
+        wsout << LESC L"[" << count << L"L";
     }
 
     void delete_lines(size_t count, std::ostream& stream)
@@ -533,10 +649,22 @@ namespace ynot
         sout << ESC "[" << count << "M";
     }
 
+    void w_delete_lines(size_t count, std::wostream& wstream)
+    {
+        std::wosyncstream wsout(wstream);
+        wsout << LESC L"[" << count << L"M";
+    }
+
     void clear_screen(std::ostream& stream)
     {
         std::osyncstream sout(stream);
         sout << ESC "[2J";
+    }
+
+    void w_clear_screen(std::wostream& wstream)
+    {
+        std::wosyncstream wsout(wstream);
+        wsout << LESC L"[2J";
     }
 
     void alternate_screen_buffer(std::ostream& stream)
@@ -545,10 +673,22 @@ namespace ynot
         sout << ESC "[?1049h";
     }
 
+    void w_alternate_screen_buffer(std::wostream& wstream)
+    {
+        std::wosyncstream wsout(wstream);
+        wsout << LESC L"[?1049h";
+    }
+
     void restore_screen_buffer(std::ostream& stream)
     {
         std::osyncstream sout(stream);
         sout << ESC "[?1049l";
+    }
+
+    void w_restore_screen_buffer(std::wostream& wstream)
+    {
+        std::wosyncstream wsout(wstream);
+        wsout << LESC L"[?1049l";
     }
 
     void set_window_width_to_132(std::ostream& stream)
@@ -557,9 +697,21 @@ namespace ynot
         sout << ESC "[?3h";
     }
 
+    void w_set_window_width_to_132(std::wostream& wstream)
+    {
+        std::wosyncstream wsout(wstream);
+        wsout << LESC L"[?3h";
+    }
+
     void set_window_width_to_80(std::ostream& stream)
     {
         std::osyncstream sout(stream);
         sout << ESC "[?3l";
+    }
+
+    void w_set_window_width_to_80(std::wostream& wstream)
+    {
+        std::wosyncstream wsout(wstream);
+        wsout << LESC L"[?3l";
     }
 }

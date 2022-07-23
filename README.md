@@ -58,9 +58,9 @@ The sample text is from [git-scm.com](https://git-scm.com/book/en/v2/Git-Branchi
 
 ### multithreading with terminal.h
 
-If your app uses multiple threads, you can give the functions in terminal.h a stream object to prevent race conditions.
+If your app uses multiple threads, you can give the functions in terminal.h an osyncstream object to prevent race conditions.
 
-Race condition example (no stream object given):
+Race condition example (no osyncstream object given):
 
 ```cpp
 ynot::set_rgb(0, green, 0);  // set_rgb communicates with the terminal
