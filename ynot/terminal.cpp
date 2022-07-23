@@ -28,7 +28,9 @@ namespace ynot
 
     void set_window_title(std::wstring title, std::wostream& wstream, std::ostream& stream)
     {
-        wprint(LESC "]0;" + title + LESC "[", wstream, stream);
+        std::osyncstream sout(stream);
+        std::wosyncstream wsout(wstream);
+        wprint(LESC "]0;" + title + LESC "[", wsout, sout);
     }
 
     void wprint(std::wstring message, std::wostream& wstream, std::ostream& stream)
@@ -55,9 +57,11 @@ namespace ynot
 
     void print_styled(std::wstring message, std::vector<Style> styles, std::wostream& wstream, std::ostream& stream)
     {
-        set_style(styles, stream);
-        wprint(message, wstream, stream);
-        reset_style(stream);
+        std::osyncstream sout(stream);
+        std::wosyncstream wsout(wstream);
+        set_style(styles, sout);
+        wprint(message, wsout, sout);
+        reset_style(sout);
     }
 
     void set_style(std::vector<Style> styles, std::ostream& stream)
@@ -83,9 +87,11 @@ namespace ynot
 
     void print_rgb(unsigned red, unsigned green, unsigned blue, std::wstring message, std::wostream& wstream, std::ostream& stream)
     {
-        set_rgb(red, green, blue, stream);
-        wprint(message, wstream, stream);
-        reset_style(stream);
+        std::osyncstream sout(stream);
+        std::wosyncstream wsout(wstream);
+        set_rgb(red, green, blue, sout);
+        wprint(message, wsout, sout);
+        reset_style(sout);
     }
 
     void print_bg_rgb(unsigned red, unsigned green, unsigned blue, std::string message, std::ostream& stream)
@@ -98,9 +104,11 @@ namespace ynot
 
     void print_bg_rgb(unsigned red, unsigned green, unsigned blue, std::wstring message, std::wostream& wstream, std::ostream& stream)
     {
-        set_bg_rgb(red, green, blue, stream);
-        wprint(message, wstream, stream);
-        reset_style(stream);
+        std::osyncstream sout(stream);
+        std::wosyncstream wsout(wstream);
+        set_bg_rgb(red, green, blue, sout);
+        wprint(message, wsout, sout);
+        reset_style(sout);
     }
 
     void set_rgb(unsigned red, unsigned green, unsigned blue, std::ostream& stream)
@@ -128,8 +136,10 @@ namespace ynot
 
     void print_at(unsigned x, unsigned y, std::wstring message, std::wostream& wstream, std::ostream& stream)
     {
-        set_cursor_coords(x, y, stream);
-        wprint(message, wstream, stream);
+        std::osyncstream sout(stream);
+        std::wosyncstream wsout(wstream);
+        set_cursor_coords(x, y, sout);
+        wprint(message, wsout, sout);
     }
 
     void set_cursor_coords(unsigned x, unsigned y, std::ostream& stream)
@@ -489,10 +499,11 @@ namespace ynot
 
     void insert(std::wstring text, std::wostream& wstream, std::ostream& stream)
     {
+        std::osyncstream sout(stream);
         std::wosyncstream wsout(wstream);
         wsout << ESC "[" << text.size() << "@";
         wsout << ESC "[" << text.size() << "D";
-        wprint(text, wsout, stream);
+        wprint(text, wsout, sout);
     }
 
     void delete_chars(size_t count, std::ostream& stream)
@@ -503,8 +514,9 @@ namespace ynot
 
     void backspace_chars(size_t count, std::ostream& stream)
     {
-        move_cursor_left(count, stream);
-        delete_chars(count, stream);
+        std::osyncstream sout(stream);
+        move_cursor_left(count, sout);
+        delete_chars(count, sout);
     }
 
     void insert_lines(size_t count, std::ostream& stream)
