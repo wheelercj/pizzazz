@@ -33,9 +33,9 @@ int main() {
 }
 ```
 
-![](https://media.giphy.com/media/Rqoco5DR2a2AjDAqtX/giphy.gif)
+![autocomplete menu example](https://media.giphy.com/media/Rqoco5DR2a2AjDAqtX/giphy.gif)
 
-Below is another example. With ynot's `Paginator` class, you can cleanly present long pieces of text in a terminal.
+Below is another example. With ynot's `Paginator` class and `dedent` function, you can cleanly present long pieces of text in a terminal.
 
 ```cpp
 #include "ynot.h"
@@ -52,16 +52,18 @@ int main() {
 }
 ```
 
-![](https://media.giphy.com/media/tAn8Pis7lLUfA39MFa/giphy.gif)
+![paginator demo](https://media.giphy.com/media/tAn8Pis7lLUfA39MFa/giphy.gif)
+
+The sample text is from [git-scm.com](https://git-scm.com/book/en/v2/Git-Branching-Rebasing).
 
 ### multithreading with terminal.h
 
-If your app uses multiple threads, you can give the functions in terminal.h a stream argument to prevent race conditions.
+If your app uses multiple threads, you can give the functions in terminal.h a stream object to prevent race conditions.
 
 Race condition example (no stream object given):
 
 ```cpp
-ynot::set_rgb(0, green, 0);
+ynot::set_rgb(0, green, 0);  // set_rgb communicates with the terminal
 ynot::print_at(x, y, message);
 ```
 
@@ -69,9 +71,13 @@ ynot::print_at(x, y, message);
 
 Each character is supposed to get steadily darker after it appears on screen, but sometimes the `print_at` function in one thread ends up being called between the `set_rgb` and `print_at` calls in another thread.
 
-Prevent this output scrambling by giving the functions an `osyncstream` object with a scope that ends when you want the output to appear:
+Prevent this output scrambling by giving the functions an [osyncstream](https://en.cppreference.com/w/cpp/io/basic_osyncstream) object, which gathers output and waits to print until it goes out of scope.
 
 ```cpp
+#include <syncstream>  // requires C++20 or newer
+
+...
+
 {
     std::osyncstream sout(std::cout);
     ynot::set_rgb(0, green, 0, sout);
