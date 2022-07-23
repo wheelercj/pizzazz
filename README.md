@@ -61,7 +61,7 @@ If your app uses multiple threads, you can give the functions in terminal.h a st
 Race condition example (no stream object given):
 
 ```cpp
-ynot::set_rgb(red, green, blue);
+ynot::set_rgb(0, green, 0);
 ynot::print_at(x, y, message);
 ```
 
@@ -73,9 +73,9 @@ Prevent this output scrambling by giving the functions an `osyncstream` object w
 
 ```cpp
 {
-	std::osyncstream sout(std::cout);
-	ynot::set_rgb(pixel.red, pixel.green, pixel.blue, sout);
-	ynot::print_at(x, y, pixel.str, sout);
+    std::osyncstream sout(std::cout);
+    ynot::set_rgb(0, green, 0, sout);
+    ynot::print_at(x, y, message, sout);
 }
 ```
 
