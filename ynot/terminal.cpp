@@ -5,9 +5,9 @@
 namespace ynot
 {
 
-    void set_cursor_style(CursorStyle style)
+    void set_cursor_style(CursorStyle style, std::ostream& stream)
     {
-        std::osyncstream sout(std::cout);
+        std::osyncstream sout(stream);
         if (style == CursorStyle::not_hidden)
             sout << ESC "[?25h";
         else if (style == CursorStyle::hidden)
@@ -20,121 +20,134 @@ namespace ynot
             sout << "\x1b[" << int(style) << " q";
     }
 
-    void set_window_title(std::string title)
+    void set_window_title(std::string title, std::ostream& stream)
     {
-        std::osyncstream(std::cout) << ESC "]0;" + title + ESC "[";
+        std::osyncstream sout(stream);
+        sout << ESC "]0;" + title + ESC "[";
     }
 
-    void set_window_title(std::wstring title)
+    void set_window_title(std::wstring title, std::wostream& wstream, std::ostream& stream)
     {
-        wprint(LESC "]0;" + title + LESC "[");
+        wprint(LESC "]0;" + title + LESC "[", wstream, stream);
     }
 
-    void wprint(std::wstring message)
+    void wprint(std::wstring message, std::wostream& wstream, std::ostream& stream)
     {
 #ifdef _WIN32
         fflush(stdout);
         int previous_mode = _setmode(_fileno(stdout), _O_U16TEXT);
-        std::wosyncstream(std::wcout) << message;
+        std::wosyncstream wsout(wstream);
+        wsout << message;
         previous_mode = _setmode(_fileno(stdout), previous_mode);
 #else
-        std::osyncstream(std::cout) << std::wstring_convert<std::codecvt_utf8<wchar_t>>().to_bytes(message);
+        std::osyncstream sout(stream);
+        sout << std::wstring_convert<std::codecvt_utf8<wchar_t>>().to_bytes(message);
 #endif
     }
 
-    void print_styled(std::string message, std::vector<Style> styles)
+    void print_styled(std::string message, std::vector<Style> styles, std::ostream& stream)
     {
-        set_style(styles);
-        std::osyncstream(std::cout) << message;
-        reset_style();
+        std::osyncstream sout(stream);
+        set_style(styles, sout);
+        sout << message;
+        reset_style(sout);
     }
 
-    void print_styled(std::wstring message, std::vector<Style> styles)
+    void print_styled(std::wstring message, std::vector<Style> styles, std::wostream& wstream, std::ostream& stream)
     {
-        set_style(styles);
-        wprint(message);
-        reset_style();
+        set_style(styles, stream);
+        wprint(message, wstream, stream);
+        reset_style(stream);
     }
 
-    void set_style(std::vector<Style> styles)
+    void set_style(std::vector<Style> styles, std::ostream& stream)
     {
-        std::osyncstream sout(std::cout);
+        std::osyncstream sout(stream);
         for (Style style : styles)
             sout << ESC "[" << int(style) << "m";
     }
 
-    void reset_style()
+    void reset_style(std::ostream& stream)
     {
-        std::osyncstream(std::cout) << "\x1b[0m";
+        std::osyncstream sout(stream);
+        sout << "\x1b[0m";
     }
 
-    void print_rgb(unsigned red, unsigned green, unsigned blue, std::string message)
+    void print_rgb(unsigned red, unsigned green, unsigned blue, std::string message, std::ostream& stream)
     {
-        set_rgb(red, green, blue);
-        std::osyncstream(std::cout) << message;
-        reset_style();
+        std::osyncstream sout(stream);
+        set_rgb(red, green, blue, sout);
+        sout << message;
+        reset_style(sout);
     }
 
-    void print_rgb(unsigned red, unsigned green, unsigned blue, std::wstring message)
+    void print_rgb(unsigned red, unsigned green, unsigned blue, std::wstring message, std::wostream& wstream, std::ostream& stream)
     {
-        set_rgb(red, green, blue);
-        wprint(message);
-        reset_style();
+        set_rgb(red, green, blue, stream);
+        wprint(message, wstream, stream);
+        reset_style(stream);
     }
 
-    void print_bg_rgb(unsigned red, unsigned green, unsigned blue, std::string message)
+    void print_bg_rgb(unsigned red, unsigned green, unsigned blue, std::string message, std::ostream& stream)
     {
-        set_bg_rgb(red, green, blue);
-        std::osyncstream(std::cout) << message;
-        reset_style();
+        std::osyncstream sout(stream);
+        set_bg_rgb(red, green, blue, sout);
+        sout << message;
+        reset_style(sout);
     }
 
-    void print_bg_rgb(unsigned red, unsigned green, unsigned blue, std::wstring message)
+    void print_bg_rgb(unsigned red, unsigned green, unsigned blue, std::wstring message, std::wostream& wstream, std::ostream& stream)
     {
-        set_bg_rgb(red, green, blue);
-        wprint(message);
-        reset_style();
+        set_bg_rgb(red, green, blue, stream);
+        wprint(message, wstream, stream);
+        reset_style(stream);
     }
 
-    void set_rgb(unsigned red, unsigned green, unsigned blue)
+    void set_rgb(unsigned red, unsigned green, unsigned blue, std::ostream& stream)
     {
         if (red > 255 || green > 255 || blue > 255)
             throw std::invalid_argument("Error: the values for the colors must be within the range [0,255].");
-        std::osyncstream(std::cout) << ESC "[38;2;" << red << ";" << green << ";" << blue << "m";
+        std::osyncstream sout(stream);
+        sout << ESC "[38;2;" << red << ";" << green << ";" << blue << "m";
     }
 
-    void set_bg_rgb(unsigned red, unsigned green, unsigned blue)
+    void set_bg_rgb(unsigned red, unsigned green, unsigned blue, std::ostream& stream)
     {
         if (red > 255 || green > 255 || blue > 255)
             throw std::invalid_argument("Error: the values for the colors must be within the range [0,255].");
-        std::osyncstream(std::cout) << ESC "[48;2;" << red << ";" << green << ";" << blue << "m";
+        std::osyncstream sout(stream);
+        sout << ESC "[48;2;" << red << ";" << green << ";" << blue << "m";
     }
 
-    void print_at(unsigned x, unsigned y, std::string message)
+    void print_at(unsigned x, unsigned y, std::string message, std::ostream& stream)
     {
-        set_cursor_coords(x, y);
-        std::osyncstream(std::cout) << message;
+        std::osyncstream sout(stream);
+        set_cursor_coords(x, y, sout);
+        sout << message;
     }
 
-    void print_at(unsigned x, unsigned y, std::wstring message)
+    void print_at(unsigned x, unsigned y, std::wstring message, std::wostream& wstream, std::ostream& stream)
     {
-        set_cursor_coords(x, y);
-        wprint(message);
+        set_cursor_coords(x, y, stream);
+        wprint(message, wstream, stream);
     }
 
-    void set_cursor_coords(unsigned x, unsigned y)
+    void set_cursor_coords(unsigned x, unsigned y, std::ostream& stream)
     {
-        std::osyncstream(std::cout) << ESC "[" << y << ";" << x << "H";
+        std::osyncstream sout(stream);
+        sout << ESC "[" << y << ";" << x << "H";
     }
 
-    void set_cursor_coords(Coord coord)
+    void set_cursor_coords(Coord coord, std::ostream& stream)
     {
-        std::osyncstream(std::cout) << ESC "[" << coord.y << ";" << coord.x << "H";
+        std::osyncstream sout(stream);
+        sout << ESC "[" << coord.y << ";" << coord.x << "H";
     }
 
-    Coord get_cursor_coords()
+    Coord get_cursor_coords(std::ostream& stream)
     {
-        std::cout << ESC "[6n";  // request coordinates in the format \x1b[y;xR
+        std::osyncstream sout(stream);
+        sout << ESC "[6n";  // request coordinates in the format \x1b[y;xR
         char input;
         input = getch_();  // \x1b
         input = getch_();  // [
@@ -158,34 +171,40 @@ namespace ynot
         return coord;
     }
 
-    void save_cursor_location()
+    void save_cursor_location(std::ostream& stream)
     {
-        std::osyncstream(std::cout) << ESC "[s";
+        std::osyncstream sout(stream);
+        sout << ESC "[s";
     }
 
-    void restore_cursor_location()
+    void restore_cursor_location(std::ostream& stream)
     {
-        std::osyncstream(std::cout) << ESC "[u";
+        std::osyncstream sout(stream);
+        sout << ESC "[u";
     }
 
-    void move_cursor_up(size_t lines)
+    void move_cursor_up(size_t lines, std::ostream& stream)
     {
-        std::osyncstream(std::cout) << ESC "[" << lines << "A";
+        std::osyncstream sout(stream);
+        sout << ESC "[" << lines << "A";
     }
 
-    void move_cursor_down(size_t lines)
+    void move_cursor_down(size_t lines, std::ostream& stream)
     {
-        std::osyncstream(std::cout) << ESC "[" << lines << "B";
+        std::osyncstream sout(stream);
+        sout << ESC "[" << lines << "B";
     }
 
-    void move_cursor_right(size_t columns)
+    void move_cursor_right(size_t columns, std::ostream& stream)
     {
-        std::osyncstream(std::cout) << ESC "[" << columns << "C";
+        std::osyncstream sout(stream);
+        sout << ESC "[" << columns << "C";
     }
 
-    void move_cursor_left(size_t columns)
+    void move_cursor_left(size_t columns, std::ostream& stream)
     {
-        std::osyncstream(std::cout) << ESC "[" << columns << "D";
+        std::osyncstream sout(stream);
+        sout << ESC "[" << columns << "D";
     }
 
     Coord get_window_size()
@@ -460,67 +479,73 @@ namespace ynot
             _ = getch_();
     }
 
-    void insert(std::string text)
+    void insert(std::string text, std::ostream& stream)
     {
-        std::osyncstream sout(std::cout);
+        std::osyncstream sout(stream);
         sout << ESC "[" << text.size() << "@";
         sout << ESC "[" << text.size() << "D";
         sout << text;
     }
 
-    void insert(std::wstring text)
+    void insert(std::wstring text, std::wostream& wstream, std::ostream& stream)
     {
-        {
-            std::wosyncstream wsout(std::wcout);
-            wsout << ESC "[" << text.size() << "@";
-            wsout << ESC "[" << text.size() << "D";
-        }
-        wprint(text);
+        std::wosyncstream wsout(wstream);
+        wsout << ESC "[" << text.size() << "@";
+        wsout << ESC "[" << text.size() << "D";
+        wprint(text, wsout, stream);
     }
 
-    void delete_chars(size_t count)
+    void delete_chars(size_t count, std::ostream& stream)
     {
-        std::osyncstream(std::cout) << ESC "[" << count << "P";
+        std::osyncstream sout(stream);
+        sout << ESC "[" << count << "P";
     }
 
-    void backspace_chars(size_t count)
+    void backspace_chars(size_t count, std::ostream& stream)
     {
-        move_cursor_left(count);
-        delete_chars(count);
+        move_cursor_left(count, stream);
+        delete_chars(count, stream);
     }
 
-    void insert_lines(size_t count)
+    void insert_lines(size_t count, std::ostream& stream)
     {
-        std::osyncstream(std::cout) << ESC "[" << count << "L";
+        std::osyncstream sout(stream);
+        sout << ESC "[" << count << "L";
     }
 
-    void delete_lines(size_t count)
+    void delete_lines(size_t count, std::ostream& stream)
     {
-        std::osyncstream(std::cout) << ESC "[" << count << "M";
+        std::osyncstream sout(stream);
+        sout << ESC "[" << count << "M";
     }
 
-    void clear_screen()
+    void clear_screen(std::ostream& stream)
     {
-        std::osyncstream(std::cout) << ESC "[2J";
+        std::osyncstream sout(stream);
+        sout << ESC "[2J";
     }
 
-    void alternate_screen_buffer()
+    void alternate_screen_buffer(std::ostream& stream)
     {
-        std::osyncstream(std::cout) << ESC "[?1049h";
+        std::osyncstream sout(stream);
+        sout << ESC "[?1049h";
     }
 
-    void restore_screen_buffer()
+    void restore_screen_buffer(std::ostream& stream)
     {
-        std::osyncstream(std::cout) << ESC "[?1049l";
+        std::osyncstream sout(stream);
+        sout << ESC "[?1049l";
     }
 
-    void set_window_width_to_132()
+    void set_window_width_to_132(std::ostream& stream)
     {
-        std::osyncstream(std::cout) << ESC "[?3h";
+        std::osyncstream sout(stream);
+        sout << ESC "[?3h";
     }
 
-    void set_window_width_to_80()
+    void set_window_width_to_80(std::ostream& stream)
     {
-        std::osyncstream(std::cout) << ESC "[?3l";
+        std::osyncstream sout(stream);
+        sout << ESC "[?3l";
     }
 }
