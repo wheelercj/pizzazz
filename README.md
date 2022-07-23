@@ -2,7 +2,15 @@
 
 Add some color, style, advanced cursor movements, autocomplete suggestions, and more to your C++ terminal app! This fully cross-platform library also includes various functions and classes to make some common challenges easier.
 
-See the header files for the lists of functions and their descriptions. Take a look at the test files for examples of how to use them. C++17 or newer is required; in Visual Studio, you can choose the version of C++ with project > Properties > C/C++ > Language > C++ Language Standard.
+## download
+
+You can download this library into your project with git by using `git submodule add https://github.com/wheelercj/ynot` and then adding `#include "../ynot/ynot/ynot.h"` to the file you want to use this library in. Get future updates with `git submodule update --remote`.
+
+Alternatively, you can manually download a zip file or a tar.gz file of this library at https://github.com/wheelercj/ynot/tags. The library's version number is saved in ynot.h so that you can check whether you have the latest version in the future.
+
+## usage
+
+See the header files for the lists of functions and their descriptions. Take a look at the test files or [the matrix](https://github.com/wheelercj/the-matrix) for examples of how to use them. C++20 or newer is required; in Visual Studio, you can choose the version of C++ with project > Properties > C/C++ > Language > C++ Language Standard.
 
 Here's a simple example of one of this library's functions, getline_ac, which can give autocomplete suggestions (not autocorrect) and has optional built-in input validation:
 
@@ -46,8 +54,31 @@ int main() {
 
 ![](https://media.giphy.com/media/tAn8Pis7lLUfA39MFa/giphy.gif)
 
-## download
+### multithreading with terminal.h
 
-You can download this library into your project with git by using `git submodule add https://github.com/wheelercj/ynot` and then adding `#include "../ynot/ynot/ynot.h"` to the file you want to use this library in.
+If your app uses multiple threads, you can give the functions in terminal.h a stream argument to prevent race conditions.
 
-Alternatively, you can manually download a zip file or a tar.gz file of this library at https://github.com/wheelercj/ynot/tags. The library's version number is saved in ynot.h so that you can check whether you have the latest version in the future.
+Race condition example (no stream object given):
+
+```cpp
+ynot::set_rgb(red, green, blue);
+ynot::print_at(x, y, message);
+```
+
+![race condition example](https://media.giphy.com/media/Zvfk7gsfI0n4dB4dkG/giphy.gif)
+
+Each character is supposed to get steadily darker after it appears on screen, but sometimes the `print_at` function in one thread ends up being called between the `set_rgb` and `print_at` calls in another thread.
+
+Prevent this output scrambling by giving the functions an `osyncstream` object with a scope that ends when you want the output to appear:
+
+```cpp
+{
+	std::osyncstream sout(std::cout);
+	ynot::set_rgb(pixel.red, pixel.green, pixel.blue, sout);
+	ynot::print_at(x, y, pixel.str, sout);
+}
+```
+
+![osyncstream demo](https://media.giphy.com/media/iArQ9LLVS30McyVR3u/giphy.gif)
+
+You can see all of the code for what's shown in the gif [here](https://github.com/wheelercj/the-matrix).
