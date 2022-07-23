@@ -156,8 +156,10 @@ namespace ynot
 
     Coord get_cursor_coords(std::ostream& stream)
     {
-        std::osyncstream sout(stream);
-        sout << ESC "[6n";  // request coordinates in the format \x1b[y;xR
+        {
+            std::osyncstream sout(stream);
+            sout << ESC "[6n";  // request coordinates in the format \x1b[y;xR
+        }
         char input;
         input = getch_();  // \x1b
         input = getch_();  // [
