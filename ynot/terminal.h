@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <iostream>
+#include <syncstream>  // C++20+
 #include <string>
 #include <vector>
 #include <wchar.h>

@@ -7,22 +7,22 @@ namespace ynot
 
     void set_cursor_style(CursorStyle style)
     {
-        // TODO: figure out why the program crashes if ctrl+c is pressed right before this function is called.
+        std::osyncstream sout(std::cout);
         if (style == CursorStyle::not_hidden)
-            std::cout << ESC "[?25h";
+            sout << ESC "[?25h";
         else if (style == CursorStyle::hidden)
-            std::cout << ESC "[?25l";
+            sout << ESC "[?25l";
         else if (style == CursorStyle::blinking_default)
-            std::cout << ESC "[7 q" ESC "[?12h";
+            sout << ESC "[7 q" ESC "[?12h";
         else if (style == CursorStyle::steady_default)
-            std::cout << ESC "[7 q" ESC "[?12l";
+            sout << ESC "[7 q" ESC "[?12l";
         else
-            std::cout << "\x1b[" << int(style) << " q";
+            sout << "\x1b[" << int(style) << " q";
     }
 
     void set_window_title(std::string title)
     {
-        std::cout << ESC "]0;" + title + ESC "[";
+        std::osyncstream(std::cout) << ESC "]0;" + title + ESC "[";
     }
 
     void set_window_title(std::wstring title)
@@ -35,17 +35,17 @@ namespace ynot
 #ifdef _WIN32
         fflush(stdout);
         int previous_mode = _setmode(_fileno(stdout), _O_U16TEXT);
-        std::wcout << message;
+        std::wosyncstream(std::wcout) << message;
         previous_mode = _setmode(_fileno(stdout), previous_mode);
 #else
-        std::cout << std::wstring_convert<std::codecvt_utf8<wchar_t>>().to_bytes(message);
+        std::osyncstream(std::cout) << std::wstring_convert<std::codecvt_utf8<wchar_t>>().to_bytes(message);
 #endif
     }
 
     void print_styled(std::string message, std::vector<Style> styles)
     {
         set_style(styles);
-        std::cout << message;
+        std::osyncstream(std::cout) << message;
         reset_style();
     }
 
@@ -58,19 +58,20 @@ namespace ynot
 
     void set_style(std::vector<Style> styles)
     {
+        std::osyncstream sout(std::cout);
         for (Style style : styles)
-            std::cout << ESC "[" << int(style) << "m";
+            sout << ESC "[" << int(style) << "m";
     }
 
     void reset_style()
     {
-        std::cout << "\x1b[0m";
+        std::osyncstream(std::cout) << "\x1b[0m";
     }
 
     void print_rgb(unsigned red, unsigned green, unsigned blue, std::string message)
     {
         set_rgb(red, green, blue);
-        std::cout << message;
+        std::osyncstream(std::cout) << message;
         reset_style();
     }
 
@@ -84,7 +85,7 @@ namespace ynot
     void print_bg_rgb(unsigned red, unsigned green, unsigned blue, std::string message)
     {
         set_bg_rgb(red, green, blue);
-        std::cout << message;
+        std::osyncstream(std::cout) << message;
         reset_style();
     }
 
@@ -99,20 +100,20 @@ namespace ynot
     {
         if (red > 255 || green > 255 || blue > 255)
             throw std::invalid_argument("Error: the values for the colors must be within the range [0,255].");
-        std::cout << ESC "[38;2;" << red << ";" << green << ";" << blue << "m";
+        std::osyncstream(std::cout) << ESC "[38;2;" << red << ";" << green << ";" << blue << "m";
     }
 
     void set_bg_rgb(unsigned red, unsigned green, unsigned blue)
     {
         if (red > 255 || green > 255 || blue > 255)
             throw std::invalid_argument("Error: the values for the colors must be within the range [0,255].");
-        std::cout << ESC "[48;2;" << red << ";" << green << ";" << blue << "m";
+        std::osyncstream(std::cout) << ESC "[48;2;" << red << ";" << green << ";" << blue << "m";
     }
 
     void print_at(unsigned x, unsigned y, std::string message)
     {
         set_cursor_coords(x, y);
-        std::cout << message;
+        std::osyncstream(std::cout) << message;
     }
 
     void print_at(unsigned x, unsigned y, std::wstring message)
@@ -123,12 +124,12 @@ namespace ynot
 
     void set_cursor_coords(unsigned x, unsigned y)
     {
-        std::cout << ESC "[" << y << ";" << x << "H";
+        std::osyncstream(std::cout) << ESC "[" << y << ";" << x << "H";
     }
 
     void set_cursor_coords(Coord coord)
     {
-        std::cout << ESC "[" << coord.y << ";" << coord.x << "H";
+        std::osyncstream(std::cout) << ESC "[" << coord.y << ";" << coord.x << "H";
     }
 
     Coord get_cursor_coords()
@@ -159,32 +160,32 @@ namespace ynot
 
     void save_cursor_location()
     {
-        std::cout << ESC "[s";
+        std::osyncstream(std::cout) << ESC "[s";
     }
 
     void restore_cursor_location()
     {
-        std::cout << ESC "[u";
+        std::osyncstream(std::cout) << ESC "[u";
     }
 
     void move_cursor_up(size_t lines)
     {
-        std::cout << ESC "[" << lines << "A";
+        std::osyncstream(std::cout) << ESC "[" << lines << "A";
     }
 
     void move_cursor_down(size_t lines)
     {
-        std::cout << ESC "[" << lines << "B";
+        std::osyncstream(std::cout) << ESC "[" << lines << "B";
     }
 
     void move_cursor_right(size_t columns)
     {
-        std::cout << ESC "[" << columns << "C";
+        std::osyncstream(std::cout) << ESC "[" << columns << "C";
     }
 
     void move_cursor_left(size_t columns)
     {
-        std::cout << ESC "[" << columns << "D";
+        std::osyncstream(std::cout) << ESC "[" << columns << "D";
     }
 
     Coord get_window_size()
@@ -461,21 +462,25 @@ namespace ynot
 
     void insert(std::string text)
     {
-        std::cout << ESC "[" << text.size() << "@";
-        std::cout << ESC "[" << text.size() << "D";
-        std::cout << text;
+        std::osyncstream sout(std::cout);
+        sout << ESC "[" << text.size() << "@";
+        sout << ESC "[" << text.size() << "D";
+        sout << text;
     }
 
     void insert(std::wstring text)
     {
-        std::cout << ESC "[" << text.size() << "@";
-        std::cout << ESC "[" << text.size() << "D";
+        {
+            std::wosyncstream wsout(std::wcout);
+            wsout << ESC "[" << text.size() << "@";
+            wsout << ESC "[" << text.size() << "D";
+        }
         wprint(text);
     }
 
     void delete_chars(size_t count)
     {
-        std::cout << ESC "[" << count << "P";
+        std::osyncstream(std::cout) << ESC "[" << count << "P";
     }
 
     void backspace_chars(size_t count)
@@ -486,36 +491,36 @@ namespace ynot
 
     void insert_lines(size_t count)
     {
-        std::cout << ESC "[" << count << "L";
+        std::osyncstream(std::cout) << ESC "[" << count << "L";
     }
 
     void delete_lines(size_t count)
     {
-        std::cout << ESC "[" << count << "M";
+        std::osyncstream(std::cout) << ESC "[" << count << "M";
     }
 
     void clear_screen()
     {
-        std::cout << ESC "[2J";
+        std::osyncstream(std::cout) << ESC "[2J";
     }
 
     void alternate_screen_buffer()
     {
-        std::cout << ESC "[?1049h";
+        std::osyncstream(std::cout) << ESC "[?1049h";
     }
 
     void restore_screen_buffer()
     {
-        std::cout << ESC "[?1049l";
+        std::osyncstream(std::cout) << ESC "[?1049l";
     }
 
     void set_window_width_to_132()
     {
-        std::cout << ESC "[?3h";
+        std::osyncstream(std::cout) << ESC "[?3h";
     }
 
     void set_window_width_to_80()
     {
-        std::cout << ESC "[?3l";
+        std::osyncstream(std::cout) << ESC "[?3l";
     }
 }
