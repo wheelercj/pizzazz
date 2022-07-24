@@ -222,7 +222,7 @@ namespace tests
 
 		TEST_METHOD(test_rstrip_with_only_characters_to_strip)
 		{
-			assert_equal("", ynot::lstrip("\n\n\n\n", "\n"));
+			assert_equal("", ynot::rstrip("\n\n\n\n", "\n"));
 		}
 
 		TEST_METHOD(test_center)
