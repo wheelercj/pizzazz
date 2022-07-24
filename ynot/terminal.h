@@ -238,7 +238,7 @@ namespace ynot
     void restore_cursor_location(std::ostream& stream = std::cout);
 
     /* Restores the terminal cursor to a previously saved location. */
-    void w_restore_cursor_location_w(std::wostream& wstream = std::wcout);
+    void w_restore_cursor_location(std::wostream& wstream = std::wcout);
 
     /* Moves the terminal cursor up a chosen number of lines.
        If the cursor is at the top of the window, this function will
