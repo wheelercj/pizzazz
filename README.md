@@ -88,3 +88,14 @@ Prevent this output scrambling by giving the functions an [osyncstream](https://
 ![osyncstream demo](https://media.giphy.com/media/iArQ9LLVS30McyVR3u/giphy.gif)
 
 You can see all of the code for what's shown in the gif [here](https://github.com/wheelercj/the-matrix).
+
+If you're using wide strings (`std::wstring`s or `wchar_t*`s), many of the functions in terminal.h have wide string equivalents with names starting with `w_`. If you're multithreading with wide strings, you can give these wide string functions a `wosyncstream` object with a limited scope to prevent race conditions.
+
+```cpp
+{
+    std::wstring message = L"this is a wide string";
+    std::wosyncstream wsout(std::wcout);
+    ynot::w_set_rgb(0, green, 0, wsout);
+    ynot::w_print_at(x, y, message, wsout);
+}
+```
