@@ -141,7 +141,7 @@ namespace ynot
 
     /*  Prints a string that can have emoji/Unicode characters.
         When calling this function, put an L in front of the string.
-        For example, `wprint(L"Hi! ✨");` prints `Hi! ✨`.
+        For example, `w_print(L"Hi! ✨");` prints `Hi! ✨`.
         Microsoft's C++ compiler doesn't support printing Unicode
         characters with code points greater than U+FFFF. */
     void w_print(std::wstring message, std::wostream& wstream = std::wcout);
