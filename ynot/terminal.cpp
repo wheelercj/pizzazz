@@ -46,6 +46,17 @@ namespace ynot
         w_print(LESC L"]0;" + title + LESC L"[", wstream);
     }
 
+    void print(std::wstring message)
+    {
+#ifdef _WIN32
+        HANDLE handle = GetStdHandle(STD_OUTPUT_HANDLE);
+        DWORD n_written;
+        WriteConsoleW(handle, message.c_str(), (DWORD)message.size(), &n_written, NULL);
+#else
+        std::wcout << message;
+#endif
+    }
+
     void w_print(std::wstring message, std::wostream& wstream)
     {
 #ifdef _WIN32

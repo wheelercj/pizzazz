@@ -27,6 +27,7 @@
 // https://en.wikipedia.org/wiki/ANSI_escape_code#SGR_(Select_Graphic_Rendition)_parameters
 // https://isocpp.github.io/CppCoreGuidelines/CppCoreGuidelines#main
 // http://xn--rpa.cc/irl/term.html
+// https://docs.microsoft.com/en-us/windows/console/writeconsole
 
 namespace ynot
 {
@@ -135,15 +136,17 @@ namespace ynot
     void set_window_title(std::string title, std::ostream& stream = std::cout);
 
     /* Changes the terminal window's title.
-       The new title can include any emoji/Unicode characters.
+       The new title can include some emoji/Unicode characters (code points <= U+FFFF).
        Doesn't work with Windows Terminal. */
     void w_set_window_title(std::wstring title, std::wostream& wstream = std::wcout);
 
-    /*  Prints a string that can have emoji/Unicode characters.
-        When calling this function, put an L in front of the string.
-        For example, `w_print(L"Hi! ✨");` prints `Hi! ✨`.
-        Microsoft's C++ compiler doesn't support printing Unicode
-        characters with code points greater than U+FFFF. */
+    /*  Prints a wstring that can have any emoji/Unicode characters.
+        When creating a wstring, put an L in front of it.
+        For example, `print(L"Hi! 🔥");` prints `Hi! 🔥`. */
+    void print(std::wstring message);
+    
+    /*  Prints a wstring that can have a limited range of emoji/Unicode characters
+        (those with a code point of U+FFFF or less). */
     void w_print(std::wstring message, std::wostream& wstream = std::wcout);
 
     /* Prints a message with style such as as color, italics, underline, etc. */
@@ -170,7 +173,7 @@ namespace ynot
     void print_rgb(unsigned red, unsigned green, unsigned blue, std::string message, std::ostream& stream = std::cout);
 
     /* Prints a message with a chosen color.
-       The message can have emoji/Unicode characters.
+       The message can have some emoji/Unicode characters (code points <= U+FFFF).
        Throws std::invalid_argument if a color value is greater than 255. */
     void w_print_rgb(unsigned red, unsigned green, unsigned blue, std::wstring message, std::wostream& wstream = std::wcout);
 
@@ -179,7 +182,7 @@ namespace ynot
     void print_bg_rgb(unsigned red, unsigned green, unsigned blue, std::string message, std::ostream& stream = std::cout);
 
     /* Prints a message with a chosen background color.
-       The message can have emoji/Unicode characters.
+       The message can have some emoji/Unicode characters (code points <= U+FFFF).
        Throws std::invalid_argument if a color value is greater than 255. */
     void w_print_bg_rgb(unsigned red, unsigned green, unsigned blue, std::wstring message, std::wostream& wstream = std::wcout);
 
@@ -199,7 +202,7 @@ namespace ynot
     void print_at(unsigned x, unsigned y, std::string message, std::ostream& stream = std::cout);
 
     /* Prints a message at chosen coordinates.
-       The message can have emoji/Unicode characters. */
+       The message can have some emoji/Unicode characters (code points <= U+FFFF). */
     void w_print_at(unsigned x, unsigned y, std::wstring message, std::wostream& wstream = std::wcout);
 
     /* Moves the terminal's cursor to chosen coordinates.
@@ -319,8 +322,8 @@ namespace ynot
     void insert(std::string text, std::ostream& stream = std::cout);
 
     /* Inserts text at the terminal cursor's current location.
-       The text can have emoji/Unicode characters. Any text that
-       is pushed out of the window to the right is deleted. */
+       The text can have some emoji/Unicode characters (code points <= U+FFFF).
+       Any text that is pushed out of the window to the right is deleted. */
     void w_insert(std::wstring text, std::wostream& wstream = std::wcout);
 
     /* Deletes a chosen number of characters at the terminal cursor's current location.

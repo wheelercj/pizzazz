@@ -23,6 +23,7 @@ int main()
 {
 	test_get_key();  // test_get_key should always be the first test in every commit.
 	test_get_key_without_waiting();
+	test_print();
 	test_getline_ac();
 	test_getline_ac_menu();
 	test_getline_ac_numbered_menu();
@@ -107,6 +108,15 @@ void test_get_key_without_waiting()
 	}
 	ynot::set_cursor_style(CursorStyle::not_hidden);
 	cout << "\nYou pressed " << input << endl;
+}
+
+void test_print()
+{
+	ynot::print(L"Here are a bunch of emojis that are only visible");
+	ynot::print(L"in modern terminals such as Windows Terminal: ");
+	ynot::print(L"🔥🎊🎁🙂😊❌◀👀😅🚩✔❤🤣😂😍😒👌😘");
+	ynot::print(L"🙌🎈🎆🎇🧨🍍🤖✌🤞😉😎🎶😢💖😜👏🚲");
+	ynot::print(L"😁👍🌹🎉🎂🤳😃✨😆🤔💕🐊👀💡🍉🍀🚄");
 }
 
 void test_getline_ac()
