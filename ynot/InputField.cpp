@@ -1,10 +1,10 @@
+#include "common.h"
 #include "InputField.h"
 #include "str.h"
-#include "common.h"
+#include "terminal.h"
 
 namespace ynot
 {
-
     std::string getline_ac(
             const std::vector<std::string>& suggestions,
             std::string default_message,
@@ -163,7 +163,7 @@ namespace ynot
         print_styled(this->input, { Style::red });
         sleep_(300);
         set_cursor_coords(this->start);
-        std::cout << this->input;
+        ynot::print(this->input);
         set_cursor_coords(this->current);
         set_cursor_style(CursorStyle::not_hidden);
     }
@@ -198,7 +198,7 @@ namespace ynot
         if (this->latest_suggestion && is_suggestion(*this->latest_suggestion))
         {
             set_cursor_coords(this->start);
-            std::cout << *this->latest_suggestion;
+            ynot::print(*this->latest_suggestion);
             return *this->latest_suggestion;
         }
         return {};
@@ -215,7 +215,7 @@ namespace ynot
             this->input.append(this->key);
             this->input_end.x += 1;
         }
-        std::cout << this->key;
+        ynot::print(this->key);
         this->current.x += 1;
         this->input_index += 1;
         find_and_print_suggestion();
