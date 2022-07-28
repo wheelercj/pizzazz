@@ -1,5 +1,5 @@
-#include "Paginator.h"
 #include <regex>
+#include "Paginator.h"
 #include "str.h"
 #include "terminal.h"
 
@@ -79,6 +79,7 @@ namespace ynot
 
 	int Paginator::run(int start_page)
 	{
+		signal(SIGINT, restore_screen_buffer_callback);
 		save_cursor_location();
 		set_cursor_style(CursorStyle::hidden);
 		this->page_number = start_page;
@@ -104,7 +105,7 @@ namespace ynot
 
 	void Paginator::print_page()
 	{
-		std::cout << this->pages[this->page_number];
+		ynot::print(this->pages[this->page_number]);
 		print_navigation_line();
 	}
 
@@ -121,17 +122,17 @@ namespace ynot
 				+ "/" + std::to_string(pages.size());
 			page_number_str = center(page_number_str, this->page_width - 4 - prefix_and_suffix_width);
 		}
-		std::cout << "\n" << this->line_prefix;
+		ynot::print("\n" + this->line_prefix);
 		if (this->page_number > 0)
-			std::cout << "<-";
+			ynot::print("<-");
 		else
-			std::cout << "  ";
-		std::cout << page_number_str;
+				ynot::print("  ");
+		ynot::print(page_number_str);
 		if (this->page_number < pages.size() - 1)
-			std::cout << "->";
+			ynot::print("->");
 		else
-			std::cout << "  ";
-		std::cout << this->line_suffix;
+				ynot::print("  ");
+		ynot::print(this->line_suffix);
 	}
 
 	bool Paginator::on_key(std::string key)
