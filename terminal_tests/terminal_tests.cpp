@@ -74,7 +74,7 @@ int main()
 
 void test_get_key()
 {
-	signal(SIGINT, ynot::restore_screen_buffer_callback);
+	ynot::reset_on_keyboard_interrupt();
 	cout << "Press any key and its name will be shown on the next line. Press escape to stop.\n";
 	string input = "";
 	while (input != "escape")

@@ -79,7 +79,7 @@ namespace ynot
 
 	int Paginator::run(int start_page)
 	{
-		signal(SIGINT, restore_screen_buffer_callback);
+		reset_on_keyboard_interrupt();
 		save_cursor_location();
 		set_cursor_style(CursorStyle::hidden);
 		this->page_number = start_page;

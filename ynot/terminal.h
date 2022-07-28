@@ -131,6 +131,12 @@ namespace ynot
     /* Returns a string that changes the terminal cursor's appearance when printed. */
     std::string ret_set_cursor_style(CursorStyle style);
 
+    /* Resets the terminal's cursor to the default style. */
+    void reset_cursor_style();
+
+    /* Returns a string that resets the terminal's cursor to the default style when printed. */
+    std::string ret_reset_cursor_style();
+
     /* Changes the terminal window's title.
        Throws std::invalid_argument if the title's size is >= 255. */
     void set_window_title(std::string title);
@@ -366,10 +372,9 @@ namespace ynot
        Does nothing if already on the original buffer. */
     std::string ret_restore_screen_buffer();
 
-    /* Restores the screen buffer and rethrows any caught signal. Set up this callback
-       function to catch keyboard interrupt with
-       `signal(SIGINT, restore_screen_buffer_callback);`. */
-    void restore_screen_buffer_callback(int signal_number);
+    /* Restores the screen buffer, the text style, and the terminal cursor style if
+       ctrl/cmd+c or ctrl/cmd+2 is pressed. */
+    void reset_on_keyboard_interrupt();
 
     void set_window_width_to_132();
 

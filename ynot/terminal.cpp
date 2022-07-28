@@ -38,6 +38,16 @@ namespace ynot
             return ESC "[" + std::to_string(int(style)) + " q";
     }
 
+    void reset_cursor_style()
+    {
+        std::cout << ret_reset_cursor_style();
+    }
+
+    std::string ret_reset_cursor_style()
+    {
+        return ESC "[" + std::to_string(int(CursorStyle::blinking_default)) + " q";
+    }
+
     void set_window_title(std::string title)
     {
         print(ret_set_window_title(title));
@@ -600,10 +610,18 @@ namespace ynot
         return ESC "[?1049l";
     }
 
-    void restore_screen_buffer_callback(int signal_number)
+    void reset_callback(int signal_number)
     {
         restore_screen_buffer();
+        reset_style();
+        reset_cursor_style();
+        std::cout << std::endl;
         exit(signal_number);
+    }
+
+    void reset_on_keyboard_interrupt()
+    {
+        signal(SIGINT, reset_callback);
     }
 
     void set_window_width_to_132()
