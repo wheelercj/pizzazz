@@ -88,9 +88,9 @@ ynot::set_cursor_coords(x, y);  // set_cursor_coords prints an ANSI code
 ynot::print_rgb(0, green, 0, message);
 ```
 
-![race condition example](https://media.giphy.com/media/gD1lU8ts5VvRyXueUO/giphy.gif)
+![race condition example](https://media.giphy.com/media/Obc0RuoYP7XkHppQ0I/giphy.gif)
 
-There are supposed to only be green letters, but sometimes the `print_rgb` function in one thread ends up being called between the `set_cursor_coords` and `print_rgb` calls in another thread.
+Each character is supposed to get steadily darker after it appears on screen, but sometimes the `print_rgb` function in one thread ends up being called between the `set_cursor_coords` and `print_rgb` calls in another thread.
 
 Prevent this output scrambling by combining all strings into one before printing. The terminal.h functions that start with `ret_` return strings instead of printing them so that you can wait to print until after combining strings.
 
