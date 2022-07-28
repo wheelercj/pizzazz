@@ -1,4 +1,4 @@
-﻿#include <fstream>
+#include <fstream>
 #include <signal.h>
 #include "terminal_tests.h"
 #include "../ynot/common.h"
@@ -11,8 +11,6 @@
 #include "../ynot/str.cpp"
 #include "../ynot/terminal.h"
 #include "../ynot/terminal.cpp"
-#include "../ynot/wstr.h"
-#include "../ynot/wstr.cpp"
 #include "../ynot/ynot.h"
 using namespace std;
 using ynot::Style;
@@ -23,7 +21,6 @@ int main()
 {
 	test_get_key();  // test_get_key should always be the first test in every commit.
 	test_get_key_without_waiting();
-	test_print();
 	test_getline_ac();
 	test_getline_ac_menu();
 	test_getline_ac_numbered_menu();
@@ -32,25 +29,26 @@ int main()
 	test_getline_ac_without_showing_suggestions();
 	test_wrap();
 	test_paginator();
+	test_paginator_with_emoji();
 	test_set_cursor_style();
 	test_set_window_title();
-	test_wide_set_window_title();
-	test_wide_print();
+	test_set_window_title_with_emoji();
+	test_print_emoji();
 	test_print_styled();
-	test_wide_print_styled();
+	test_print_styled_emoji();
 	test_print_multi_styled();
-	test_wide_print_multi_styled();
+	test_print_multi_styled_emoji();
 	test_set_style();
 	test_set_multi_style();
 	test_reset_style();
 	test_print_rgb();
 	test_print_invalid_rgb();
-	test_wide_print_rgb();
+	test_print_rgb_emoji();
 	test_print_background_rgb();
-	test_wide_print_background_rgb();
+	test_print_background_rgb_emoji();
 	test_save_cursor_coords();
 	test_print_at();
-	test_wide_print_at();
+	test_print_at_with_emoji();
 	test_set_cursor_coordinates();
 	test_get_cursor_location();
 	test_restore_cursor_location();
@@ -63,7 +61,7 @@ int main()
 	test_kbhit__();
 	test_getch_if_kbhit();
 	test_insert();
-	test_wide_insert();
+	test_insert_emoji();
 	test_delete_chars();
 	test_insert_lines();
 	test_delete_lines();
@@ -74,16 +72,9 @@ int main()
 	return 0;
 }
 
-void signal_callback_handler(int signal_number)
-{
-	cout << "\r                                                                   \r";
-	cout << "You pressed Ctrl + c or Ctrl + 2 which ends the program early.";
-	exit(signal_number);
-}
-
 void test_get_key()
 {
-	signal(SIGINT, signal_callback_handler);
+	signal(SIGINT, ynot::restore_screen_buffer_callback);
 	cout << "Press any key and its name will be shown on the next line. Press escape to stop.\n";
 	string input = "";
 	while (input != "escape")
@@ -110,18 +101,9 @@ void test_get_key_without_waiting()
 	cout << "\nYou pressed " << input << endl;
 }
 
-void test_print()
-{
-	ynot::print(L"Here are a bunch of emojis that are only visible");
-	ynot::print(L"in modern terminals such as Windows Terminal: ");
-	ynot::print(L"🔥🎊🎁🙂😊❌◀👀😅🚩✔❤🤣😂😍😒👌😘");
-	ynot::print(L"🙌🎈🎆🎇🧨🍍🤖✌🤞😉😎🎶😢💖😜👏🚲");
-	ynot::print(L"😁👍🌹🎉🎂🤳😃✨😆🤔💕🐊👀💡🍉🍀🚄");
-}
-
 void test_getline_ac()
 {
-	cout << "Autocomplete suggestions example:\n";
+	cout << "\nAutocomplete suggestions example:\n";
 	vector<string> large_city_names = { "Ahmedabad", "Alexandria", "Atlanta", "Baghdad", "Bangalore", "Bangkok", "Barcelona", "Beijing", "Belo Horizonte", "Bogotá", "Buenos Aires", "Cairo", "Chengdu", "Chennai", "Chicago", "Chongqing", "Dalian", "Dallas", "Dar es Salaam", "Delhi", "Dhaka", "Dongguan", "Foshan", "Fukuoka", "Guadalajara", "Guangzhou", "Hangzhou", "Harbin", "Ho Chi Minh City", "Hong Kong", "Houston", "Hyderabad", "Istanbul", "Jakarta", "Jinan", "Karachi", "Khartoum", "Kinshasa", "Kolkata", "Kuala Lumpur", "Lagos", "Lahore", "Lima", "London", "Los Angeles", "Luanda", "Madrid", "Manila", "Mexico City", "Miami", "Moscow", "Mumbai", "Nagoya", "Nanjing", "New York", "Osaka", "Paris", "Philadelphia", "Pune", "Qingdao", "Rio de Janeiro", "Riyadh", "Saint Petersburg", "Santiago", "Seoul", "Shanghai", "Shenyang", "Shenzhen", "Singapore", "Surat", "Suzhou", "São Paulo", "Tehran", "Tianjin", "Tokyo", "Toronto", "Washington", "Wuhan", "Xi'an", "Yangon" };
 	string name = ynot::getline_ac(large_city_names, "type a large city's name");
 	cout << "\nYou chose " << name << endl;
@@ -163,7 +145,7 @@ void test_getline_ac_numbered_menu()
 		cout << "Edit";
 		break;
 	case '4':
-		cout << "Delete";
+		cout << "Remove";
 		break;
 	}
 	cout << "\n\n";
@@ -206,12 +188,17 @@ void test_getline_ac_without_showing_suggestions()
 			throw runtime_error("Not loading words correctly.");
 		words.push_back(word);
 	}
+	ynot::Coord window_size = ynot::get_window_size();
 	cout << "\nTry typing a few letters and pressing tab. Enter stop to stop.\n";
 	string input = "";
 	while (input != "stop")
 	{
 		input = ynot::getline_ac(words, "", ynot::opt::hide_suggestions);
-		cout << " ";
+		ynot::Coord coord = ynot::get_cursor_coords();
+		if (coord.x >= window_size.x - 10)
+			cout << "\n";
+		else
+			cout << " ";
 	}
 }
 
@@ -241,12 +228,22 @@ void test_paginator()
 		Source: https://en.wikipedia.org/wiki/Recursive_descent_parser)");
 	ynot::Paginator paginator(title, body, line_prefix);
 	paginator.run();
-	std::cout << endl;
+}
+
+void test_paginator_with_emoji()
+{
+	std::cout << "\n\nAnother Paginator test, this time with emoji. Press any key"
+		"\nto start the paginator, and escape to close the paginator.";
+	ynot::pause();
+	std::string title = "🍴 menu 🍴";
+	std::string body = "🍄  mushroom\n🍅  tomato\n🍆  aubergine\n🍇  grapes\n🍈  melon\n🍉  watermelon\n🍊  tangerine\n🍋  lemon\n🍌  banana\n🍍  pineapple\n🍎  red apple\n🍏  green apple\n🍐  pear\n🍑  peach\n🍒  cherries\n🍓  strawberry\n🍔  hamburger\n🍕  slice of pizza\n🍖  meat on bone\n🍗  poultry leg\n🍘  rice cracker\n🍙  rice ball\n🍚  cooked rice\n🍛  curry and rice\n🍜  steaming bowl\n🍝  spaghetti\n🍞  bread\n🍟  french fries\n🍠  roasted sweet potato\n🍡  dango\n🍢  oden\n🍣  sushi\n🍤  fried shrimp\n🍥  fish cake with swirl design\n🍦  soft ice cream\n🍧  shaved ice\n🍨  ice cream\n🍩  doughnut\n🍪  cookie\n🍫  chocolate bar\n🍬  candy\n🍭  lollipop\n🍮  custard\n🍯  honey pot\n🍰  shortcake\n🍱  bento box\n🍲  pot of food\n🍵  teacup without handle\n🍶  sake bottle and cup\n🍷  wine glass\n🍸  cocktail glass\n🍹  tropical drink\n🍺  beer mug\n🍻  clinking beer mugs\n🍼  baby bottle\n🍾  bottle with popping cork\n🍿  popcorn";
+	ynot::Paginator paginator(title, body, "\n    ");
+	paginator.run();
 }
 
 void test_set_cursor_style()
 {
-	cout << "\nCursor visible";
+	cout << "\n\nCursor visible";
 	ynot::pause();
 	ynot::set_cursor_style(CursorStyle::hidden);
 	cout << "\nCursor not visible";
@@ -281,41 +278,41 @@ void test_set_cursor_style()
 	ynot::set_cursor_style(CursorStyle::blinking_default);
 	cout << "\nBack to the default cursor";
 	ynot::pause();
-	cout << "\n\n";
 }
 
 void test_set_window_title()
 {
 	ynot::set_window_title("hey look, a custom title!");
-	cout << "Title set to \"hey look, a custom title!\" The title will only be "
-		"visible in some terminals such as Command Prompt.\n\n";
+	cout << "\n\nTitle set to \"hey look, a custom title!\"";
 	ynot::pause();
 }
 
-void test_wide_set_window_title()
+void test_set_window_title_with_emoji()
 {
-	ynot::w_set_window_title(L"a custom title with emoji! 🔥");
-	wcout << "Title set to \"a custom title with emoji! (flame emoji here)\" The "
-		"title will only be visible in some terminals such as Command Prompt.\n";
+	ynot::set_window_title("a custom title with emoji! 🔥");
+	ynot::print("\nTitle set to \"a custom title with emoji! 🔥\"");
 	ynot::pause();
 }
 
-void test_wide_print()
+void test_print_emoji()
 {
-	ynot::w_print(L"A message with emoji! ✨ The emoji will not be visible in some "
-		"terminals such as Command Prompt.\n");
-	ynot::pause();
+	ynot::print("\n\nHere are a bunch of emojis that are only visible");
+	ynot::print("\nin modern terminals such as Windows Terminal: ");
+	ynot::print("\n🔥🎊🎁🙂😊❌◀👀😅🚩✔❤🤣😂😍😒👌😘");
+	ynot::print("\n🙌🎈🎆🎇🧨🍍🤖✌🤞😉😎🎶😢💖😜👏🚲");
+	ynot::print("\n😁👍🌹🎉🎂🤳😃✨😆🤔💕🐊👀💡🍉🍀🚄");
 }
 
 void test_print_styled()
 {
-	ynot::print_styled("This is underlined.", { Style::underlined });
+	ynot::print_styled("\nThis is underlined.", { Style::underlined });
 	ynot::pause();
 }
 
-void test_wide_print_styled()
+void test_print_styled_emoji()
 {
-	ynot::w_print_styled(L"\nThis text has a bright red background.", { Style::bright_bg_red });
+	ynot::print_styled("\nThis text has a bright red background"
+		"\nand here's an emoji of a scooter: 🛴", { Style::bright_bg_red });
 	ynot::pause();
 }
 
@@ -327,22 +324,19 @@ void test_print_multi_styled()
 	ynot::pause();
 }
 
-void test_wide_print_multi_styled()
+void test_print_multi_styled_emoji()
 {
-	ynot::w_print_styled(L"\nThis is blue, overlined, double underlined, and italic with an emoji: ✅",
+	ynot::print_styled("\nThis is blue, overlined, double underlined, and italic with an emoji: ✅."
+		"\nAll of these (except the color) are only visible in some terminals such "
+		"\nas Windows Terminal.",
 		{ Style::double_underlined, Style::overlined, Style::italic, Style::blue });
-	ynot::w_print_styled(L".\nAll of these (except the color) are only visible in some terminals such "
-		L"as Windows Terminal.",
-		{ Style::double_underlined, Style::overlined, Style::italic, Style::blue });
-	// Attempting to print the checkmark emoji in cmd.exe somehow broke the output stream, preventing
-	// the printing of anything after the emoji until the next print function call.
 	ynot::pause();
 }
 
 void test_set_style()
 {
 	ynot::set_style({ Style::bright_blue });
-	cout << "\nThis is \"bright\" blue.\n";
+	cout << "\nThis is bright blue.\n";
 	ynot::reset_style();
 	ynot::pause();
 }
@@ -350,7 +344,7 @@ void test_set_style()
 void test_set_multi_style()
 {
 	ynot::set_style({ Style::bg_white, Style::black, Style::bold });
-	cout << "\nThis is black and bold with a white background.\n\n";
+	cout << "\nThis is black and bold with a white background.";
 	ynot::reset_style();
 	ynot::pause();
 }
@@ -358,54 +352,55 @@ void test_set_multi_style()
 void test_reset_style()
 {
 	ynot::set_style({ Style::red });
-	cout << "This is red.\n\n";
+	cout << "\nThis is red.";
 	ynot::reset_style();
-	cout << "This is the default color.\n\n";
+	cout << "\nThis is the default color.";
 	ynot::pause();
 }
 
 void test_print_rgb()
 {
-	ynot::print_rgb(95, 255, 95, "This is bright green.\n");
+	ynot::print_rgb(95, 255, 95, "\nThis is bright green.");
 	ynot::pause();
 }
 
 void test_print_invalid_rgb()
 {
-	cout << "Attempting to use an invalid rgb value.\n";
+	cout << "\nAttempting to use an invalid rgb value. An error message"
+		"\nshould appear on the next line.";
 	try
 	{
-		ynot::print_rgb(95, 256, 95, "This will raise an exception.");
+		ynot::print_rgb(95, 256, 95, "The argument of 256 will raise an exception.");
 	}
 	catch (invalid_argument& e)
 	{
-		cout << e.what() << endl;
+		cout << endl << e.what();
 	}
 }
 
-void test_wide_print_rgb()
+void test_print_rgb_emoji()
 {
-	ynot::w_print_rgb(37, 100, 188, L"This is blue, and here's an emoji that's only visible in "
-		"some terminals like Windows Terminal: ⚓.\n");
+	ynot::print_rgb(37, 100, 188, "\nThis is blue (rgb 37, 100, 188), and here's an emoji that's only"
+		"\nvisible in some terminals like Windows Terminal: ⚓.");
 	ynot::pause();
 }
 
 void test_print_background_rgb()
 {
-	ynot::print_bg_rgb(242, 203, 30, "This has a yellow background.\n");
+	ynot::print_bg_rgb(242, 203, 30, "\nThis has a yellow background.");
 	ynot::pause();
 }
 
-void test_wide_print_background_rgb()
+void test_print_background_rgb_emoji()
 {
-	ynot::w_print_bg_rgb(183, 84, 4, L"This has a brown/orange background, and here's an "
-		"emoji that's only visible in some terminals like Windows Terminal: ☃.\n");
+	ynot::print_bg_rgb(183, 84, 4, "\nThis has a brown/orange background, and here's an"
+		"\nemoji that's only visible in some terminals like Windows Terminal: ☃.");
 	ynot::pause();
 }
 
 void test_save_cursor_coords()
 {
-	cout << "Saving cursor location after this message.\n";
+	cout << "\nSaving cursor location after this message.\n";
 	ynot::save_cursor_location();
 	ynot::pause();
 }
@@ -418,10 +413,10 @@ void test_print_at()
 	ynot::pause();
 }
 
-void test_wide_print_at()
+void test_print_at_with_emoji()
 {
 	ynot::set_style({ Style::bg_blue });
-	ynot::w_print_at(10, 10, L"This starts at coordinates (10,10), and here's an emoji "
+	ynot::print_at(10, 10, "This starts at coordinates (10,10), and here's an emoji "
 		"that's only visible in some terminals like Windows Terminal: ☔.\n");
 	ynot::reset_style();
 	ynot::pause();
@@ -531,7 +526,7 @@ void test_getch_if_kbhit()
 	char input = 0;
 	for (int i = 0; "yes"; i++)
 	{
-		cout << "\r(" << i << ") Waiting for you to press a key without blocking.";
+		cout << "\r(" << i << ") Waiting for you to press a key without completely blocking.";
 		if (ynot::kbhit__())
 			input = ynot::getch_();
 		if (input != 0)
@@ -552,16 +547,13 @@ void test_insert()
 	ynot::pause();
 }
 
-void test_wide_insert()
+void test_insert_emoji()
 {
 	cout << endl;
-	wstring message = L"This is also printed first.";
-	ynot::w_print(message);
+	string message = "This is also printed first.";
+	ynot::print(message);
 	ynot::move_cursor_left(message.size());
-	ynot::w_insert(L"Now this is also inserted, with emoji: ☕. ");
-	// TODO: figure out why the first letter of the first output gets overwritten in
-	// Windows Terminal and not Command Prompt. Does it have something to do with the
-	// use of wide characters?
+	ynot::insert("Now this is also inserted, with emoji: ☕. ");
 	ynot::pause();
 }
 
