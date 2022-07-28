@@ -6,4 +6,3 @@
 #include "Paginator.h"
 #include "str.h"
 #include "terminal.h"
-#include "wstr.h"

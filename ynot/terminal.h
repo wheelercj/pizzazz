@@ -1,9 +1,6 @@
 ﻿#pragma once
-#include <iostream>
-#include <syncstream>  // C++20+
 #include <string>
 #include <vector>
-#include <wchar.h>
 #include <stdexcept>
 #include <csignal>  // raise, SIGINT
 #ifdef _WIN32
@@ -125,163 +122,148 @@ namespace ynot
         bright_bg_white,
     };
 
-    /* Changes the terminal cursor's appearance. */
-    void set_cursor_style(CursorStyle style, std::ostream& stream = std::cout);
+    /* Prints a string that can have any emoji/Unicode characters. */
+    void print(std::string message);
 
     /* Changes the terminal cursor's appearance. */
-    void w_set_cursor_style(CursorStyle style, std::wostream& wstream = std::wcout);
+    void set_cursor_style(CursorStyle style);
+
+    /* Returns a string that changes the terminal cursor's appearance when printed. */
+    std::string ret_set_cursor_style(CursorStyle style);
 
     /* Changes the terminal window's title.
-       Doesn't work with Windows Terminal. */
-    void set_window_title(std::string title, std::ostream& stream = std::cout);
+       Throws std::invalid_argument if the title's size is >= 255. */
+    void set_window_title(std::string title);
 
-    /* Changes the terminal window's title.
-       The new title can include some emoji/Unicode characters (code points <= U+FFFF).
-       Doesn't work with Windows Terminal. */
-    void w_set_window_title(std::wstring title, std::wostream& wstream = std::wcout);
-
-    /*  Prints a wstring that can have any emoji/Unicode characters.
-        When creating a wstring, put an L in front of it.
-        For example, `print(L"Hi! 🔥");` prints `Hi! 🔥`. */
-    void print(std::wstring message);
-    
-    /*  Prints a wstring that can have a limited range of emoji/Unicode characters
-        (those with a code point of U+FFFF or less). */
-    void w_print(std::wstring message, std::wostream& wstream = std::wcout);
+    /* Returns a string that changes the terminal window's title when printed.
+       Throws std::invalid_argument if the title's size is >= 255. */
+    std::string ret_set_window_title(std::string title);
 
     /* Prints a message with style such as as color, italics, underline, etc. */
-    void print_styled(std::string message, std::vector<Style> styles, std::ostream& stream = std::cout);
+    void print_styled(std::string message, std::vector<Style> styles);
 
-    /* Prints a message with style such as as color, italics, underline, etc. */
-    void w_print_styled(std::wstring message, std::vector<Style> styles, std::wostream& wstream = std::wcout);
-
-    /* Sets future output to have a style such as as color, italics, underline, etc. */
-    void set_style(std::vector<Style> styles, std::ostream& stream = std::cout);
+    /* Returns a string that displays a message with style such as as color, italics,
+       underline, etc. when printed. */
+    std::string ret_print_styled(std::string message, std::vector<Style> styles);
 
     /* Sets future output to have a style such as as color, italics, underline, etc. */
-    void w_set_style(std::vector<Style> styles, std::wostream& wstream = std::wcout);
+    void set_style(std::vector<Style> styles);
+
+    /* Returns a string that sets future output to have a style such as as color, italics,
+       underline, etc. when printed. */
+    std::string ret_set_style(std::vector<Style> styles);
 
     /* Sets future output to NOT have any special styles. */
-    void reset_style(std::ostream& stream = std::cout);
+    void reset_style();
 
-    /* Sets future output to NOT have any special styles. */
-    void w_reset_style(std::wostream& wstream = std::wcout);
+    /* Returns a string that sets future output to NOT have any special styles whe printed. */
+    std::string ret_reset_style();
 
     /* Prints a message with a chosen color.
        Throws std::invalid_argument if a color value is greater than 255.
        The red, green, and blue variables must be in the range [0, 255]. */
-    void print_rgb(unsigned red, unsigned green, unsigned blue, std::string message, std::ostream& stream = std::cout);
+    void print_rgb(unsigned red, unsigned green, unsigned blue, std::string message);
 
-    /* Prints a message with a chosen color.
-       The message can have some emoji/Unicode characters (code points <= U+FFFF).
-       Throws std::invalid_argument if a color value is greater than 255. */
-    void w_print_rgb(unsigned red, unsigned green, unsigned blue, std::wstring message, std::wostream& wstream = std::wcout);
-
-    /* Prints a message with a chosen background color.
-       Throws std::invalid_argument if a color value is greater than 255. */
-    void print_bg_rgb(unsigned red, unsigned green, unsigned blue, std::string message, std::ostream& stream = std::cout);
+    /* Returns a string that displays a message with a chosen color when printed.
+       Throws std::invalid_argument if a color value is greater than 255.
+       The red, green, and blue variables must be in the range [0, 255]. */
+    std::string ret_print_rgb(unsigned red, unsigned green, unsigned blue, std::string message);
 
     /* Prints a message with a chosen background color.
-       The message can have some emoji/Unicode characters (code points <= U+FFFF).
        Throws std::invalid_argument if a color value is greater than 255. */
-    void w_print_bg_rgb(unsigned red, unsigned green, unsigned blue, std::wstring message, std::wostream& wstream = std::wcout);
+    void print_bg_rgb(unsigned red, unsigned green, unsigned blue, std::string message);
+
+    /* Returns a string that displays a message with a chosen background color when printed.
+       Throws std::invalid_argument if a color value is greater than 255. */
+    std::string ret_print_bg_rgb(unsigned red, unsigned green, unsigned blue, std::string message);
 
     /* Sets future output to have a chosen color. */
-    void set_rgb(unsigned red, unsigned green, unsigned blue, std::ostream& stream = std::cout);
+    void set_rgb(unsigned red, unsigned green, unsigned blue);
 
-    /* Sets future output to have a chosen color. */
-    void w_set_rgb(unsigned red, unsigned green, unsigned blue, std::wostream& wstream = std::wcout);
-
-    /* Sets future output to have a chosen background color. */
-    void set_bg_rgb(unsigned red, unsigned green, unsigned blue, std::ostream& stream = std::cout);
+    /* Returns a string that sets future output to have a chosen color when printed. */
+    std::string ret_set_rgb(unsigned red, unsigned green, unsigned blue);
 
     /* Sets future output to have a chosen background color. */
-    void w_set_bg_rgb(unsigned red, unsigned green, unsigned blue, std::wostream& wstream = std::wcout);
+    void set_bg_rgb(unsigned red, unsigned green, unsigned blue);
+
+    /* Returns a string that sets future output to have a chosen background color when printed. */
+    std::string ret_set_bg_rgb(unsigned red, unsigned green, unsigned blue);
 
     /* Prints a message at chosen coordinates. */
-    void print_at(unsigned x, unsigned y, std::string message, std::ostream& stream = std::cout);
+    void print_at(unsigned x, unsigned y, std::string message);
 
-    /* Prints a message at chosen coordinates.
-       The message can have some emoji/Unicode characters (code points <= U+FFFF). */
-    void w_print_at(unsigned x, unsigned y, std::wstring message, std::wostream& wstream = std::wcout);
+    /* Returns a string that displays a message at chosen coordinates when printed. */
+    std::string ret_print_at(unsigned x, unsigned y, std::string message);
+
+    /* Moves the terminal's cursor to chosen coordinates.
+       In this coordinate system, x increases to the right and y increases downwards. */
+    void set_cursor_coords(unsigned x, unsigned y);
+
+    /* Returns a string that moves the terminal's cursor to chosen coordinates when printed.
+       In this coordinate system, x increases to the right and y increases downwards. */
+    std::string ret_set_cursor_coords(unsigned x, unsigned y);
 
     /* Moves the terminal's cursor to chosen coordinates.
        In this coordinate system, x increases to the right
        and y increases downwards. */
-    void set_cursor_coords(unsigned x, unsigned y, std::ostream& stream = std::cout);
+    void set_cursor_coords(Coord coord);
 
-    /* Moves the terminal's cursor to chosen coordinates.
-       In this coordinate system, x increases to the right
-       and y increases downwards. */
-    void w_set_cursor_coords(unsigned x, unsigned y, std::wostream& wstream = std::wcout);
-
-    /* Moves the terminal's cursor to chosen coordinates.
-       In this coordinate system, x increases to the right
-       and y increases downwards. */
-    void set_cursor_coords(Coord coord, std::ostream& stream = std::cout);
-
-    /* Moves the terminal's cursor to chosen coordinates.
-       In this coordinate system, x increases to the right
-       and y increases downwards. */
-    void w_set_cursor_coords(Coord coord, std::wostream& wstream = std::wcout);
+    /* Returns a string that moves the terminal's cursor to chosen coordinates when printed.
+       In this coordinate system, x increases to the right and y increases downwards. */
+    std::string ret_set_cursor_coords(Coord coord);
 
     /* Detects the current coordinates of the terminal's cursor. */
-    Coord get_cursor_coords(std::ostream& stream = std::cout);
-
-    /* Detects the current coordinates of the terminal's cursor. */
-    Coord w_get_cursor_coords(std::wostream& wstream = std::wcout);
+    Coord get_cursor_coords();
 
     /* Saves the terminal cursor's current location to be restored later. */
-    void save_cursor_location(std::ostream& stream = std::cout);
+    void save_cursor_location();
 
-    /* Saves the terminal cursor's current location to be restored later. */
-    void w_save_cursor_location(std::wostream& wstream = std::wcout);
-
-    /* Restores the terminal cursor to a previously saved location. */
-    void restore_cursor_location(std::ostream& stream = std::cout);
+    /* Returns a string that saves the terminal cursor's current location (to be restored later)
+       when printed. */
+    std::string ret_save_cursor_location();
 
     /* Restores the terminal cursor to a previously saved location. */
-    void w_restore_cursor_location(std::wostream& wstream = std::wcout);
+    void restore_cursor_location();
+
+    /* Returns a string that restores the terminal cursor to a previously saved location
+       when printed. */
+    std::string ret_restore_cursor_location();
 
     /* Moves the terminal cursor up a chosen number of lines.
-       If the cursor is at the top of the window, this function will
-       have no effect. */
-    void move_cursor_up(size_t lines = 1, std::ostream& stream = std::cout);
+       If the cursor is at the top of the window, this function will have no effect. */
+    void move_cursor_up(size_t lines = 1);
 
-    /* Moves the terminal cursor up a chosen number of lines.
-       If the cursor is at the top of the window, this function will
-       have no effect. */
-    void w_move_cursor_up(size_t lines = 1, std::wostream& wstream = std::wcout);
+    /* Returns a string that moves the terminal cursor up a chosen number of lines when printed.
+       If the cursor is at the top of the window, printing the string will have no effect. */
+    std::string ret_move_cursor_up(size_t lines = 1);
 
     /* Moves the terminal cursor down a chosen number of lines.
-       If the cursor is at the bottom of the window, this function will
-       have no effect. */
-    void move_cursor_down(size_t lines = 1, std::ostream& stream = std::cout);
-    
-    /* Moves the terminal cursor down a chosen number of lines.
-       If the cursor is at the bottom of the window, this function will
-       have no effect. */
-    void w_move_cursor_down(size_t lines = 1, std::wostream& wstream = std::wcout);
+       If the cursor is at the bottom of the window, this function will have no effect. */
+    void move_cursor_down(size_t lines = 1);
+
+    /* Returns a string that moves the terminal cursor down a chosen number of lines when printed.
+       If the cursor is at the bottom of the window, printing the string will have no effect. */
+    std::string ret_move_cursor_down(size_t lines = 1);
 
     /* Moves the terminal cursor to the right a chosen number of columns.
        If the cursor is at the right edge of the window, this function will
        have no effect. */
-    void move_cursor_right(size_t columns = 1, std::ostream& stream = std::cout);
+    void move_cursor_right(size_t columns = 1);
 
-    /* Moves the terminal cursor to the right a chosen number of columns.
-       If the cursor is at the right edge of the window, this function will
-       have no effect. */
-    void w_move_cursor_right(size_t columns = 1, std::wostream& wstream = std::wcout);
-
-    /* Moves the terminal cursor to the left a chosen number of columns.
-       If the cursor is at the left edge of the window, this function will
-       have no effect. */
-    void move_cursor_left(size_t columns = 1, std::ostream& stream = std::cout);
+    /* Returns a string that moves the terminal cursor to the right a chosen number
+       of columns when printed. If the cursor is at the right edge of the window,
+       printing the string will have no effect. */
+    std::string ret_move_cursor_right(size_t columns = 1);
 
     /* Moves the terminal cursor to the left a chosen number of columns.
        If the cursor is at the left edge of the window, this function will
        have no effect. */
-    void w_move_cursor_left(size_t columns = 1, std::wostream& wstream = std::wcout);
+    void move_cursor_left(size_t columns = 1);
+
+    /* Returns a string that moves the terminal cursor to the left a chosen number
+       of columns when printed. If the cursor is at the left edge of the window,
+       printing the string will have no effect. */
+    std::string ret_move_cursor_left(size_t columns = 1);
 
     /* Detects the terminal window's current size in columns and rows. */
     Coord get_window_size();
@@ -317,78 +299,83 @@ namespace ynot
     void pause();
 
     /* Inserts text at the terminal cursor's current location.
-       Any text that is pushed out of the window to the right
-       is deleted. */
-    void insert(std::string text, std::ostream& stream = std::cout);
-
-    /* Inserts text at the terminal cursor's current location.
-       The text can have some emoji/Unicode characters (code points <= U+FFFF).
        Any text that is pushed out of the window to the right is deleted. */
-    void w_insert(std::wstring text, std::wostream& wstream = std::wcout);
+    void insert(std::string text);
+
+    /* Returns a string that inserts text at the terminal cursor's current location
+       when printed. Any text that is pushed out of the window to the right is deleted. */
+    std::string ret_insert(std::string text);
 
     /* Deletes a chosen number of characters at the terminal cursor's current location.
        All characters to the right of what is deleted move to the left. */
-    void delete_chars(size_t count, std::ostream& stream = std::cout);
+    void delete_chars(size_t count);
 
-    /* Deletes a chosen number of wide characters at the terminal cursor's current location.
-       All characters to the right of what is deleted move to the left. */
-    void w_delete_chars(size_t count, std::wostream& wstream = std::wcout);
+    /* Returns a string that deletes a chosen number of characters at the terminal
+       cursor's current location when printed. All characters to the right of what
+       is deleted move to the left. */
+    std::string ret_delete_chars(size_t count);
 
     /* Backspaces a chosen number of characters at the terminal cursor's current location. */
-    void backspace_chars(size_t count, std::ostream& stream = std::cout);
+    void backspace_chars(size_t count);
 
-    /* Backspaces a chosen number of wide characters at the terminal cursor's current location. */
-    void w_backspace_chars(size_t count, std::wostream& wstream = std::wcout);
-
-    /* Inserts empty lines at the terminal cursor's current location.
-       Any text that gets pushed down off the window is deleted. */
-    void insert_lines(size_t count, std::ostream& stream = std::cout);
+    /* Returns a string that backspaces a chosen number of characters at the terminal
+       cursor's current location when printed. */
+    std::string ret_backspace_chars(size_t count);
 
     /* Inserts empty lines at the terminal cursor's current location.
        Any text that gets pushed down off the window is deleted. */
-    void w_insert_lines(size_t count, std::wostream& wstream = std::wcout);
+    void insert_lines(size_t count);
+
+    /* Returns a string that inserts empty lines at the terminal cursor's current location
+       when printed. Any text that gets pushed down off the window is deleted. */
+    std::string ret_insert_lines(size_t count);
 
     /* Deletes a chosen number of lines at the terminal cursor's current location.
        All characters below what is deleted move up. */
-    void delete_lines(size_t count, std::ostream& stream = std::cout);
+    void delete_lines(size_t count);
 
-    /* Deletes a chosen number of lines at the terminal cursor's current location.
-       All characters below what is deleted move up. */
-    void w_delete_lines(size_t count, std::wostream& wstream = std::wcout);
-
-    /* Deletes all characters in the terminal window.
-       Use of this function is not recommended without using an alternate screen buffer. */
-    void clear_screen(std::ostream& stream = std::cout);
+    /* Returns a string that deletes a chosen number of lines at the terminal cursor's
+       current location when printed. All characters below what is deleted move up. */
+    std::string ret_delete_lines(size_t count);
 
     /* Deletes all characters in the terminal window.
        Use of this function is not recommended without using an alternate screen buffer. */
-    void w_clear_screen(std::wostream& wstream = std::wcout);
+    void clear_screen();
+
+    /* Returns a string that deletes all characters in the terminal window when printed.
+       Printing of the string is not recommended without using an alternate screen buffer. */
+    std::string ret_clear_screen();
 
     /* Switches the terminal app to a different "window" in the terminal.
-       Some terminal apps move the cursor to the top when the new "window" opens, and some
+       Some terminals move the cursor to the top when the new "window" opens, and some
        do not. This can be called multiple times consecutively, but only the original
        buffer can be restored. */
-    void alternate_screen_buffer(std::ostream& stream = std::cout);
+    void alternate_screen_buffer();
 
-    /* Switches the terminal app to a different "window" in the terminal.
-       Some terminal apps move the cursor to the top when the new "window" opens, and some
-       do not. This can be called multiple times consecutively, but only the original
-       buffer can be restored. */
-    void w_alternate_screen_buffer(std::wostream& wstream = std::wcout);
-
-    /* Restores the terminal app's original "window". Does nothing if already on the
-    original buffer. */
-    void restore_screen_buffer(std::ostream& stream = std::cout);
+    /* Returns a string that switches the terminal app to a different "window" in the terminal
+       when printed. Some terminals move the cursor to the top when the new "window" opens,
+       and some do not. The string can be printed multiple times consecutively, but only the
+       original buffer can be restored. */
+    std::string ret_alternate_screen_buffer();
 
     /* Restores the terminal app's original "window". Does nothing if already on the
-    original buffer. */
-    void w_restore_screen_buffer(std::wostream& wstream = std::wcout);
+       original buffer. */
+    void restore_screen_buffer();
 
-    void set_window_width_to_132(std::ostream& stream = std::cout);
+    /* Returns a string that restores the terminal app's original "window" when printed.
+       Does nothing if already on the original buffer. */
+    std::string ret_restore_screen_buffer();
 
-    void w_set_window_width_to_132(std::wostream& wstream = std::wcout);
+    /* Restores the screen buffer and rethrows any caught signal. Set up this callback
+       function to catch keyboard interrupt with
+       `signal(SIGINT, restore_screen_buffer_callback);`. */
+    void restore_screen_buffer_callback(int signal_number);
 
-    void set_window_width_to_80(std::ostream& stream = std::cout);
+    void set_window_width_to_132();
 
-    void w_set_window_width_to_80(std::wostream& wstream = std::wcout);
+    std::string ret_set_window_width_to_132();
+
+    void set_window_width_to_80();
+
+    std::string ret_set_window_width_to_80();
 }
