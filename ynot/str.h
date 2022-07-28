@@ -27,10 +27,10 @@ namespace ynot
 
 	/* Removes characters from the edges of a string. */
 	std::string strip(std::string str, std::string characters);
-	
+
 	/* Removes characters from the left edge of a string. */
 	std::string lstrip(std::string str, std::string characters);
-	
+
 	/* Removes characters from the right edge of a string. */
 	std::string rstrip(std::string str, std::string characters);
 
@@ -43,7 +43,7 @@ namespace ynot
 	std::string ljust(std::string str, int width, char fill_char = ' ');
 
 	/* Justifies text to the right, filling with a chosen character if needed.
-       Returns the string unchanged if width is <= the string's width. */
+	   Returns the string unchanged if width is <= the string's width. */
 	std::string rjust(std::string str, int width, char fill_char = ' ');
 
 	/* Determines whether a string starts with a given substr. */
@@ -71,7 +71,7 @@ namespace ynot
 	/* Finds the index of the next space after an optional starting index.
 	   Returns -1 if there is no next space. */
 	int find_next_space(std::string str, size_t start = 0);
-	
+
 	/* Finds the index of the latest space before an optional starting index.
 	   Returns -1 if there is no previous space. */
 	int find_previous_space(std::string str, size_t start = std::string::npos);

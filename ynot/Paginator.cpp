@@ -126,12 +126,12 @@ namespace ynot
 		if (this->page_number > 0)
 			ynot::print("<-");
 		else
-				ynot::print("  ");
+			ynot::print("  ");
 		ynot::print(page_number_str);
 		if (this->page_number < pages.size() - 1)
 			ynot::print("->");
 		else
-				ynot::print("  ");
+			ynot::print("  ");
 		ynot::print(this->line_suffix);
 	}
 
@@ -199,7 +199,7 @@ namespace ynot
 		}
 		return false;
 	}
-	
+
 	std::string Paginator::improve_spacing(std::string text)
 	{
 		return std::regex_replace(text, std::regex(R"((?!\n|  )\n(?!\n))"), " ");

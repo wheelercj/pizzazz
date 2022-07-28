@@ -31,7 +31,7 @@ namespace tests
 	TEST_CLASS(tests)
 	{
 	public:
-		
+
 		TEST_METHOD(test_to_lower)
 		{
 			assert_equal("abcdefg", ynot::to_lower("AbCdEfG"));

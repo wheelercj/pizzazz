@@ -20,7 +20,7 @@ namespace ynot
 			int page_line_count = 24,
 			int page_width = 70,
 			bool show_page_number = true);
-		
+
 		/* Throws invalid_argument if no lines are given. */
 		Paginator(
 			std::string title,
@@ -32,7 +32,7 @@ namespace ynot
 			int page_line_count = 24,
 			int page_width = 70,
 			bool show_page_number = true);
-		
+
 		/* Returns the page number on which the paginator was
 		   closed. */
 		int run(int start_page = 0);
