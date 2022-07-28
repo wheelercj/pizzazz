@@ -222,7 +222,7 @@ namespace ynot
 				if (prev_space >= 0)
 				{
 					wrapped_lines.push_back(long_line.substr(0, prev_space) + line_suffix);
-					long_line.erase(0, prev_space + 1);
+					long_line.erase(0, size_t(prev_space + 1));
 				}
 				else
 				{
