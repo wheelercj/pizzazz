@@ -1,4 +1,4 @@
-﻿// version 1.7.1
+﻿// version 2.0.0
 
 #pragma once
 #include "common.h"
