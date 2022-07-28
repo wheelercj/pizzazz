@@ -149,7 +149,7 @@ namespace ynot
 
 	void set_cursor_coords(unsigned x, unsigned y)
 	{
-		std::cout << ESC "[" << y << ";" << x << "H";
+		std::cout << ret_set_cursor_coords(x, y);
 	}
 
 	std::string ret_set_cursor_coords(unsigned x, unsigned y)
