@@ -612,10 +612,9 @@ namespace ynot
 
     void reset_callback(int signal_number)
     {
-        restore_screen_buffer();
         reset_style();
         reset_cursor_style();
-        std::cout << std::endl;
+        restore_screen_buffer();
         exit(signal_number);
     }
 
