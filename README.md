@@ -40,11 +40,11 @@ int main() {
          * Update
          * Delete
         > )");
-	ynot::print(menu);
-	string choice = ynot::getline_ac(
-		{ "Create", "Read", "Update", "Delete" },
-		"type an option");
-	ynot::print("\n You chose " + choice);
+    ynot::print(menu);
+    string choice = ynot::getline_ac(
+        { "Create", "Read", "Update", "Delete" },
+        "type an option");
+    ynot::print("\n You chose " + choice);
     return 0;
 }
 ```
@@ -57,13 +57,13 @@ Below is another example. With ynot's `Paginator` class, you can cleanly present
 #include "../ynot/ynot/ynot.h"
 using namespace std;
 int main() {
-	string article_title = "3.6 Git Branching - Rebasing";
-	string article_body = ynot::dedent(R"(
-		Article body here.
-		Indent with tabs or spaces, not both.)");
-	string line_prefix = "\n    ";
-	ynot::Paginator paginator(article_title, article_body, line_prefix);
-	paginator.run();
+    string article_title = "3.6 Git Branching - Rebasing";
+    string article_body = ynot::dedent(R"(
+        Article body here.
+        Indent with tabs or spaces, not both.)");
+    string line_prefix = "\n    ";
+    ynot::Paginator paginator(article_title, article_body, line_prefix);
+    paginator.run();
     return 0;
 }
 ```
