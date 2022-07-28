@@ -7,8 +7,6 @@
 #include "../ynot/str.cpp"
 #include "../ynot/terminal.h"
 #include "../ynot/terminal.cpp"
-#include "../ynot/wstr.h"
-#include "../ynot/wstr.cpp"
 using namespace std;
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -39,29 +37,14 @@ namespace tests
 			assert_equal("abcdefg", ynot::to_lower("AbCdEfG"));
 		}
 
-		TEST_METHOD(test_to_lower_with_wchars)
-		{
-			assert_equal(L"abcdefg", ynot::to_lower(L"AbCdEfG"));
-		}
-
 		TEST_METHOD(test_to_lower_with_a_std_string)
 		{
 			assert_equal("abcdefg", ynot::to_lower(std::string("AbCdEfG")));
 		}
 
-		TEST_METHOD(test_to_lower_with_a_std_wstring)
-		{
-			assert_equal(L"abcdefg", ynot::to_lower(std::wstring(L"AbCdEfG")));
-		}
-
 		TEST_METHOD(test_to_upper)
 		{
 			assert_equal("ABCDEFG", ynot::to_upper("AbCdEfG"));
-		}
-
-		TEST_METHOD(test_to_upper_with_wchars)
-		{
-			assert_equal(L"ABCDEFG", ynot::to_upper(L"AbCdEfG"));
 		}
 
 		TEST_METHOD(test_dont_slice)
@@ -132,11 +115,6 @@ namespace tests
 		TEST_METHOD(test_slice_with_step_of_negative_2)
 		{
 			assert_equal("eca", ynot::slice("abcdefg", 0, 6, -2));
-		}
-
-		TEST_METHOD(test_slice_wchar_t_string)
-		{
-			assert_equal(L"eca", ynot::slice(L"abcdefg", 0, 6, -2));
 		}
 
 		TEST_METHOD(test_split_with_default_argument)
