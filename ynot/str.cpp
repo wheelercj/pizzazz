@@ -232,7 +232,7 @@ namespace ynot
 				}
 			}
 		}
-		return join(wrapped_lines, "");
+		return strip(join(wrapped_lines, ""), "\n");
 	}
 
 	bool contains(std::string str, std::string substr)

@@ -334,22 +334,27 @@ namespace tests
 
 		TEST_METHOD(test_wrap)
 		{
-			assert_equal("\na aa\naaa", ynot::wrap("a aa aaa", 7));
+			assert_equal("a aa\naaa", ynot::wrap("a aa aaa", 7));
 		}
 
 		TEST_METHOD(test_wrap_with_indentation)
 		{
-			assert_equal("\n  a aa\n  aaa", ynot::wrap("a aa aaa", 7, "\n  "));
+			assert_equal("  a aa\n  aaa", ynot::wrap("a aa aaa", 7, "\n  "));
 		}
 
 		TEST_METHOD(test_dont_wrap)
 		{
-			assert_equal("a aa aaa", ynot::wrap("a aa aaa", 30, ""));
+			assert_equal("a aa aaa", ynot::wrap("a aa aaa", 30));
+		}
+
+		TEST_METHOD(test_dont_wrap_with_suffix)
+		{
+			assert_equal("a aa aaa", ynot::wrap("a aa aaa", 30, "", "\n"));
 		}
 
 		TEST_METHOD(test_wrap_with_word_that_is_too_long)
 		{
-			assert_equal("\nwhat if long word\nfloccinaucinihilipi\nlification",
+			assert_equal("what if long word\nfloccinaucinihilipi\nlification",
 				ynot::wrap("what if long word floccinaucinihilipilification", 20));
 		}
 
@@ -367,7 +372,7 @@ namespace tests
 				Sadly, these strings cannot only be multiline; they must be raw strings too.
 				)");
 			std::string actual_result = ynot::wrap(str, 25);
-			std::string expected_result = "\nC++ has raw multiline\nstrings almost like in\nPython.\n\nSadly, these strings\ncannot only be\nmultiline; they must be\nraw strings too.";
+			std::string expected_result = "C++ has raw multiline\nstrings almost like in\nPython.\n\nSadly, these strings\ncannot only be\nmultiline; they must be\nraw strings too.";
 			assert_equal(expected_result, actual_result);
 		}
 
