@@ -27,6 +27,25 @@ int main() {
 
 To print emoji, the file must be [saved with the UTF-8 encoding](https://docs.microsoft.com/en-us/visualstudio/ide/how-to-save-and-open-files-with-encoding?view=vs-2022) (_without_ signature/BOM) and your code must run in a modern terminal (such as [Windows Terminal](https://aka.ms/terminal); see [how to run your C++ app in Windows Terminal](https://wheelercj.github.io/notes/pages/20220506214620.html)).
 
+Here is the `get_key` function which can instantly detect key presses without an enter key press:
+
+```cpp
+#include "../ynot/ynot/ynot.h"
+using namespace std;
+
+int main() {
+    string key = "";
+    while (key != "escape")
+    {
+        key = ynot::get_key();
+        ynot::print("\r                               \r You pressed " + key);
+    }
+    return 0;
+}
+```
+
+![get_key demo](https://media.giphy.com/media/BVk0mTxjIu8Pgbeo1h/giphy.gif)
+
 Below is an example of ynot's `Menu` class, which makes it easy to create centered menus controlled with the arrow and enter keys.
 
 ```cpp
