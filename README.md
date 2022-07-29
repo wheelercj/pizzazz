@@ -18,6 +18,7 @@ The ynot library's `print` function (and other functions that print) allows you 
 
 ```cpp
 #include "../ynot/ynot/ynot.h"
+
 int main() {
     ynot::print("🔥🐊");
     ynot::print("\n I can print anything 😎🤖");
@@ -49,13 +50,20 @@ int main() {
 Below is an example of ynot's `Menu` class, which makes it easy to create centered menus controlled with the arrow and enter keys.
 
 ```cpp
-ynot::Menu menu("sample menu", { "create", "list", "edit", "delete", "help", "settings", "exit" });
-optional<string> choice = menu.run();
-if (choice)
-    ynot::print("\nYou chose " + *choice);
-else
-    ynot::print("\nYou pressed escape.");
-ynot::pause();
+#include "../ynot/ynot/ynot.h"
+#include <optional>
+using namespace std;
+
+int main() {
+    ynot::Menu menu("sample menu", { "create", "list", "edit", "delete", "help", "settings", "exit" });
+    optional<string> choice = menu.run();
+    if (choice)
+        ynot::print("\nYou chose " + *choice);
+    else
+        ynot::print("\nYou pressed escape.");
+    ynot::pause();
+    return 0;
+}
 ```
 
 ![menu demo](https://media.giphy.com/media/vUiPYlobVhnGrhKCTc/giphy.gif)
@@ -65,6 +73,7 @@ Here's an example of `dedent` which removes indentation from a multiline string,
 ```cpp
 #include "../ynot/ynot/ynot.h"
 using namespace std;
+
 int main() {
     string menu = ynot::dedent(R"(
         Sample menu:
@@ -89,6 +98,7 @@ Below is another example. With ynot's `Paginator` class, you can cleanly present
 ```cpp
 #include "../ynot/ynot/ynot.h"
 using namespace std;
+
 int main() {
     string article_title = "3.6 Git Branching - Rebasing";
     string article_body = ynot::dedent(R"(
