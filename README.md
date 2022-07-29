@@ -27,6 +27,20 @@ int main() {
 
 To print emoji, the file must be [saved with the UTF-8 encoding](https://docs.microsoft.com/en-us/visualstudio/ide/how-to-save-and-open-files-with-encoding?view=vs-2022) (_without_ signature/BOM) and your code must run in a modern terminal (such as [Windows Terminal](https://aka.ms/terminal); see [how to run your C++ app in Windows Terminal](https://wheelercj.github.io/notes/pages/20220506214620.html)).
 
+Below is an example of ynot's `Menu` class, which makes it easy to create centered menus controlled with the arrow and enter keys.
+
+```cpp
+ynot::Menu menu("sample menu", { "create", "list", "edit", "delete", "help", "settings", "exit" });
+optional<string> choice = menu.run();
+if (choice)
+    ynot::print("\nYou chose " + *choice);
+else
+    ynot::print("\nYou pressed escape.");
+ynot::pause();
+```
+
+![menu demo](https://media.giphy.com/media/vUiPYlobVhnGrhKCTc/giphy.gif)
+
 Here's an example of `dedent` which removes indentation from a multiline string, and `getline_ac` which can give autocomplete suggestions (not autocorrect) and has optional built-in input validation:
 
 ```cpp

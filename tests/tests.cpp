@@ -1,6 +1,8 @@
 #include "pch.h"  // This must be the first include.
 #include "CppUnitTest.h"
 #include <vector>
+#include "../ynot/Menu.h"
+#include "../ynot/Menu.cpp"
 #include "../ynot/Paginator.h"
 #include "../ynot/Paginator.cpp"
 #include "../ynot/str.h"
@@ -469,6 +471,12 @@ namespace tests
 		TEST_METHOD(test_paginator_with_empty_text)
 		{
 			auto func = [] { ynot::Paginator("this is the title", "").run(); };
+			Assert::ExpectException<invalid_argument>(func);
+		}
+
+		TEST_METHOD(test_menu_with_no_options)
+		{
+			auto func = [] { ynot::Menu("this is the title", {}).run(); };
 			Assert::ExpectException<invalid_argument>(func);
 		}
 	};

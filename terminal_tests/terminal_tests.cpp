@@ -5,6 +5,8 @@
 #include "../ynot/common.cpp"
 #include "../ynot/InputField.h"
 #include "../ynot/InputField.cpp"
+#include "../ynot/Menu.h"
+#include "../ynot/Menu.cpp"
 #include "../ynot/Paginator.h"
 #include "../ynot/Paginator.cpp"
 #include "../ynot/str.h"
@@ -21,9 +23,9 @@ int main()
 {
 	test_get_key();  // test_get_key should always be the first test in every commit.
 	test_get_key_without_waiting();
+	test_menu();
 	test_getline_ac();
 	test_getline_ac_menu();
-	test_getline_ac_numbered_menu();
 	test_getline_ac_with_empty_suggestion();
 	test_getline_ac_without_input_validation();
 	test_getline_ac_without_showing_suggestions();
@@ -98,7 +100,19 @@ void test_get_key_without_waiting()
 		ynot::sleep_(1000);
 	}
 	ynot::set_cursor_style(CursorStyle::not_hidden);
-	cout << "\nYou pressed " << input << endl;
+	cout << "\nYou pressed " << input;
+}
+
+void test_menu()
+{
+	cout << "\n\nMenu test. Press any key to open the menu.";
+	ynot::pause();
+	ynot::Menu menu("sample menu", { "create", "list", "edit", "delete", "help", "settings", "exit" });
+	std::optional<std::string> choice = menu.run();
+	if (choice)
+		cout << "\nYou chose " << *choice;
+	else
+		cout << "\nYou pressed escape.";
 }
 
 void test_getline_ac()
@@ -120,40 +134,12 @@ void test_getline_ac_menu()
 	string choice = ynot::getline_ac(
 		{ "Create", "Read", "Update", "Delete" },
 		"type an option");
-	cout << "\nYou chose " << choice << "\n\n";
-}
-
-void test_getline_ac_numbered_menu()
-{
-	cout << "\nSample menu:"
-		"\n 1. New"
-		"\n 2. View"
-		"\n 3. Edit"
-		"\n 4. Remove"
-		"\n> ";
-	string choice = ynot::getline_ac({ "1", "2", "3", "4" });
-	cout << "\nYou chose ";
-	switch (choice[0])
-	{
-	case '1':
-		cout << "New";
-		break;
-	case '2':
-		cout << "View";
-		break;
-	case '3':
-		cout << "Edit";
-		break;
-	case '4':
-		cout << "Remove";
-		break;
-	}
-	cout << "\n\n";
+	cout << "\nYou chose " << choice;
 }
 
 void test_getline_ac_with_empty_suggestion()
 {
-	cout << "\nEnter a month or just press enter to skip: ";
+	cout << "\n\nEnter a month or just press enter to skip: ";
 	string month = ynot::getline_ac({ "", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" });
 	if (month.empty())
 		cout << "\nYou skipped the question";
