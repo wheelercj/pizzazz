@@ -17,13 +17,8 @@ See the header files for the lists of functions and their descriptions. There ar
 The ynot library's `print` function (and other functions that print) allows you to print any emoji or other [Unicode](https://en.wikipedia.org/wiki/Unicode) symbols to a terminal. On Windows, printing emoji with C++ is normally very complicated. With this print function, it couldn't be more simple.
 
 ```cpp
-#include "../ynot/ynot/ynot.h"
-
-int main() {
-    ynot::print("🔥🐊");
-    ynot::print("\n I can print anything 😎🤖");
-    return 0;
-}
+ynot::print("🔥🐊");
+ynot::print("\n I can print anything 😎🤖");
 ```
 
 To print emoji, the file must be [saved with the UTF-8 encoding](https://docs.microsoft.com/en-us/visualstudio/ide/how-to-save-and-open-files-with-encoding?view=vs-2022) (_without_ signature/BOM) and your code must run in a modern terminal (such as [Windows Terminal](https://aka.ms/terminal); see [how to run your C++ app in Windows Terminal](https://wheelercj.github.io/notes/pages/20220506214620.html)).
@@ -31,17 +26,11 @@ To print emoji, the file must be [saved with the UTF-8 encoding](https://docs.mi
 Here is the `get_key` function which can instantly detect key presses without an enter key press:
 
 ```cpp
-#include "../ynot/ynot/ynot.h"
-using namespace std;
-
-int main() {
-    string key = "";
-    while (key != "escape")
-    {
-        key = ynot::get_key();
-        ynot::print("\r                               \r You pressed " + key);
-    }
-    return 0;
+string key = "";
+while (key != "escape")
+{
+    key = ynot::get_key();
+    ynot::print("\r                               \r You pressed " + key);
 }
 ```
 
@@ -50,20 +39,12 @@ int main() {
 Below is an example of ynot's `Menu` class, which makes it easy to create centered menus controlled with the arrow and enter keys.
 
 ```cpp
-#include "../ynot/ynot/ynot.h"
-#include <optional>
-using namespace std;
-
-int main() {
-    ynot::Menu menu("sample menu", { "create", "list", "edit", "delete", "help", "settings", "exit" });
-    optional<string> choice = menu.run();
-    if (choice)
-        ynot::print("\nYou chose " + *choice);
-    else
-        ynot::print("\nYou pressed escape.");
-    ynot::pause();
-    return 0;
-}
+ynot::Menu menu("sample menu", { "create", "list", "edit", "delete", "help", "settings", "exit" });
+optional<string> choice = menu.run();
+if (choice)
+    ynot::print("\nYou chose " + *choice);
+else
+    ynot::print("\nYou pressed escape.");
 ```
 
 ![menu demo](https://media.giphy.com/media/vUiPYlobVhnGrhKCTc/giphy.gif)
@@ -71,24 +52,18 @@ int main() {
 Here's an example of `dedent` which removes indentation from a multiline string, and `getline_ac` which can give autocomplete suggestions (not autocorrect) and has optional built-in input validation:
 
 ```cpp
-#include "../ynot/ynot/ynot.h"
-using namespace std;
-
-int main() {
-    string menu = ynot::dedent(R"(
-        Sample menu:
-         * Create
-         * Read
-         * Update
-         * Delete
-        > )");
-    ynot::print(menu);
-    string choice = ynot::getline_ac(
-        { "Create", "Read", "Update", "Delete" },
-        "type an option");
-    ynot::print("\n You chose " + choice);
-    return 0;
-}
+string menu = ynot::dedent(R"(
+    Sample menu:
+     * Create
+     * Read
+     * Update
+     * Delete
+    > )");
+ynot::print(menu);
+string choice = ynot::getline_ac(
+    { "Create", "Read", "Update", "Delete" },
+    "type an option");
+ynot::print("\n You chose " + choice);
 ```
 
 ![autocomplete menu example](https://media.giphy.com/media/Rqoco5DR2a2AjDAqtX/giphy.gif)
@@ -96,19 +71,13 @@ int main() {
 Below is another example. With ynot's `Paginator` class, you can cleanly present long pieces of text in a terminal.
 
 ```cpp
-#include "../ynot/ynot/ynot.h"
-using namespace std;
-
-int main() {
-    string article_title = "3.6 Git Branching - Rebasing";
-    string article_body = ynot::dedent(R"(
-        Article body here.
-        Indent with tabs or spaces, not both.)");
-    string line_prefix = "\n    ";
-    ynot::Paginator paginator(article_title, article_body, line_prefix);
-    paginator.run();
-    return 0;
-}
+string article_title = "3.6 Git Branching - Rebasing";
+string article_body = ynot::dedent(R"(
+    Article body here.
+    Indent with tabs or spaces, not both.)");
+string line_prefix = "\n    ";
+ynot::Paginator paginator(article_title, article_body, line_prefix);
+paginator.run();
 ```
 
 ![paginator demo](https://media.giphy.com/media/tAn8Pis7lLUfA39MFa/giphy.gif)
