@@ -108,11 +108,8 @@ void test_menu()
 	cout << "\n\nMenu test. Press any key to open the menu.";
 	ynot::pause();
 	ynot::Menu menu("sample menu", { "create", "list", "edit", "delete", "help", "settings", "exit" });
-	std::optional<std::string> choice = menu.run();
-	if (choice)
-		cout << "\nYou chose " << *choice;
-	else
-		cout << "\nYou pressed escape.";
+	std::string choice = menu.run();
+	cout << "\nYou chose " << choice;
 }
 
 void test_getline_ac()

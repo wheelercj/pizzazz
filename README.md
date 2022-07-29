@@ -40,11 +40,8 @@ Below is an example of ynot's `Menu` class, which makes it easy to create center
 
 ```cpp
 ynot::Menu menu("sample menu", { "create", "list", "edit", "delete", "help", "settings", "exit" });
-optional<string> choice = menu.run();
-if (choice)
-    ynot::print("\nYou chose " + *choice);
-else
-    ynot::print("\nYou pressed escape.");
+string choice = menu.run();
+ynot::print("\nYou chose " + choice);
 ```
 
 ![menu demo](https://media.giphy.com/media/vUiPYlobVhnGrhKCTc/giphy.gif)

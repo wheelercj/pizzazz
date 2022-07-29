@@ -22,7 +22,7 @@ namespace ynot
 		}
 	}
 
-	std::optional<std::string> Menu::run()
+	std::string Menu::run()
 	{
 		Coord window_size = get_window_size();
 		format_strings(window_size);
@@ -40,7 +40,7 @@ namespace ynot
 		Coord option_coords = print_menu(window_size, top_margin, left_title_margin, left_option_margin);
 		bool selection_changed = true;
 		std::string key = "";
-		while (key != "escape" && key != "enter")
+		while (key != "enter")
 		{
 			if (selection_changed)
 				print_options(option_coords, left_option_margin);
@@ -49,8 +49,6 @@ namespace ynot
 		}
 
 		after_loop();
-		if (key == "escape")
-			return {};
 		return this->options[this->current_selection];
 	}
 
