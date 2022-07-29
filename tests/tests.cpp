@@ -226,6 +226,11 @@ namespace tests
 			assert_equal("hello", ynot::center("hello", 3));
 		}
 
+		TEST_METHOD(test_center_multiline)
+		{
+			assert_equal(" hi  \n hey \n bye \nlong line", ynot::center_multiline("hi\nhey\nbye\nlong line", 5));
+		}
+
 		TEST_METHOD(test_ljust)
 		{
 			assert_equal("hi   ", ynot::ljust("hi", 5));
@@ -241,6 +246,11 @@ namespace tests
 			assert_equal("hello", ynot::ljust("hello", 3));
 		}
 
+		TEST_METHOD(test_ljust_multiline)
+		{
+			assert_equal("hi   \nhey  \nwhat \nlong line", ynot::ljust_multiline("hi\nhey\nwhat\nlong line", 5));
+		}
+
 		TEST_METHOD(test_rjust)
 		{
 			assert_equal("   hi", ynot::rjust("hi", 5));
@@ -254,6 +264,11 @@ namespace tests
 		TEST_METHOD(test_rjust_with_small_width)
 		{
 			assert_equal("hello", ynot::rjust("hello", 3));
+		}
+
+		TEST_METHOD(test_rjust_multiline)
+		{
+			assert_equal("   hi\n  hey\n what\nlong line", ynot::rjust_multiline("hi\nhey\nwhat\nlong line", 5));
 		}
 
 		TEST_METHOD(test_startswith)
@@ -399,6 +414,16 @@ namespace tests
 		TEST_METHOD(test_contains_empty_string)
 		{
 			assert_equal(true, ynot::contains("asjdfklj", ""));
+		}
+
+		TEST_METHOD(test_count_string)
+		{
+			assert_equal(2, ynot::count("alskdjflskdfjdslkfjdss", "kd"));
+		}
+
+		TEST_METHOD(test_count_char)
+		{
+			assert_equal(3, ynot::count("slkdfjslksd", 's'));
 		}
 
 		TEST_METHOD(test_find_next_space_at_start)

@@ -34,17 +34,29 @@ namespace ynot
 	/* Removes characters from the right edge of a string. */
 	std::string rstrip(std::string str, std::string characters);
 
-	/* Centers text, filling with a chosen character if needed.
+	/* Centers a line of text, filling with a chosen character if needed.
 	   Returns the string unchanged if width is <= the string's width. */
 	std::string center(std::string str, int width, char fill_char = ' ');
 
-	/* Justifies text to the left, filling with a chosen character if needed.
+	/* Centers multiple lines of text, filling with a chosen character if needed.
+	   Lines of width >= the given width are returned unchanged. */
+	std::string center_multiline(std::string str, int width, char fill_char = ' ');
+
+	/* Justifies a line of text to the left, filling with a chosen character if needed.
 	   Returns the string unchanged if width is <= the string's width. */
 	std::string ljust(std::string str, int width, char fill_char = ' ');
 
-	/* Justifies text to the right, filling with a chosen character if needed.
+	/* Justifies multiple lines of text to the left, filling with a chosen character if needed.
+	   Lines of width >= the given width are returned unchanged. */
+	std::string ljust_multiline(std::string str, int width, char fill_char = ' ');
+
+	/* Justifies a line of text to the right, filling with a chosen character if needed.
 	   Returns the string unchanged if width is <= the string's width. */
 	std::string rjust(std::string str, int width, char fill_char = ' ');
+
+	/* Justifies multiple lines of text to the right, filling with a chosen character if needed.
+	   Lines of width >= the given width are returned unchanged. */
+	std::string rjust_multiline(std::string str, int width, char fill_char = ' ');
 
 	/* Determines whether a string starts with a given substr. */
 	bool startswith(std::string str, std::string prefix);
@@ -67,6 +79,15 @@ namespace ynot
 
 	/* Determines whether a string contains a given character. */
 	bool contains(std::string str, char ch);
+
+	/* Counts the non-overlapping occurrences of a substring in a string.
+	   Throws invalid_argument if the substring is longer than the superstring,
+	   or if either string is empty. */
+	int count(std::string str, std::string substr);
+
+	/* Counts the occurrences of a character in a string.
+	   Throws invalid_argument if the string is empty. */
+	int count(std::string str, char ch);
 
 	/* Finds the index of the next space after an optional starting index.
 	   Returns -1 if there is no next space. */

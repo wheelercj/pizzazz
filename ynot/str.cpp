@@ -118,6 +118,14 @@ namespace ynot
 		return str;
 	}
 
+	std::string center_multiline(std::string str, int width, char fill_char)
+	{
+		std::vector<std::string> lines = split(str, "\n");
+		for (std::string& line : lines)
+			line = center(line, width);
+		return join(lines, "\n");
+	}
+
 	std::string ljust(std::string str, int width, char fill_char)
 	{
 		while (int(str.size()) < width)
@@ -125,11 +133,27 @@ namespace ynot
 		return str;
 	}
 
+	std::string ljust_multiline(std::string str, int width, char fill_char)
+	{
+		std::vector<std::string> lines = split(str, "\n");
+		for (std::string& line : lines)
+			line = ljust(line, width);
+		return join(lines, "\n");
+	}
+
 	std::string rjust(std::string str, int width, char fill_char)
 	{
 		while (int(str.size()) < width)
 			str.insert(str.begin(), fill_char);
 		return str;
+	}
+
+	std::string rjust_multiline(std::string str, int width, char fill_char)
+	{
+		std::vector<std::string> lines = split(str, "\n");
+		for (std::string& line : lines)
+			line = rjust(line, width);
+		return join(lines, "\n");
 	}
 
 	bool startswith(std::string str, std::string prefix)
@@ -253,6 +277,31 @@ namespace ynot
 				return true;
 		}
 		return false;
+	}
+
+	int count(std::string str, std::string substr)
+	{
+		if (str.size() < substr.size())
+			throw std::invalid_argument("str must be longer than substr");
+		if (str.empty() || substr.empty())
+			throw std::invalid_argument("The given strings must not be empty.");
+		int c = 0;
+		for (size_t i = 0; i < str.size() - substr.size() + 1; i++)
+		{
+			if (substr == slice(str, int(i), int(i + substr.size())))
+			{
+				c++;
+				i += substr.size();
+			}
+		}
+		return c;
+	}
+
+	int count(std::string str, char ch)
+	{
+		if (str.empty())
+			throw std::invalid_argument("The given strings must not be empty.");
+		return (int)std::count(str.begin(), str.end(), ch);
 	}
 
 	int find_next_space(std::string str, size_t start)
