@@ -23,6 +23,7 @@ int main()
 {
 	test_get_key();  // test_get_key should always be the first test in every commit.
 	test_get_key_without_waiting();
+	test_emoji_size();
 	test_menu();
 	test_getline_ac();
 	test_getline_ac_menu();
@@ -101,6 +102,20 @@ void test_get_key_without_waiting()
 	}
 	ynot::set_cursor_style(CursorStyle::not_hidden);
 	cout << "\nYou pressed " << input;
+}
+
+void test_emoji_size()
+{
+	ynot::print("\nUnfortunately, C++ considers some characters to have different widths:");
+	string letter = "a";
+	ynot::print("\n" + letter + " size: " + to_string(letter.size()));
+	string greek_letter = "ζ";
+	ynot::print("\n" + greek_letter + " size: " + to_string(greek_letter.size()));
+	string biohazard_symbol = "☣";
+	ynot::print("\n" + biohazard_symbol + " size: " + to_string(biohazard_symbol.size()));
+	string pizza = "🍕";
+	ynot::print("\n" + pizza + " size: " + std::to_string(pizza.size()));
+	ynot::pause();
 }
 
 void test_menu()
