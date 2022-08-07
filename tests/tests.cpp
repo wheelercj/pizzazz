@@ -389,7 +389,7 @@ namespace tests
 				Sadly, these strings cannot only be multiline; they must be raw strings too.
 				)");
 			std::string actual_result = ynot::wrap(str, 25);
-			std::string expected_result = "C++ has raw multiline\nstrings almost like in\nPython.\n\nSadly, these strings\ncannot only be\nmultiline; they must be\nraw strings too.";
+			std::string expected_result = "\nC++ has raw multiline\nstrings almost like in\nPython.\n\nSadly, these strings\ncannot only be\nmultiline; they must be\nraw strings too.";
 			assert_equal(expected_result, actual_result);
 		}
 

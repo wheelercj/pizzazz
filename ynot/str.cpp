@@ -226,6 +226,8 @@ namespace ynot
 	{
 		if (line_prefix.size() + line_suffix.size() >= width)
 			throw std::invalid_argument("The wrap width must be greater than the line prefix and suffix width.");
+		bool starts_with_newline = startswith(str, "\n");
+		bool ends_with_newline = endswith(str, "\n");
 		str = strip(str, "\n");
 		std::vector<std::string> input_lines = split(str, "\n");
 		std::vector<std::string> wrapped_lines;
@@ -256,7 +258,12 @@ namespace ynot
 				}
 			}
 		}
-		return strip(join(wrapped_lines, ""), "\n");
+		str = join(wrapped_lines, "");
+		if (!starts_with_newline)
+			str = lstrip(str, "\n");
+		if (!ends_with_newline)
+			str = rstrip(str, "\n");
+		return str;
 	}
 
 	bool contains(std::string str, std::string substr)
