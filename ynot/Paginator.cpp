@@ -202,6 +202,7 @@ namespace ynot
 
 	std::string Paginator::improve_spacing(std::string text)
 	{
-		return std::regex_replace(text, std::regex(R"((?!\n|  )\n(?!\n))"), " ");
+		std::string result = std::regex_replace(text, std::regex(R"((?!\n|  )\n(?!\n))"), " ");
+		return std::regex_replace(text, std::regex(R"(  (?=\n))"), "\n");
 	}
 }
