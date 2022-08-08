@@ -1,3 +1,5 @@
+#pragma once
+
 void test_get_key();
 void test_get_key_without_waiting();
 void test_emoji_size();
@@ -10,6 +12,7 @@ void test_getline_ac_without_showing_suggestions();
 void test_wrap();
 void test_paginator();
 void test_paginator_with_emoji();
+void test_paginator_with_vector();
 void test_set_cursor_style();
 void test_set_window_title();
 void test_set_window_title_with_emoji();

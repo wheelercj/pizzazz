@@ -9,7 +9,7 @@ namespace ynot
 	{
 	public:
 
-		/* Throws invalid_argument if no text is given. */
+		/* Throws std::invalid_argument if no text is given. */
 		Paginator(
 			std::string title,
 			std::string text,
@@ -17,11 +17,11 @@ namespace ynot
 			std::string line_suffix = "",
 			std::string page_prefix = "",
 			std::string page_suffix = "",
-			int page_line_count = 24,
-			int page_width = 70,
-			bool show_page_number = true);
+			int max_page_lines = 24,
+			int max_page_width = 70,
+			bool show_page_numbers = true);
 
-		/* Throws invalid_argument if no lines are given. */
+		/* Throws std::invalid_argument if no lines are given. */
 		Paginator(
 			std::string title,
 			std::vector<std::string> lines,
@@ -29,21 +29,31 @@ namespace ynot
 			std::string line_suffix = "",
 			std::string page_prefix = "",
 			std::string page_suffix = "",
-			int page_line_count = 24,
-			int page_width = 70,
-			bool show_page_number = true);
+			int max_page_lines = 24,
+			int max_page_width = 70,
+			bool show_page_numbers = true);
 
 		/* Returns the page number on which the paginator was
-		   closed. */
+		   closed. If the terminal window is resized between Paginator
+		   runs, attempting to start at the same previously viewed
+		   page might not be possible because the number of pages may
+		   change. */
 		int run(int start_page = 0);
 
 	private:
+		std::string title;
+		std::string text;
+		std::vector<std::string> lines;
+		bool using_lines_not_text;
 		std::vector<std::string> pages;
 		int page_number = 0;  // the current index of the pages vector
-		int page_width;
+		int max_page_width;
+		int max_page_lines;
 		bool show_page_numbers = true;
 		std::string line_prefix;
 		std::string line_suffix;
+		std::string page_prefix;
+		std::string page_suffix;
 
 		void print_page();
 		void print_navigation_line();

@@ -12,35 +12,22 @@ namespace ynot
 		std::string line_suffix,
 		std::string page_prefix,
 		std::string page_suffix,
-		int page_line_count,
-		int page_width,
+		int max_page_lines,
+		int max_page_width,
 		bool show_page_numbers)
 	{
 		if (text.empty())
 			throw std::invalid_argument("Text must be given.");
-		this->page_width = page_width;
+		this->text = improve_spacing(text);
+		this->using_lines_not_text = false;
+		this->title = title;
+		this->max_page_lines = max_page_lines;
+		this->max_page_width = max_page_width;
 		this->show_page_numbers = show_page_numbers;
 		this->line_prefix = line_prefix;
 		this->line_suffix = line_suffix;
-		text = improve_spacing(text);
-		text = wrap(text, page_width, line_prefix, line_suffix);
-		if (startswith(text, "\n"))
-			text = slice(text, 1);
-		std::vector<std::string> lines = split(text, "\n");
-		std::string page_title = line_prefix + "\x1b[4m" + title + "\x1b[24m" + "\n";
-		std::string page;
-		while (lines.size())
-		{
-			page = page_title;
-			page += page_prefix;
-			for (int i = 0; i < page_line_count && lines.size(); i++)
-			{
-				page += "\n" + lines[0];
-				lines.erase(lines.begin(), lines.begin() + 1);
-			}
-			page += page_suffix;
-			this->pages.push_back(page);
-		}
+		this->page_prefix = page_prefix;
+		this->page_suffix = page_suffix;
 	}
 
 	Paginator::Paginator(std::string title,
@@ -49,32 +36,22 @@ namespace ynot
 		std::string line_suffix,
 		std::string page_prefix,
 		std::string page_suffix,
-		int page_line_count,
-		int page_width,
-		bool show_page_number)
+		int max_page_lines,
+		int max_page_width,
+		bool show_page_numbers)
 	{
 		if (lines.empty())
 			throw std::invalid_argument("Lines must be given.");
-		this->page_width = page_width;
+		this->lines = lines;
+		this->using_lines_not_text = true;
+		this->title = title;
+		this->max_page_width = max_page_width;
+		this->max_page_lines = max_page_lines;
 		this->show_page_numbers = show_page_numbers;
 		this->line_prefix = line_prefix;
 		this->line_suffix = line_suffix;
-		for (std::string& line : lines)
-			line = wrap(line, page_width, line_prefix, line_suffix);
-		std::string page_title = title + "\n";
-		std::string page;
-		while (lines.size())
-		{
-			page = page_title;
-			page += page_prefix;
-			for (int i = 0; i < page_line_count && lines.size(); i++)
-			{
-				page += lines[0];
-				lines.erase(lines.begin(), lines.begin() + 1);
-			}
-			page += page_suffix;
-			this->pages.push_back(page);
-		}
+		this->page_prefix = page_prefix;
+		this->page_suffix = page_suffix;
 	}
 
 	int Paginator::run(int start_page)
@@ -84,6 +61,48 @@ namespace ynot
 		set_cursor_style(CursorStyle::hidden);
 		this->page_number = start_page;
 		alternate_screen_buffer();
+		Coord window_size = get_window_size();
+		if (this->max_page_width > window_size.x - 1)
+			this->max_page_width = window_size.x - 1;
+		if (this->max_page_lines > window_size.y - 5)
+			this->max_page_lines = window_size.y - 5;
+		if (!this->using_lines_not_text)
+		{
+			this->text = wrap(text, this->max_page_width, this->line_prefix, this->line_suffix);
+			this->lines = split(this->text, "\n");
+			this->using_lines_not_text = true;
+		}
+		else
+		{
+			for (std::string& line : this->lines)
+				line = wrap(line, this->max_page_width, this->line_prefix, this->line_suffix);
+		}
+		for (std::string& line : this->lines)
+			line = indent(line, "\n");
+		this->title = this->line_prefix + "\x1b[4m" + this->title + "\x1b[24m\n";
+		std::string page;
+		while (this->lines.size())
+		{
+			page = this->title;
+			int total_page_lines = count(this->title, "\n")
+				+ 1 + count(this->page_prefix, "\n");
+			for (int i = 0; i < this->lines.size(); i++)
+			{
+				int line_line_count = count(this->lines[i], "\n");
+				if (total_page_lines + line_line_count > this->max_page_lines)
+					break;
+				total_page_lines += line_line_count;
+			}
+			page += this->page_prefix;
+			for (int i = 0; i < total_page_lines && this->lines.size(); i++)
+			{
+				page += this->lines[0];
+				this->lines.erase(this->lines.begin(), this->lines.begin() + 1);
+			}
+			page += this->page_suffix;
+			this->pages.push_back(page);
+		}
+
 		bool page_changed = true;
 		std::string key = "";
 		while (key != "escape")
@@ -114,13 +133,13 @@ namespace ynot
 		int prefix_and_suffix_width = int(this->line_prefix.size() + this->line_suffix.size());
 		std::string page_number_str;
 		if (!this->show_page_numbers)
-			page_number_str = center("", this->page_width - 4 - prefix_and_suffix_width);
+			page_number_str = center("", this->max_page_width - 4 - prefix_and_suffix_width);
 		else
 		{
 			page_number_str =
 				std::to_string(this->page_number + 1)
 				+ "/" + std::to_string(pages.size());
-			page_number_str = center(page_number_str, this->page_width - 4 - prefix_and_suffix_width);
+			page_number_str = center(page_number_str, this->max_page_width - 4 - prefix_and_suffix_width);
 		}
 		ynot::print("\n" + this->line_prefix);
 		if (this->page_number > 0)

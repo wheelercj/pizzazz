@@ -33,6 +33,7 @@ int main()
 	test_wrap();
 	test_paginator();
 	test_paginator_with_emoji();
+	test_paginator_with_vector();
 	test_set_cursor_style();
 	test_set_window_title();
 	test_set_window_title_with_emoji();
@@ -224,6 +225,7 @@ void test_paginator()
 		Predictive parsers can be depicted using transition diagrams for each non - terminal symbol where the edges between the initial and the final states are labelled by the symbols(terminals and non - terminals) of the right side of the production rule. [3]
 
 		Source: https://en.wikipedia.org/wiki/Recursive_descent_parser)");
+	body = ynot::lstrip(body, "\n");
 	ynot::Paginator paginator(title, body, line_prefix);
 	paginator.run();
 }
@@ -236,6 +238,34 @@ void test_paginator_with_emoji()
 	std::string title = "🍴 menu 🍴";
 	std::string body = "🍄  mushroom\n🍅  tomato\n🍆  aubergine\n🍇  grapes\n🍈  melon\n🍉  watermelon\n🍊  tangerine\n🍋  lemon\n🍌  banana\n🍍  pineapple\n🍎  red apple\n🍏  green apple\n🍐  pear\n🍑  peach\n🍒  cherries\n🍓  strawberry\n🍔  hamburger\n🍕  slice of pizza\n🍖  meat on bone\n🍗  poultry leg\n🍘  rice cracker\n🍙  rice ball\n🍚  cooked rice\n🍛  curry and rice\n🍜  steaming bowl\n🍝  spaghetti\n🍞  bread\n🍟  french fries\n🍠  roasted sweet potato\n🍡  dango\n🍢  oden\n🍣  sushi\n🍤  fried shrimp\n🍥  fish cake with swirl design\n🍦  soft ice cream\n🍧  shaved ice\n🍨  ice cream\n🍩  doughnut\n🍪  cookie\n🍫  chocolate bar\n🍬  candy\n🍭  lollipop\n🍮  custard\n🍯  honey pot\n🍰  shortcake\n🍱  bento box\n🍲  pot of food\n🍵  teacup without handle\n🍶  sake bottle and cup\n🍷  wine glass\n🍸  cocktail glass\n🍹  tropical drink\n🍺  beer mug\n🍻  clinking beer mugs\n🍼  baby bottle\n🍾  bottle with popping cork\n🍿  popcorn";
 	ynot::Paginator paginator(title, body, "\n    ");
+	paginator.run();
+}
+
+void test_paginator_with_vector()
+{
+	std::cout << "\n\nPaginator test with a vector of strings. Press any key"
+		"\nto start the paginator, and escape to close the paginator.";
+	ynot::pause();
+	std::string title = "some of the topics on https://wheelercj.github.io/notes/";
+	std::vector<std::string> lines = {
+		"• important computer science skills",
+		"• programming practice prompts",
+		"• intro to regex",
+		"• how to quickly share code",
+		"• algorithms",
+		"• intro to version control(with Git and GitHub)",
+		"• swapping pointers in C or C++",
+		"• intro to SQL",
+		"• intro to Python",
+		"• how to create custom terminal commands",
+		"• how to install a local Python project",
+		"• how to use colors in terminals",
+		"• how to print emoji with C++",
+		"• how to edit PATH in Windows",
+		"• intro to recursion with C++",
+		"• how to control the terminal's cursor"
+	};
+	ynot::Paginator paginator(title, lines, "\n    ");
 	paginator.run();
 }
 
