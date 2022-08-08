@@ -96,8 +96,9 @@ namespace ynot
 	void Paginator::format_lines()
 	{
 		Coord window_size = get_window_size();
-		if (this->max_page_width > window_size.x - 1)
-			this->max_page_width = window_size.x - 1;
+		int s = int(this->line_prefix.size() + this->line_suffix.size());
+		if (this->max_page_width > window_size.x - 5 - s)
+			this->max_page_width = window_size.x - 5 - s;
 		if (this->max_page_lines > window_size.y - 5)
 			this->max_page_lines = window_size.y - 5;
 		if (!this->using_lines_not_text)
