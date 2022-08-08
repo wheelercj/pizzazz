@@ -289,9 +289,9 @@ namespace ynot
 	int count(std::string str, std::string substr)
 	{
 		if (str.size() < substr.size())
-			throw std::invalid_argument("str must be longer than substr");
-		if (str.empty() || substr.empty())
-			throw std::invalid_argument("The given strings must not be empty.");
+			return 0;
+		if (substr.empty())
+			return int(str.size() + 1);
 		int c = 0;
 		for (size_t i = 0; i < str.size() - substr.size() + 1; i++)
 		{
@@ -306,8 +306,6 @@ namespace ynot
 
 	int count(std::string str, char ch)
 	{
-		if (str.empty())
-			throw std::invalid_argument("The given strings must not be empty.");
 		return (int)std::count(str.begin(), str.end(), ch);
 	}
 

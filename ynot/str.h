@@ -80,13 +80,10 @@ namespace ynot
 	/* Determines whether a string contains a given character. */
 	bool contains(std::string str, char ch);
 
-	/* Counts the non-overlapping occurrences of a substring in a string.
-	   Throws invalid_argument if the substring is longer than the superstring,
-	   or if either string is empty. */
+	/* Counts the non-overlapping occurrences of a substring in a string. */
 	int count(std::string str, std::string substr);
 
-	/* Counts the occurrences of a character in a string.
-	   Throws invalid_argument if the string is empty. */
+	/* Counts the occurrences of a character in a string. */
 	int count(std::string str, char ch);
 
 	/* Finds the index of the next space after an optional starting index.

@@ -428,6 +428,31 @@ namespace tests
 			assert_equal(3, ynot::count("slkdfjslksd", 's'));
 		}
 
+		TEST_METHOD(test_count_empty_string)
+		{
+			assert_equal(4, ynot::count("abc", ""));
+		}
+
+		TEST_METHOD(test_count_string_in_empty_string)
+		{
+			assert_equal(0, ynot::count("", "a"));
+		}
+
+		TEST_METHOD(test_count_char_in_empty_string)
+		{
+			assert_equal(0, ynot::count("", 'a'));
+		}
+
+		TEST_METHOD(test_count_empty_strings)
+		{
+			assert_equal(1, ynot::count("", ""));
+		}
+
+		TEST_METHOD(test_count_with_larger_substr)
+		{
+			assert_equal(0, ynot::count("a", "abc"));
+		}
+
 		TEST_METHOD(test_find_next_space_at_start)
 		{
 			assert_equal(0, ynot::find_next_space(" hi"));
