@@ -21,6 +21,9 @@ using ynot::Coord;
 
 int main()
 {
+	test_paginator();
+	test_paginator_with_emoji();
+	test_paginator_with_vector();
 	test_get_key();  // test_get_key should always be the first test in every commit.
 	test_get_key_without_waiting();
 	test_emoji_size();

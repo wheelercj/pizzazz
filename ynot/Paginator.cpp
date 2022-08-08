@@ -18,7 +18,7 @@ namespace ynot
 	{
 		if (text.empty())
 			throw std::invalid_argument("Text must be given.");
-		this->text = improve_spacing(text);
+		this->text = this->improve_spacing(text);
 		this->using_lines_not_text = false;
 		this->title = title;
 		this->max_page_lines = max_page_lines;
@@ -56,11 +56,45 @@ namespace ynot
 
 	int Paginator::run(int start_page)
 	{
+		this->page_number = start_page;
+		this->before_loop();
+		bool page_changed = true;
+		std::string key = "";
+		while (key != "escape")
+		{
+			if (page_changed)
+			{
+				clear_screen();
+				set_cursor_coords(1, 1);
+				this->print_page();
+			}
+			key = get_key();
+			page_changed = this->on_key(key);
+		}
+		this->after_loop();
+		return this->page_number;
+	}
+
+	void Paginator::before_loop()
+	{
 		reset_on_keyboard_interrupt();
 		save_cursor_location();
 		set_cursor_style(CursorStyle::hidden);
-		this->page_number = start_page;
 		alternate_screen_buffer();
+		this->format_lines();
+		this->title = this->line_prefix + "\x1b[4m" + this->title + "\x1b[24m\n";
+		this->create_pages();
+	}
+
+	void Paginator::after_loop()
+	{
+		restore_screen_buffer();
+		restore_cursor_location();
+		set_cursor_style(CursorStyle::not_hidden);
+	}
+
+	void Paginator::format_lines()
+	{
 		Coord window_size = get_window_size();
 		if (this->max_page_width > window_size.x - 1)
 			this->max_page_width = window_size.x - 1;
@@ -79,11 +113,13 @@ namespace ynot
 		}
 		for (std::string& line : this->lines)
 			line = indent(line, "\n");
-		this->title = this->line_prefix + "\x1b[4m" + this->title + "\x1b[24m\n";
-		std::string page;
+	}
+
+	void Paginator::create_pages()
+	{
 		while (this->lines.size())
 		{
-			page = this->title;
+			std::string page = this->title;
 			int total_page_lines = count(this->title, "\n")
 				+ 1 + count(this->page_prefix, "\n");
 			for (int i = 0; i < this->lines.size(); i++)
@@ -102,30 +138,12 @@ namespace ynot
 			page += this->page_suffix;
 			this->pages.push_back(page);
 		}
-
-		bool page_changed = true;
-		std::string key = "";
-		while (key != "escape")
-		{
-			if (page_changed)
-			{
-				clear_screen();
-				set_cursor_coords(1, 1);
-				print_page();
-			}
-			key = get_key();
-			page_changed = on_key(key);
-		}
-		restore_screen_buffer();
-		restore_cursor_location();
-		set_cursor_style(CursorStyle::not_hidden);
-		return this->page_number;
 	}
 
 	void Paginator::print_page()
 	{
 		ynot::print(this->pages[this->page_number]);
-		print_navigation_line();
+		this->print_navigation_line();
 	}
 
 	void Paginator::print_navigation_line()
@@ -158,22 +176,22 @@ namespace ynot
 	{
 		if (key == "left arrow" || key == "up arrow" || key == "page up")
 		{
-			if (go_to_previous_page())
+			if (this->go_to_previous_page())
 				return true;
 		}
 		else if (key == "right arrow" || key == "down arrow" || key == "page down")
 		{
-			if (go_to_next_page())
+			if (this->go_to_next_page())
 				return true;
 		}
 		else if (key == "home")
 		{
-			if (go_to_first_page())
+			if (this->go_to_first_page())
 				return true;
 		}
 		else if (key == "end")
 		{
-			if (go_to_last_page())
+			if (this->go_to_last_page())
 				return true;
 		}
 		return false;

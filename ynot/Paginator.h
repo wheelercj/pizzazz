@@ -55,6 +55,11 @@ namespace ynot
 		std::string page_prefix;
 		std::string page_suffix;
 
+		void before_loop();
+		void after_loop();
+
+		void format_lines();
+		void create_pages();
 		void print_page();
 		void print_navigation_line();
 
