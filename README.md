@@ -21,7 +21,7 @@ ynot::print("🔥🐊");
 ynot::print("\n I can print anything 😎🤖");
 ```
 
-To print emoji, the file must be [saved with the UTF-8 encoding](https://docs.microsoft.com/en-us/visualstudio/ide/how-to-save-and-open-files-with-encoding?view=vs-2022) (_without_ signature/BOM) and your code must run in a modern terminal (such as [Windows Terminal](https://aka.ms/terminal); see [how to run your C++ app in Windows Terminal](https://wheelercj.github.io/notes/pages/20220506214620.html)).
+To print emoji, the file must be [saved with the UTF-8 encoding](https://docs.microsoft.com/en-us/visualstudio/ide/how-to-save-and-open-files-with-encoding?view=vs-2022) (_without_ signature/BOM) and your code must run in a modern terminal (such as [Windows Terminal](https://aka.ms/terminal); see [how to run your C++ app in Windows Terminal](https://wheelercj.github.io/notes/pages/20220506214620.html)). On Windows, you must use the emoji or Unicode symbol itself in your code rather than a Unicode code point (Unicode code points only work in `wstring`s).
 
 Here is the `get_key` function which can instantly detect key presses without an enter key press:
 
