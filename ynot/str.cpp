@@ -245,6 +245,8 @@ namespace ynot
 					break;
 				}
 				int prev_space = find_previous_space(long_line, width);
+				if (line_prefix.size() >= prev_space)
+					prev_space = -1;
 				if (prev_space >= 0)
 				{
 					wrapped_lines.push_back(long_line.substr(0, prev_space) + line_suffix);
