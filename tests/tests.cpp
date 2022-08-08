@@ -1,6 +1,8 @@
 #include "pch.h"  // This must be the first include.
 #include "CppUnitTest.h"
 #include <vector>
+#include "../ynot/common.h"
+#include "../ynot/common.cpp"
 #include "../ynot/Menu.h"
 #include "../ynot/Menu.cpp"
 #include "../ynot/Paginator.h"
