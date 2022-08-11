@@ -3,6 +3,9 @@
 
 namespace ynot
 {
+	/* Creates and runs a Notification. */
+	void notify(std::string text);
+
 	class Notification
 	{
 	public:

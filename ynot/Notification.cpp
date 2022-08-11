@@ -3,6 +3,11 @@
 
 namespace ynot
 {
+	void notify(std::string text)
+	{
+		Notification(text).run();
+	}
+
 	Notification::Notification(std::string text)
 	{
 		this->text = dedent(text);
