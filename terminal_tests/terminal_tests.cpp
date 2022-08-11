@@ -133,7 +133,8 @@ void test_menu_reusing()
 {
 	cout << "\n\nAnother menu test. Press any key to open the menu.";
 	ynot::pause();
-	ynot::Menu menu("this is the title", { "reload this menu", "exit" });
+	ynot::Menu menu("this is the title", { "reload this menu", "exit" },
+		"Nothing should move when the menu is reloaded.");
 	string choice = "";
 	while (choice != "exit")
 		choice = menu.run();

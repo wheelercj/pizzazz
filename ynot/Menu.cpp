@@ -85,7 +85,7 @@ namespace ynot
 			print_styled(this->title + "\n\n", { Style::underlined });
 		}
 		if (this->description.size())
-			print(description + "\n");
+			print(center(description, this->window_size.x) + "\n\n");
 		Coord option_coords = get_cursor_coords();
 		this->print_options(option_coords, left_option_margin);
 		return option_coords;
