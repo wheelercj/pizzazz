@@ -8,11 +8,9 @@ You can download this library into your project with git by using `git submodule
 
 Alternatively, you can manually download [a zip file or a tar.gz file](https://github.com/wheelercj/ynot/tags) and go through a similar setup process.
 
-## usage
-
-See the header files for the lists of functions and their descriptions. There are many examples of how you can use this library below, in the test files, and in [the matrix](https://github.com/wheelercj/the-matrix). C++17 or newer is required; in Visual Studio, you can choose the version of C++ with project > Properties > C/C++ > Language > C++ Language Standard.
-
 ## examples
+
+See the header files for the lists of functions and their descriptions. There are many examples of how you can use this library below, in the test files, in [terminal paint](https://github.com/wheelercj/terminal-paint), and in [the matrix](https://github.com/wheelercj/the-matrix). C++17 or newer is required; in Visual Studio, you can choose the version of C++ with project > Properties > C/C++ > Language > C++ Language Standard.
 
 The ynot library's `print` function (and other functions that print) allows you to print any emoji or other [Unicode](https://en.wikipedia.org/wiki/Unicode) symbols to a terminal. On Windows, printing emoji with C++ is normally very complicated. With this print function, it couldn't be more simple.
 
