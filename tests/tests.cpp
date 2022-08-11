@@ -5,6 +5,8 @@
 #include "../ynot/common.cpp"
 #include "../ynot/Menu.h"
 #include "../ynot/Menu.cpp"
+#include "../ynot/Notification.h"
+#include "../ynot/Notification.cpp"
 #include "../ynot/Paginator.h"
 #include "../ynot/Paginator.cpp"
 #include "../ynot/str.h"

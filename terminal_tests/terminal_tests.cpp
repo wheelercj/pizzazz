@@ -7,6 +7,8 @@
 #include "../ynot/InputField.cpp"
 #include "../ynot/Menu.h"
 #include "../ynot/Menu.cpp"
+#include "../ynot/Notification.h"
+#include "../ynot/Notification.cpp"
 #include "../ynot/Paginator.h"
 #include "../ynot/Paginator.cpp"
 #include "../ynot/str.h"
@@ -25,7 +27,11 @@ int main()
 	test_get_key_without_waiting();
 	test_emoji_size();
 	test_menu();
-	test_menu_reusing();
+	test_menu_reuse();
+	test_menu_with_one_choice();
+	test_notification();
+	test_big_notification();
+	test_big_notification_without_manual_wrapping();
 	test_getline_ac();
 	test_getline_ac_menu();
 	test_getline_ac_with_empty_suggestion();
@@ -129,7 +135,7 @@ void test_menu()
 	cout << "\nYou chose " << choice;
 }
 
-void test_menu_reusing()
+void test_menu_reuse()
 {
 	cout << "\n\nAnother menu test. Press any key to open the menu.";
 	ynot::pause();
@@ -138,6 +144,51 @@ void test_menu_reusing()
 	string choice = "";
 	while (choice != "exit")
 		choice = menu.run();
+}
+
+void test_menu_with_one_choice()
+{
+	cout << "\n\nHacky notification test. Press any key to open.";
+	ynot::pause();
+	ynot::Menu menu("", { "ok" }, "Here is a message.");
+	menu.run();
+}
+
+void test_notification()
+{
+	cout << "\n\nNotification test. Press any key to open.";
+	ynot::pause();
+	ynot::Notification("This is a better notification.").run();
+}
+
+void test_big_notification()
+{
+	cout << "\n\nBig notification test. Press any key to open.";
+	ynot::pause();
+	ynot::Notification(R"(
+		Nomorhamphus towoetii is endemic to Indonesia. This species can
+		be found in a freshwater system. Facts and information about the
+		population trends about this species are limited and not details
+		are lacking about population. This species is recorded to be
+		found in the Lake Towuti system in central Sulawesi, Indonesia.
+		It is considered to be an endangered species due to the fact
+		that it has a limited and restricted extent of occurrence within
+		five locations. There are major threats within a few of these
+		locations as well.
+
+		Source: https://en.wikipedia.org/wiki/Nomorhamphus_towoetii
+		)").run();
+}
+
+void test_big_notification_without_manual_wrapping()
+{
+	cout << "\n\nUnwrapped big notification test. Press any key to open.";
+	ynot::pause();
+	ynot::Notification(R"(
+		Nomorhamphus towoetii is endemic to Indonesia. This species can be found in a freshwater system. Facts and information about the population trends about this species are limited and not details are lacking about population. This species is recorded to be found in the Lake Towuti system in central Sulawesi, Indonesia. It is considered to be an endangered species due to the fact that it has a limited and restricted extent of occurrence within five locations. There are major threats within a few of these locations as well.
+
+		Source: https://en.wikipedia.org/wiki/Nomorhamphus_towoetii
+		)").run();
 }
 
 void test_getline_ac()
