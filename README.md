@@ -4,9 +4,13 @@ Add color, style, advanced cursor movements, autocomplete suggestions, and more 
 
 ## download
 
-You can download this library into your project with git by using `git submodule add https://github.com/wheelercj/ynot` and then adding `#include "../ynot/ynot/ynot.h"` (and optionally `using namespace ynot;`) to the files you want to use this library in. If you're using Visual Studio, you will also need to [add the library's files to your project's solution explorer](https://wheelercj.github.io/notes/pages/20220807002725.html). Get future updates with `git submodule update --remote`. The library's version number is saved in ynot.h so that you can check whether you have the latest version in the future.
+You can download this library into your project with git by using `git submodule add https://github.com/wheelercj/ynot` and then adding `#include "../ynot/ynot/ynot.h"` (and optionally `using namespace ynot;`) to the files you want to use this library in. Get future updates with `git submodule update --remote`. The library's version number is saved in ynot.h so that you can check whether you have the latest version in the future.
 
 Alternatively, you can manually download [a zip file or a tar.gz file](https://github.com/wheelercj/ynot/tags) and go through a similar setup process.
+
+If you're using Visual Studio, each time you download or update the library you will also need to:
+* add any of the library's files you haven't added yet to your project's solution explorer ([here's a guide](https://wheelercj.github.io/notes/pages/20220807002725.html))
+* rescan the solution by right-clicking on your project in the solution explorer and choosing "Rescan Solution"
 
 ## examples
 
