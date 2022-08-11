@@ -20,35 +20,40 @@ namespace ynot
 			if (option.size() > this->max_option_width)
 				this->max_option_width = option.size();
 		}
+		this->window_size = get_window_size();
+		this->text_height = get_height();
 	}
 
 	std::string Menu::run()
 	{
-		Coord window_size = get_window_size();
-		format_strings(window_size);
-		int left_option_margin = (window_size.x - int(this->max_option_width)) / 2;
-		int title_width = get_title_width();
-		int left_title_margin = (window_size.x - title_width) / 2;
-		int text_height = get_height(window_size);
-		int top_margin = (window_size.y - text_height) / 2;
-		before_loop();
+		Coord temp_window_size = get_window_size();
+		if (this->window_size != temp_window_size)
+		{
+			this->window_size = temp_window_size;
+			this->format_strings();
+		}
+		int left_option_margin = (this->window_size.x - int(this->max_option_width)) / 2;
+		int title_width = this->get_title_width();
+		int left_title_margin = (this->window_size.x - title_width) / 2;
+		int top_margin = (this->window_size.y - this->text_height) / 2;
+		this->before_loop();
 		if (top_margin < 0)
 		{
-			after_loop();
+			this->after_loop();
 			throw std::runtime_error("The menu doesn't fit in the window.");
 		}
-		Coord option_coords = print_menu(window_size, top_margin, left_title_margin, left_option_margin);
+		Coord option_coords = this->print_menu(top_margin, left_title_margin, left_option_margin);
 		bool selection_changed = true;
 		std::string key = "";
 		while (key != "enter")
 		{
 			if (selection_changed)
-				print_options(option_coords, left_option_margin);
+				this->print_options(option_coords, left_option_margin);
 			key = get_key();
-			selection_changed = on_key(key);
+			selection_changed = this->on_key(key);
 		}
 
-		after_loop();
+		this->after_loop();
 		return this->options[this->current_selection];
 	}
 
@@ -68,7 +73,7 @@ namespace ynot
 		restore_cursor_location();
 	}
 
-	Coord Menu::print_menu(Coord window_size, int top_margin, int left_title_margin, int left_option_margin)
+	Coord Menu::print_menu(int top_margin, int left_title_margin, int left_option_margin)
 	{
 		set_cursor_coords(0, 0);
 		for (int i = 0; i < top_margin; i++)
@@ -77,12 +82,12 @@ namespace ynot
 		{
 			for (int i = 0; i < left_title_margin; i++)
 				print(" ");
-			print_styled(this->title + "\n", { Style::underlined });
+			print_styled(this->title + "\n\n", { Style::underlined });
 		}
 		if (this->description.size())
 			print(description + "\n");
 		Coord option_coords = get_cursor_coords();
-		print_options(option_coords, left_option_margin);
+		this->print_options(option_coords, left_option_margin);
 		return option_coords;
 	}
 
@@ -90,7 +95,7 @@ namespace ynot
 	{
 		set_cursor_coords(option_coords);
 		for (size_t i = 0; i < this->options.size(); i++)
-			print_option(int(i), left_option_margin);
+			this->print_option(int(i), left_option_margin);
 	}
 
 	void Menu::print_option(int option_index, int left_option_margin)
@@ -133,9 +138,9 @@ namespace ynot
 		return false;
 	}
 
-	void Menu::format_strings(Coord window_size)
+	void Menu::format_strings()
 	{
-		validate_max_option_width(window_size);
+		this->validate_max_option_width();
 		int max_width = window_size.x - this->min_horiz_margin_size;
 		this->title = wrap(this->title, max_width, "", "\n");
 		this->description = wrap(this->description, max_width, "", "\n");
@@ -153,9 +158,9 @@ namespace ynot
 		return max_size;
 	}
 
-	void Menu::validate_max_option_width(Coord window_size)
+	void Menu::validate_max_option_width()
 	{
-		int true_max_option_width = window_size.x - this->min_horiz_margin_size * 2;
+		int true_max_option_width = this->window_size.x - this->min_horiz_margin_size * 2;
 		if (true_max_option_width > this->max_option_width)
 			return;
 		this->max_option_width = true_max_option_width;
@@ -163,7 +168,7 @@ namespace ynot
 			option = wrap(option, int(this->max_option_width), "", "\n");
 	}
 
-	int Menu::get_height(Coord window_size)
+	int Menu::get_height()
 	{
 		int lines_count = 0;
 		if (this->title.size())

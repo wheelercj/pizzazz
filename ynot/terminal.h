@@ -35,13 +35,21 @@ namespace ynot
 		int y;
 		Coord()
 		{
-			x = 0;
-			y = 0;
+			this->x = 0;
+			this->y = 0;
 		}
 		Coord(int new_x, int new_y)
 		{
-			x = new_x;
-			y = new_y;
+			this->x = new_x;
+			this->y = new_y;
+		}
+		bool operator==(const Coord& other)
+		{
+			return this->x == other.x && this->y == other.y;
+		}
+		bool operator!=(const Coord& other)
+		{
+			return !operator==(other);
 		}
 	};
 

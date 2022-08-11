@@ -25,6 +25,8 @@ namespace ynot
 		std::string title;
 		std::string description;
 		std::vector<std::string> options;
+		Coord window_size;
+		int text_height;
 		int min_horiz_margin_size;
 		size_t max_option_width = 0;
 		size_t current_selection = 0;
@@ -34,7 +36,7 @@ namespace ynot
 		void after_loop();
 
 		/* Returns the coordinates of the top-left corner of the options. */
-		Coord print_menu(Coord window_size, int top_margin, int left_title_margin, int left_option_margin);
+		Coord print_menu(int top_margin, int left_title_margin, int left_option_margin);
 
 		void print_options(Coord option_coords, int left_option_margin);
 
@@ -43,12 +45,12 @@ namespace ynot
 		/* Returns true if the current selection changed, false otherwise. */
 		bool on_key(std::string key);
 
-		void format_strings(Coord window_size);
+		void format_strings();
 
 		int get_title_width();
 
-		void validate_max_option_width(Coord window_size);
+		void validate_max_option_width();
 
-		int get_height(Coord window_size);
+		int get_height();
 	};
 }

@@ -21,13 +21,11 @@ using ynot::Coord;
 
 int main()
 {
-	test_paginator();
-	test_paginator_with_emoji();
-	test_paginator_with_vector();
 	test_get_key();  // test_get_key should always be the first test in every commit.
 	test_get_key_without_waiting();
 	test_emoji_size();
 	test_menu();
+	test_menu_reusing();
 	test_getline_ac();
 	test_getline_ac_menu();
 	test_getline_ac_with_empty_suggestion();
@@ -129,6 +127,16 @@ void test_menu()
 	ynot::Menu menu("sample menu", { "create", "list", "edit", "delete", "help", "settings", "exit" });
 	std::string choice = menu.run();
 	cout << "\nYou chose " << choice;
+}
+
+void test_menu_reusing()
+{
+	cout << "\n\nAnother menu test. Press any key to open the menu.";
+	ynot::pause();
+	ynot::Menu menu("this is the title", { "reload this menu", "exit" });
+	string choice = "";
+	while (choice != "exit")
+		choice = menu.run();
 }
 
 void test_getline_ac()

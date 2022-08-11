@@ -4,6 +4,7 @@ void test_get_key();
 void test_get_key_without_waiting();
 void test_emoji_size();
 void test_menu();
+void test_menu_reusing();
 void test_getline_ac();
 void test_getline_ac_menu();
 void test_getline_ac_with_empty_suggestion();
