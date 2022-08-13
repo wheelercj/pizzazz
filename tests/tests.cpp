@@ -3,6 +3,10 @@
 #include <vector>
 #include "../ynot/common.h"
 #include "../ynot/common.cpp"
+#include "../ynot/encoding/utf8conv.h"
+#include "../ynot/encoding/utf8conv.cpp"
+#include "../ynot/encoding/utf8except.h"
+#include "../ynot/encoding/utf8except.cpp"
 #include "../ynot/Menu.h"
 #include "../ynot/Menu.cpp"
 #include "../ynot/Notification.h"
