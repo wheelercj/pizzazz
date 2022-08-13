@@ -158,14 +158,14 @@ void test_notification()
 {
 	cout << "\n\nNotification test. Press any key to open.";
 	ynot::pause();
-	ynot::Notification("This is a better notification.").run();
+	ynot::notify("This is a better notification.");
 }
 
 void test_big_notification()
 {
 	cout << "\n\nBig notification test. Press any key to open.";
 	ynot::pause();
-	ynot::Notification(R"(
+	ynot::notify(R"(
 		Nomorhamphus towoetii is endemic to Indonesia. This species can
 		be found in a freshwater system. Facts and information about the
 		population trends about this species are limited and not details
@@ -177,18 +177,18 @@ void test_big_notification()
 		locations as well.
 
 		Source: https://en.wikipedia.org/wiki/Nomorhamphus_towoetii
-		)").run();
+		)");
 }
 
 void test_big_notification_without_manual_wrapping()
 {
 	cout << "\n\nUnwrapped big notification test. Press any key to open.";
 	ynot::pause();
-	ynot::Notification(R"(
+	ynot::notify(R"(
 		Nomorhamphus towoetii is endemic to Indonesia. This species can be found in a freshwater system. Facts and information about the population trends about this species are limited and not details are lacking about population. This species is recorded to be found in the Lake Towuti system in central Sulawesi, Indonesia. It is considered to be an endangered species due to the fact that it has a limited and restricted extent of occurrence within five locations. There are major threats within a few of these locations as well.
 
 		Source: https://en.wikipedia.org/wiki/Nomorhamphus_towoetii
-		)").run();
+		)");
 }
 
 void test_getline_ac()
