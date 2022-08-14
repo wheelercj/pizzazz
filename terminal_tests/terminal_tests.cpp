@@ -127,6 +127,10 @@ void test_emoji_size()
 	ynot::print("\n" + biohazard_symbol + " size: " + to_string(biohazard_symbol.size()));
 	string pizza = "🍕";
 	ynot::print("\n" + pizza + " size: " + std::to_string(pizza.size()));
+	string space = " ";
+	ynot::print("\n  (normal space) size: " + std::to_string(space.size()));
+	string zero_width_space = "​";
+	ynot::print("\n" + zero_width_space + " (zero-width space) size: " + std::to_string(zero_width_space.size()));
 	ynot::pause();
 }
 
