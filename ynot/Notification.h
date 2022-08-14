@@ -3,8 +3,9 @@
 
 namespace ynot
 {
-	/* Creates and runs a Notification. */
-	void notify(std::string text);
+	/* Creates and runs a Notification. Optionally choose whether
+	   to wait for the user to press a key. */
+	void notify(std::string text, bool wait = true);
 
 	class Notification
 	{
@@ -12,17 +13,16 @@ namespace ynot
 
 		Notification(std::string text);
 
-		/* Throws std::runtime_error if the notification's text doesn't
-		   fit in the terminal window because there is too much text,
-		   the font size is too large, and/or the window is too small. */
-		void run();
+		/* Runs the Notification. Optionally choose whether
+		   to wait for the user to press a key. */
+		void run(bool wait);
 
 	private:
 		std::string text;
 		Coord window_size;
 		int text_height;
 
-		void print_notification(int top_margin);
+		void print_notification(int top_margin, bool wait);
 
 		void wrap_text();
 		

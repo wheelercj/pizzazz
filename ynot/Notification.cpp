@@ -3,9 +3,9 @@
 
 namespace ynot
 {
-	void notify(std::string text)
+	void notify(std::string text, bool wait)
 	{
-		Notification(text).run();
+		Notification(text).run(wait);
 	}
 
 	Notification::Notification(std::string text)
@@ -16,7 +16,7 @@ namespace ynot
 		this->text_height = count(this->text, '\n') + 2;
 	}
 
-	void Notification::run()
+	void Notification::run(bool wait)
 	{
 		reset_on_keyboard_interrupt();
 		save_cursor_location();
@@ -32,18 +32,23 @@ namespace ynot
 		int top_margin = (this->window_size.y - this->text_height) / 2;
 		if (top_margin < 0)
 			throw std::runtime_error("The notification doesn't fit in the window.");
-		this->print_notification(top_margin);
-		pause();
+		this->print_notification(top_margin, wait);
+		if (wait)
+		{
+			pause();
+			restore_screen_buffer();
+			restore_cursor_location();
+		}
 		reset_cursor_style();
-		restore_screen_buffer();
-		restore_cursor_location();
 	}
 
-	void Notification::print_notification(int top_margin)
+	void Notification::print_notification(int top_margin, bool wait)
 	{
 		set_cursor_coords(0, 0);
 		print(center("", top_margin, '\n'));
-		std::string final_text = this->text + "\n\n\x1b[2mPress any key to continue.\x1b[0m";
+		std::string final_text = this->text;
+		if (wait)
+			final_text += "\n\n\x1b[2mPress any key to continue.\x1b[0m";
 		int text_width = this->get_text_width(final_text);
 		final_text = center_multiline(ljust_multiline(final_text, text_width), this->window_size.x);
 		print(final_text);

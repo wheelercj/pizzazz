@@ -7,6 +7,7 @@ void test_menu();
 void test_menu_reuse();
 void test_menu_with_one_choice();
 void test_notification();
+void test_notification_without_waiting();
 void test_big_notification();
 void test_big_notification_without_manual_wrapping();
 void test_getline_ac();

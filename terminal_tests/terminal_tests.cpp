@@ -34,6 +34,7 @@ int main()
 	test_menu_reuse();
 	test_menu_with_one_choice();
 	test_notification();
+	test_notification_without_waiting();
 	test_big_notification();
 	test_big_notification_without_manual_wrapping();
 	test_getline_ac();
@@ -167,6 +168,19 @@ void test_notification()
 	cout << "\n\nNotification test. Press any key to open.";
 	ynot::pause();
 	ynot::notify("This is a better notification.");
+}
+
+void test_notification_without_waiting()
+{
+	cout << "\n\nAnother notification test. Press any key to open.";
+	ynot::pause();
+	ynot::notify(R"(
+		This is a notification that doesn't wait for you to press a key.
+		Instead, a 7-second sleep function is called immediately after it.)",
+		false);
+	ynot::sleep_(7000);
+	ynot::restore_screen_buffer();
+	ynot::restore_cursor_location();
 }
 
 void test_big_notification()
