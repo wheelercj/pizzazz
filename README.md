@@ -1,6 +1,6 @@
 ﻿# ynot
 
-Add color, style, advanced cursor movements, autocomplete suggestions, and more to your C++ terminal app! This fully cross-platform library includes a variety of functions and classes to make common challenges easier.
+Add color, style, advanced cursor movements, fancy menus, and more to your C++ terminal app! This fully cross-platform library includes a variety of functions and classes to make common challenges easier.
 
 ## download
 
@@ -48,26 +48,17 @@ ynot::print("\nYou chose " + choice);
 
 ![menu demo](https://media.giphy.com/media/vUiPYlobVhnGrhKCTc/giphy.gif)
 
-Here's an example of `dedent` which removes indentation from a multiline string, and `getline_ac` which can give autocomplete suggestions (not autocorrect) and has optional built-in input validation:
+Here's an example of `getline_ac` which gets a line of input while giving autocomplete suggestions (not autocorrect) and has optional built-in input validation:
 
 ```cpp
-string menu = ynot::dedent(R"(
-    Sample menu:
-     * Create
-     * Read
-     * Update
-     * Delete
-    > )");
-ynot::print(menu);
-string choice = ynot::getline_ac(
-    { "Create", "Read", "Update", "Delete" },
-    "type an option");
-ynot::print("\n You chose " + choice);
+ynot::print(" Enter a month: ");
+string month = ynot::getline_ac({ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" });
+ynot::print("\n You chose " + month);
 ```
 
-![autocomplete menu example](https://media.giphy.com/media/Rqoco5DR2a2AjDAqtX/giphy.gif)
+![autocomplete demo](https://media.giphy.com/media/26Rjoe4CA6r7TXiOpc/giphy.gif)
 
-Below is another example. With ynot's `Paginator` class, you can cleanly present long pieces of text in a terminal.
+Below is another example. With ynot's `Paginator` class, you can cleanly present long pieces of text in a terminal. The `dedent` function removes indentation from a multiline string.
 
 ```cpp
 string article_title = "3.6 Git Branching - Rebasing";
