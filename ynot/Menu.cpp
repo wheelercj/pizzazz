@@ -9,7 +9,9 @@ namespace ynot
 		std::string description,
 		int min_horiz_margin_size)
 	{
+		this->original_title = title;
 		this->title = title;
+		this->original_description = description;
 		this->description = description;
 		this->options = options;
 		this->min_horiz_margin_size = min_horiz_margin_size;
@@ -21,7 +23,7 @@ namespace ynot
 				this->max_option_width = option.size();
 		}
 		this->window_size = get_window_size();
-		this->text_height = get_height();
+		this->text_height = this->get_height();
 	}
 
 	std::string Menu::run()
@@ -31,6 +33,7 @@ namespace ynot
 		{
 			this->window_size = temp_window_size;
 			this->format_strings();
+			this->text_height = this->get_height();
 		}
 		int left_option_margin = (this->window_size.x - int(this->max_option_width)) / 2;
 		int title_width = this->get_title_width();
@@ -85,7 +88,7 @@ namespace ynot
 			print_styled(this->title + "\n\n", { Style::underlined });
 		}
 		if (this->description.size())
-			print(center(description, this->window_size.x) + "\n\n");
+			print(center(this->description, this->window_size.x) + "\n\n");
 		Coord option_coords = get_cursor_coords();
 		this->print_options(option_coords, left_option_margin);
 		return option_coords;
@@ -168,9 +171,9 @@ namespace ynot
 	{
 		this->validate_max_option_width();
 		int max_width = window_size.x - this->min_horiz_margin_size;
-		this->title = wrap(this->title, max_width, "", "\n");
-		this->description = wrap(this->description, max_width, "", "\n");
-		this->description = center_multiline(this->description, window_size.x);
+		this->title = wrap(this->original_title, max_width, "", "\n");
+		this->description = wrap(this->original_description, max_width, "", "\n");
+		this->description = center_multiline(this->original_description, window_size.x);
 	}
 
 	int Menu::get_title_width()

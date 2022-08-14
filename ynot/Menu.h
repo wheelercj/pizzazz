@@ -22,7 +22,9 @@ namespace ynot
 		std::string run();
 
 	private:
+		std::string original_title;
 		std::string title;
+		std::string original_description;
 		std::string description;
 		std::vector<std::string> options;
 		Coord window_size;
