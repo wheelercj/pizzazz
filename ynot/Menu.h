@@ -29,7 +29,7 @@ namespace ynot
 		int text_height;
 		int min_horiz_margin_size;
 		size_t max_option_width = 0;
-		size_t current_selection = 0;
+		size_t current_selection = 0;  // The current index of the options vector.
 
 		void before_loop();
 
@@ -42,8 +42,13 @@ namespace ynot
 
 		void print_option(int option_index, int left_option_margin);
 
-		/* Returns true if the current selection changed, false otherwise. */
+		/* The navigation functions return true if the current selection
+		   changed, false otherwise. */
 		bool on_key(std::string key);
+		bool key_up_arrow();
+		bool key_down_arrow();
+		bool key_home();
+		bool key_end();
 
 		void format_strings();
 

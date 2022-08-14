@@ -115,22 +115,48 @@ namespace ynot
 
 	bool Menu::on_key(std::string key)
 	{
-		if (key == "up arrow" && this->current_selection > 0)
-		{
+		if (key == "up arrow")
+			return this->key_up_arrow();
+		else if (key == "down arrow")
+			return this->key_down_arrow();
+		else if (key == "home")
+			return this->key_home();
+		else if (key == "end")
+			return this->key_end();
+		return false;
+	}
+
+	bool Menu::key_up_arrow()
+	{
+		if (this->current_selection > 0)
 			this->current_selection--;
-			return true;
-		}
-		else if (key == "down arrow" && this->current_selection < this->options.size() - 1)
-		{
+		else
+			this->current_selection = this->options.size() - 1;
+		return true;
+	}
+
+	bool Menu::key_down_arrow()
+	{
+		if (this->current_selection < this->options.size() - 1)
 			this->current_selection++;
-			return true;
-		}
-		else if (key == "home" && this->current_selection > 0)
+		else
+			this->current_selection = 0;
+		return true;
+	}
+
+	bool Menu::key_home()
+	{
+		if (this->current_selection > 0)
 		{
 			this->current_selection = 0;
 			return true;
 		}
-		else if (key == "end" && this->current_selection < this->options.size() - 1)
+		return false;
+	}
+
+	bool Menu::key_end()
+	{
+		if (this->current_selection < this->options.size() - 1)
 		{
 			this->current_selection = this->options.size() - 1;
 			return true;
