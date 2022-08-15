@@ -2,7 +2,7 @@
 
 #pragma once
 #include "common.h"
-#include "encoding/utf8conv.h"
+#include "utf8conv.h"
 #include "InputField.h"
 #include "Menu.h"
 #include "Notification.h"
