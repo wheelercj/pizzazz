@@ -406,6 +406,11 @@ namespace tests
 			assert_equal(true, ynot::contains("slkdjflsk\nslkdjflks", "\n"));
 		}
 
+		TEST_METHOD(test_contains_char_at_end)
+		{
+			assert_equal(true, ynot::contains("abc", "c"));
+		}
+
 		TEST_METHOD(test_contains_with_multiple_characters)
 		{
 			assert_equal(true, ynot::contains("abcdefghijklm", "ghi"));

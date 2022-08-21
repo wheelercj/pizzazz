@@ -270,7 +270,7 @@ namespace ynot
 
 	bool contains(std::string str, std::string substr)
 	{
-		for (size_t i = 0; i + substr.size() < str.size(); i++)
+		for (size_t i = 0; i + substr.size() < str.size() + 1; i++)
 		{
 			if (substr == slice(str, int(i), int(i + substr.size())))
 				return true;
