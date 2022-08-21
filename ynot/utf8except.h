@@ -85,6 +85,6 @@ namespace ynot
 
     } // namespace win32
 
-#endif // GIOVANNI_DICANIO_WIN32_UTF8EXCEPT_H_
-
 } // namespace ynot
+
+#endif // GIOVANNI_DICANIO_WIN32_UTF8EXCEPT_H_
