@@ -38,6 +38,8 @@ while (key != "escape")
 
 ![get_key demo](https://media.giphy.com/media/BVk0mTxjIu8Pgbeo1h/giphy.gif)
 
+This library also has many **string manipulation** functions including `wrap`, `split`, `join`, `strip`, `center`, `indent`, `dedent`, and more.
+
 Below is an example of ynot's `Menu` class, which makes it easy to create centered menus controlled with the arrow and enter keys.
 
 ```cpp
