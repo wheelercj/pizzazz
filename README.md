@@ -38,7 +38,7 @@ while (key != "escape")
 
 ![get_key demo](https://media.giphy.com/media/BVk0mTxjIu8Pgbeo1h/giphy.gif)
 
-This library also has many **string manipulation** functions including `wrap`, `split`, `join`, `strip`, `center`, `indent`, `dedent`, and more.
+This library also has many **string manipulation** functions including `wrap`, `split`, `join`, `strip`, `center`, `indent`, `dedent`, and more. See their signatures in [str.h](https://github.com/wheelercj/ynot/blob/main/ynot/str.h).
 
 Below is an example of ynot's `Menu` class, which makes it easy to create centered menus controlled with the arrow and enter keys.
 
